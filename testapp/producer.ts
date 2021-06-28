@@ -6,6 +6,7 @@ const publish = async (topic: string, message: string) => {
 	try {
 		// creating a producer from the producer function of the imported client
 		const producer = client.producer();
+		console.log(producer)
 		// awaiting connecting
 		await producer.connect();
 		// sending message

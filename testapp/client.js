@@ -8,6 +8,6 @@ var kafka = new kafkajs_1.Kafka({
     clientId: 'my-app',
     brokers: ['localhost:9092'],
 });
-// module.exports = kafka;
+console.log(kafka);
 exports.default = kafka;
 //# sourceMappingURL=client.js.map

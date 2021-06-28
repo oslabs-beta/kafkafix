@@ -8,5 +8,6 @@ const kafka = new Kafka({
 	brokers: ['localhost:9092'],
 });
 
-// module.exports = kafka;
+console.log(kafka);
+
 export default kafka;
