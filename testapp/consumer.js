@@ -45,6 +45,7 @@ var kafkaSubscribe = function (topic) { return __awaiter(void 0, void 0, void 0,
             case 0:
                 _a.trys.push([0, 4, , 5]);
                 consumer = client_1.default.consumer({ groupId: 'my-group' });
+                console.log(consumer);
                 return [4 /*yield*/, consumer.connect()];
             case 1:
                 _a.sent();
@@ -58,7 +59,7 @@ var kafkaSubscribe = function (topic) { return __awaiter(void 0, void 0, void 0,
                                 return __generator(this, function (_b) {
                                     console.log({
                                         // key: message.key.toString(),
-                                        value: message.value.toString(),
+                                        value: message.value,
                                     });
                                     return [2 /*return*/];
                                 });

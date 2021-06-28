@@ -46,6 +46,7 @@ var publish = function (topic, message) { return __awaiter(void 0, void 0, void 
             case 0:
                 _a.trys.push([0, 4, , 5]);
                 producer = client_1.default.producer();
+                console.log(producer);
                 // awaiting connecting
                 return [4 /*yield*/, producer.connect()];
             case 1:
