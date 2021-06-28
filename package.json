@@ -1,0 +1,27 @@
+{
+  "name": "kafkafix",
+  "version": "1.0.0",
+  "description": "kafkafix",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "convert": "tsc -p ./testapp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oslabs-beta/kafkafix.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oslabs-beta/kafkafix/issues"
+  },
+  "homepage": "https://github.com/oslabs-beta/kafkafix#readme",
+  "dependencies": {
+    "kafkajs": "^1.15.0"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.5"
+  }
+}
