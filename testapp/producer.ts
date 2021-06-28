@@ -23,10 +23,6 @@ const publish = async (topic: string, message: string) => {
 
 let i = 0;
 
-setTimeout(() => {
+setInterval(() => {
 	publish('test-topic', `Message: ${i++}`);
 }, 1000);
-
-
-
-

@@ -1,11 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // import kafkajs from dependecies
-import { Kafka } from 'kafkajs';
+var kafkajs_1 = require("kafkajs");
 // create an instance of kafka, passing in the clientId & brockers
 // no broker discovery here - just passing in port of kafka
-const kafka = new Kafka({
+var kafka = new kafkajs_1.Kafka({
     clientId: 'my-app',
     brokers: ['localhost:9092'],
 });
 // module.exports = kafka;
-export default kafka;
+exports.default = kafka;
 //# sourceMappingURL=client.js.map
