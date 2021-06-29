@@ -10,8 +10,12 @@ const Sidepane = () => {
   return (
     <>
       <h1>Sidepane</h1>
-      <Connect />
-      <NavBar />
+      <div>
+        <Connect />
+      </div>
+      <div>
+        <NavBar />
+      </div>
     </>
   );
 };
