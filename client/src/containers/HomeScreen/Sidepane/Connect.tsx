@@ -6,9 +6,13 @@ const Connect = () => {
 
   const returnForm = () => {
     return (
-      <form >
+      <form>
         <label>Enter Your Broker ID</label>
-        <input id='brokerID' name='brokerID' placeholder='localhost:9092'></input>
+        <input
+          id='brokerID'
+          name='brokerID'
+          placeholder='localhost:9092'
+        ></input>
         <button>Connect</button>
       </form>
     );
