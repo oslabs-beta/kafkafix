@@ -35,9 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // requiring in client from client file
-var client_1 = require("./client");
+var client_1 = __importDefault(require("./client"));
 // creating and exporting the publishing function (exporting because we are using a CLI to publish messages)
 var publish = function (topic, message) { return __awaiter(void 0, void 0, void 0, function () {
     var producer, e_1;
@@ -79,4 +82,3 @@ var i = 0;
 setInterval(function () {
     publish('test-topic', "Message: " + i++);
 }, 1000);
-//# sourceMappingURL=producer.js.map
