@@ -5,6 +5,10 @@ import { KafkaState } from "../../state/reducers/kafkaDataReducer";
 import { TopicRow } from "./TopicRow";
 
 const TopicsDisplay: FC = (props) => {
+  const isConnected = useSelector<overallState, KafkaState["isConnected"]>(
+    (state) => state.kafka.isConnected
+  );
+
   const topicsArr = useSelector<overallState, KafkaState["topics"]>((state) => {
     return state.kafka.topics;
   });
@@ -21,15 +25,16 @@ const TopicsDisplay: FC = (props) => {
           </tr>
         </thead>
         <tbody>
-          {topicsArr.map((el, i) => (
-            <TopicRow
-              key={i}
-              name={el.name}
-              partitionNum={el.partitionNum}
-              consumerNum={el.consumerNum}
-              producerNum={el.producerNum}
-            />
-          ))}
+          {isConnected &&
+            topicsArr.map((el, i) => (
+              <TopicRow
+                key={i}
+                name={el.name}
+                partitionNum={el.partitionNum}
+                consumerNum={el.consumerNum}
+                producerNum={el.producerNum}
+              />
+            ))}
         </tbody>
       </table>
     </div>

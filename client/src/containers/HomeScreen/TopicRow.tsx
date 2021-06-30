@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, MouseEvent } from "react";
 
 interface TopicRowProps {
   name: string;
@@ -8,8 +8,11 @@ interface TopicRowProps {
 }
 
 export const TopicRow: FC<TopicRowProps> = (props) => {
+  const handleClickTopic = (e: MouseEvent) => {
+    console.log(e.target);
+  };
   return (
-    <tr>
+    <tr onClick={handleClickTopic}>
       <td>{props.name}</td>
       <td>{props.partitionNum}</td>
       <td>{props.consumerNum}</td>

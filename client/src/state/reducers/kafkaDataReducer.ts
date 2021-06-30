@@ -1,6 +1,5 @@
 import { Type } from "../constants/constants";
 import { Action } from "../actions/actions";
-import { stat } from "fs";
 
 export interface TopicData {
   name: string;
@@ -27,17 +26,18 @@ const initialState: KafkaState = {
 export const kafkaDataReducer = (
   state: KafkaState = initialState,
   action: Action
-) => {
+): KafkaState => {
   switch (action.type) {
     case Type.CONNECTED:
+      console.log("arrived here");
       return {
         ...state,
-        connected: true,
+        isConnected: true,
       };
     case Type.DISCONNECTED:
       return {
         ...state,
-        connected: false,
+        isConnected: false,
       };
     case Type.POPULATE_TOPICS:
       return {

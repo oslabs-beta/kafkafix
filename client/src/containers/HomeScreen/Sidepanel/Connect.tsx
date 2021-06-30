@@ -1,7 +1,8 @@
 import React, { FC, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { KafkaState } from "../../../state/reducers/kafkaDataReducer";
 import { overallState } from "../../../state/reducers";
+import { connectedActionCreator } from "../../../state/actions/actions";
 
 interface options {
   headers: string;
@@ -14,6 +15,10 @@ const Connect: FC = (props) => {
   const isConnected = useSelector<overallState, KafkaState["isConnected"]>(
     (state) => state.kafka.isConnected
   );
+
+  const dispatch = useDispatch();
+  dispatch(connectedActionCreator());
+  console.log(isConnected);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();

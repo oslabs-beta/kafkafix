@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 
 // importing Connect
-import Connect from "./Sidepane/Connect";
+import Connect from "./Sidepanel/Connect";
 
 // importing Navbar
-import NavBar from "./Sidepane/NavBar";
+import NavBar from "./Sidepanel/NavBar";
 
 const Sidepanel: FC = (props) => {
   return (
