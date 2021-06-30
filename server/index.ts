@@ -1,6 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 
+import kafkaRoutes from './kafka/kafka.routes';
+
 // initialize configuration
 dotenv.config();
 
@@ -8,6 +10,8 @@ const PORT = process.env.PORT;
 const app: Express = express();
 
 app.use(express.json());
+
+app.use('/api', kafkaRoutes);
 
 app.use('*', (req: Request, res: Response) => {
 	return res.status(404).send('Invalid Route');

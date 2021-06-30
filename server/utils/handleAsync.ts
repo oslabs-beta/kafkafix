@@ -1,4 +1,4 @@
-const handle = async <T>(promise: Promise<T>) => {
+const handleAsync = async <T>(promise: Promise<T>) => {
 	try {
 		const data = await promise;
 
@@ -13,4 +13,4 @@ const handle = async <T>(promise: Promise<T>) => {
 	}
 };
 
-export default handle;
+export default handleAsync;
