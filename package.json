@@ -2,15 +2,21 @@
   "name": "kafkafix",
   "version": "1.0.0",
   "description": "kafkafix",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
+    "convert": "tsc",
+    "electron": "concurrently \" npm run dev\" \"wait-on http://localhost:9000 && electron .\"",
     "dev": "webpack serve",
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
+<<<<<<< HEAD
     "convert": "tsc -p ./testapp",
     "bundle": "NODE_ENV=production webpack",
     "electron-dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "start": "electron ."
+=======
+    "bundle": "NODE_ENV=production webpack"
+>>>>>>> 1a63151de50e787b527c61336deb16d6e63ee56e
   },
   "repository": {
     "type": "git",
@@ -39,6 +45,10 @@
     "dotenv": "latest",
     "electron": "^13.1.4",
     "electron-builder": "^22.11.7",
+<<<<<<< HEAD
+=======
+    "electron-is-dev": "^2.0.0",
+>>>>>>> 1a63151de50e787b527c61336deb16d6e63ee56e
     "express": "latest",
     "kafkajs": "^1.15.0",
     "react": "^17.0.2",
@@ -56,8 +66,11 @@
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
     "concurrently": "^6.2.0",
+<<<<<<< HEAD
     "css-loader": "^5.2.6",
     "electron-is-dev": "^2.0.0",
+=======
+>>>>>>> 1a63151de50e787b527c61336deb16d6e63ee56e
     "eslint": "latest",
     "html-webpack-plugin": "^5.3.2",
     "nodemon": "^1.18.11",
