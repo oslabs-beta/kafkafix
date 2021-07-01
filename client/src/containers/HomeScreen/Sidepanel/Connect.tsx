@@ -17,34 +17,30 @@ const Connect: FC = (props) => {
   );
 
   const dispatch = useDispatch();
-  dispatch(connectedActionCreator());
+  // dispatch(connectedActionCreator());
   console.log(isConnected);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     let method;
+    let inputField: HTMLInputElement | null =
+      document.querySelector("#brokerID");
     let body;
-    let inputField: HTMLInputElement | null;
+    if (inputField) {
+      console.log(inputField.value);
+      // move down to fetch
+      body = JSON.stringify({ PORT: inputField.value });
+      // inputField.setAttribute("disabled", "true");
+    } else {
+      alert("Cannot connect because Broker ID field is empty");
+      return;
+    }
+
     if (!isConnected) {
       method = "POST";
-      inputField = document.querySelector("#brokerID");
       console.log(inputField);
-      if (inputField) console.log(inputField.value);
-      // if (inputField?.value)
-      if (inputField && parseInt(inputField.value)) {
-        // move down to fetch
-        // inputField.setAttribute("disabled", "true");
-
-        // edit body
-        body = JSON.stringify({ brokerID: inputField.value });
-      } else {
-        alert("Cannot connect because Broker ID field is empty");
-        return;
-      }
     } else {
       method = "PUT";
-      //edit the body
-      body = JSON.stringify({});
     }
 
     const options = {
@@ -55,13 +51,13 @@ const Connect: FC = (props) => {
     // move down into fetch
 
     //edit the fetch api
-    // fetch("/api", options)
-    //   .then((data) => {
-    //     setConnect(true);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+    fetch("/api/connect", options)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
