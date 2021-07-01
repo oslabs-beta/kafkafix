@@ -2,12 +2,12 @@ import express, { Request, Response, ErrorRequestHandler } from 'express';
 import * as http from 'http'; // use if socket io
 import dotenv from 'dotenv';
 
-dotenv.config();
-
 import { Mongoose } from './common/db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
 import { KafkaRoutes } from './kafka/kafka.routes';
+
+dotenv.config();
 
 // initialize configuration
 const PORT = process.env.PORT;
