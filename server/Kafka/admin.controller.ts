@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { Kafka } from 'kafkajs';
-import handleAsync from '../utils/handleAsync';
+import handleAsync from '../common/handleAsync';
 
 //! User must run zookeeper and server on their own
 // ADD a command to start docker compose file
@@ -14,7 +14,7 @@ export class AdminController {
 		const { PORT } = req.body;
 
 		const kafka = new Kafka({
-			clientId: 'my-app',
+			clientId: 'my-app', //!
 			brokers: [`kafka1:${PORT}`],
 		});
 		const admin = kafka.admin();
@@ -22,7 +22,7 @@ export class AdminController {
 
 		if (error) return next(error);
 
-		res.locals.kafka = kafka;
+		res.locals.kafka = kafka; // for consumer & producer
 		res.locals.admin = admin;
 
 		return next();
@@ -38,22 +38,64 @@ export class AdminController {
 		return next();
 	};
 
-	// ADD crate topic //? async
-	static createTopics: RequestHandler = async (req, res, next) => {};
+	static createTopic: RequestHandler = async (req, res, next) => {
+		const { admin } = res.locals;
+		const { topic, partitions } = req.body;
+		const [, error] = await handleAsync(
+			admin.createTopics({ topics: [{ topic, partitions }] })
+		);
 
-	/**
-	 * topics: <String[]>
-	 * timeout: <Number>
-	 */
-	static deleteTopics: RequestHandler = async (req, res, next) => {
-		const { topics, timeout } = req.body;
+		if (error) return next(error);
+
+		return next();
 	};
 
-	static createPartitions: RequestHandler = async (req, res, next) => {
-		const { topics, timeout } = req.body;
+	static deleteTopic: RequestHandler = async (req, res, next) => {
+		const { admin } = res.locals;
+		const { topic } = req.body;
+		const [, error] = await handleAsync(
+			admin.deleteTopics({ topics: [topic] })
+		);
+
+		if (error) return next(error);
+
+		return next();
 	};
 
-	static getAllMetadata: RequestHandler = async (rq, res, next) => {};
+	static createPartition: RequestHandler = async (req, res, next) => {
+		const { admin } = res.locals;
+		const { topic, count } = req.body;
+		const [, error] = await handleAsync(
+			admin.createPartitions({ topicPartitions: [{ topic, count }] })
+		);
 
-	static getTopicMetadata: RequestHandler = async (rq, res, next) => {};
+		if (error) return next(error);
+
+		return next();
+	};
+
+	static getTopicMetadata: RequestHandler = async (req, res, next) => {
+		const { admin } = res.locals;
+		const { topic } = req.body; 
+		const [metadata, error] = await handleAsync(
+			await admin.fetchTopicMetadata({ topics: [topic] })
+		);
+
+		if (error) return next(error);
+		res.locals.metadata = metadata;
+
+		return next();
+	};
+
+	static getAllMetadata: RequestHandler = async (rq, res, next) => {
+		const { admin } = res.locals;
+		const [metadatas, error] = await handleAsync(
+			await admin.fetchTopicMetadata()
+		);
+
+		if (error) return next(error);
+		res.locals.metadatas = metadatas;
+
+		return next();
+	};
 }

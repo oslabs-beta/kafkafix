@@ -6,9 +6,10 @@ const handleAsync = async <T>(promise: Promise<T>) => {
 	} catch (e) {
 		const error = {
 			status: 500,
-			message: 'Error at Middleware',
+			message: e,
 		};
 
+		console.error(e);
 		return [null, error];
 	}
 };
