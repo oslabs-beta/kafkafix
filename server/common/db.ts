@@ -17,10 +17,6 @@ export class Mongoose {
 		this.connect();
 	}
 
-	// instantiate() {
-	// 	return mongoose;
-	// }
-
 	async connect(): Promise<void> {
 		const [db, error] = await handleAsync(connect(MONGO_URI, this.options));
 

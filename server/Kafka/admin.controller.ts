@@ -1,29 +1,31 @@
 import { RequestHandler } from 'express';
 import { Kafka } from 'kafkajs';
-import handleAsync from '../common/handleAsync';
 
-//! User must run zookeeper and server on their own
+import handleAsync from '../common/handleAsync';
+import { consumer, producer } from './kafka.controller';
+
+// ADD - commander -  User must run zookeeper and server on their own
 // ADD a command to start docker compose file
+// ADD handle multiple ports: only 9092
 
 export class AdminController {
-	/**
-	 * create a new instance of kafka
-	 * @PORT port passed in by user
-	 */
 	static kafka: RequestHandler = async (req, res, next) => {
-		const { PORT } = req.body;
+		console.log('admin: kafka');
+		const { PORT }: { PORT: number } = req.body;
 
 		const kafka = new Kafka({
-			clientId: 'my-app', //!
-			brokers: [`kafka1:${PORT}`],
+			clientId: 'my-app',
+			brokers: [`localhost:${PORT}`],
 		});
 		const admin = kafka.admin();
 		const [, error] = await handleAsync(admin.connect());
 
 		if (error) return next(error);
 
-		res.locals.kafka = kafka; // for consumer & producer
 		res.locals.admin = admin;
+
+		producer(kafka);
+		consumer(kafka, PORT);
 
 		return next();
 	};
@@ -76,7 +78,7 @@ export class AdminController {
 
 	static getTopicMetadata: RequestHandler = async (req, res, next) => {
 		const { admin } = res.locals;
-		const { topic } = req.body; 
+		const { topic } = req.body;
 		const [metadata, error] = await handleAsync(
 			await admin.fetchTopicMetadata({ topics: [topic] })
 		);
