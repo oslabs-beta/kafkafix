@@ -4,8 +4,8 @@ import { KafkaState } from "../../../state/reducers/kafkaDataReducer";
 import { overallState } from "../../../state/reducers";
 import { connectedActionCreator } from "../../../state/actions/actions";
 
-interface options {
-  headers: string;
+interface Options {
+  headers: {};
   body: string;
   method: string;
 }
@@ -17,7 +17,7 @@ const Connect: FC = (props) => {
   );
 
   const dispatch = useDispatch();
-  // dispatch(connectedActionCreator());
+  dispatch(connectedActionCreator());
   console.log(isConnected);
 
   const handleSubmit = (e: any) => {
@@ -43,7 +43,7 @@ const Connect: FC = (props) => {
       method = "PUT";
     }
 
-    const options = {
+    const options: Options = {
       method,
       headers: { "content-type": "application/json" },
       body,
