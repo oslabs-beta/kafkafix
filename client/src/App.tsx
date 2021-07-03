@@ -1,15 +1,14 @@
-import React from 'react';
+import React from "react";
 // app renders 1 component -- Home Screen --
 
 // importing HomeScreen
-import HomeScreen from './containers/HomeScreen';
-
+import HomeScreen from "./containers/HomeScreen";
 
 const App: React.FC = () => {
   return (
     <>
       <div>KafkaFix logo</div>
-        <HomeScreen />
+      <HomeScreen />
     </>
   );
 };
