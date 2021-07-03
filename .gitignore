@@ -1,2 +1,5 @@
 **/node_modules
 /full-stack
+/.env
+/zk-kafka
+/tsc
