@@ -1,9 +1,9 @@
-import React, { FC, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { KafkaState } from "../../../state/reducers/kafkaDataReducer";
-import { overallState } from "../../../state/reducers";
-import { connectedActionCreator } from "../../../state/actions/actions";
-import WebSocket from "ws";
+import React, { FC, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { KafkaState } from '../../../state/reducers/kafkaDataReducer';
+import { overallState } from '../../../state/reducers';
+import { connectedActionCreator } from '../../../state/actions/actions';
+import WebSocket from 'ws';
 
 interface Options {
   headers: {};
@@ -14,19 +14,19 @@ interface Options {
 
 const Connect: FC = (props) => {
   // display form function -> onSubmit -> send fetch request to backend with Broker URI
-  const isConnected = useSelector<overallState, KafkaState["isConnected"]>(
+  const isConnected = useSelector<overallState, KafkaState['isConnected']>(
     (state) => state.kafka.isConnected
   );
 
   const dispatch = useDispatch();
-  // dispatch(connectedActionCreator());
+  dispatch(connectedActionCreator());
   console.log(isConnected);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     let method;
     let inputField: HTMLInputElement | null =
-      document.querySelector("#brokerID");
+      document.querySelector('#brokerID');
     let body;
     if (inputField) {
       console.log(inputField.value);
@@ -34,26 +34,26 @@ const Connect: FC = (props) => {
       body = JSON.stringify({ PORT: inputField.value });
       // inputField.setAttribute("disabled", "true");
     } else {
-      alert("Cannot connect because Broker ID field is empty");
+      alert('Cannot connect because Broker ID field is empty');
       return;
     }
 
     if (!isConnected) {
-      method = "POST";
+      method = 'POST';
       console.log(inputField);
     } else {
-      method = "PUT";
+      method = 'PUT';
     }
 
     const options: Options = {
       method,
-      headers: { "content-type": "application/json" },
+      headers: { 'content-type': 'application/json' },
       body,
     };
     // move down into fetch
 
     //edit the fetch api
-    fetch("/api/connect", options)
+    fetch('/api/connect', options)
       .then((data) => {
         console.log(data);
         // ws = new WebSocket("ws://localhost:3000");
@@ -71,12 +71,12 @@ const Connect: FC = (props) => {
           <label>Enter Your Broker Port Number</label>
         </div>
         <input
-          id="brokerID"
-          name="brokerID"
-          placeholder="Your Broker Port Number"
-          pattern="[0-9]+"
+          id='brokerID'
+          name='brokerID'
+          placeholder='Your Broker Port Number'
+          pattern='[0-9]+'
         ></input>
-        <button>{isConnected ? "Disconnect" : "Connect"}</button>
+        <button>{isConnected ? 'Disconnect' : 'Connect'}</button>
       </form>
     </div>
   );

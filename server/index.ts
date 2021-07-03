@@ -1,14 +1,14 @@
-import express, { Request, Response, ErrorRequestHandler } from "express";
-import * as http from "http";
-import * as WebSocket from "ws";
-import dotenv from "dotenv";
-import cors from "cors";
+import express, { Request, Response, ErrorRequestHandler } from 'express';
+import * as http from 'http';
+import * as WebSocket from 'ws';
+import dotenv from 'dotenv';
+import cors from 'cors';
 
-import { Mongoose } from "./common/db";
-import { RouteConfig } from "./common/route.config";
-import { AuthRoutes } from "./auth/auth.routes";
-import { KafkaRoutes } from "./Kafka/kafka.routes";
-import { GroupRoutes, TopicRoutes } from "./Kafka";
+import { Mongoose } from './common/db';
+import { RouteConfig } from './common/route.config';
+import { AuthRoutes } from './auth/auth.routes';
+import { KafkaRoutes } from './Kafka/kafka.routes';
+import { GroupRoutes, TopicRoutes } from './Kafka';
 
 dotenv.config();
 
@@ -34,15 +34,15 @@ routes.push(new KafkaRoutes(app));
 routes.push(new TopicRoutes(app));
 
 // 404
-app.use("*", (req: Request, res: Response) => {
-  return res.status(404).send("Invalid Route");
+app.use('*', (req: Request, res: Response) => {
+  return res.status(404).send('Invalid Route');
 });
 
 // global error handler
 app.use(((err, req, res, next) => {
   const defaultErr = {
     status: 500,
-    message: "Error: Middleware error at global error handler",
+    message: 'Error: Middleware error at global error handler',
   };
   const errorObj = Object.assign({}, defaultErr, err);
   return res.status(errorObj.status).json(errorObj.message);
@@ -59,9 +59,9 @@ server.listen(PORT, () => {
 
 // websocket server
 // CHECK if wss.on vs wss.once
-wss.once("connection", (ws: WebSocket) => {
+wss.once('connection', (ws: WebSocket) => {
   app.locals.ws = ws;
-  console.log("ws connected");
+  console.log('ws connected');
 
-  ws.on("close", () => console.log("ws disconnected"));
+  ws.on('close', () => console.log('ws disconnected'));
 });
