@@ -1,5 +1,5 @@
 import React from "react";
-
+import Partitions from "./HomeScreen/TopicsDisplay/Partitions";
 // Home screen renders two componenets - the left panel (Sidepane) and the right topics display (topicsDisplay)
 
 // importing Sidepane component
@@ -14,6 +14,7 @@ const HomeScreen = () => {
       <h1>Homescreen</h1>
       <Sidepanel />
       <TopicsDisplay />
+      <Partitions />
     </div>
   );
 };

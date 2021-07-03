@@ -18,5 +18,6 @@ export const TopicRow: FC<TopicRowProps> = (props) => {
       <td>{props.consumerNum}</td>
       <td>{props.producerNum}</td>
     </tr>
+    // {topicSelector === props.name && p}
   );
 };
