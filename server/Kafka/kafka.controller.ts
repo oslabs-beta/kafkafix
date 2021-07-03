@@ -37,11 +37,9 @@ export const consumer = async (kafka: Kafka, ws: WebSocket, PORT: number) => {
   const [, subscribeErr] = await handleAsync(
     consumer.subscribe({ topic, fromBeginning: true })
   );
-  // console.log("inside the consumer function");
   if (connectErr) return connectErr;
   if (subscribeErr) return subscribeErr;
 
-  // console.log("made it here");
   // CHECK with client side
   ws.on("open", async () => {
     console.log("open");
