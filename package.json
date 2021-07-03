@@ -1,71 +1,79 @@
 {
-  "name": "kafkafix",
-  "version": "1.0.0",
-  "description": "kafkafix",
-  "main": "main.js",
-  "scripts": {
-    "convert": "tsc",
-    "electron": "concurrently \" npm run dev\" \"wait-on http://localhost:9000 && electron .\"",
-    "dev": "webpack serve",
-    "build": "webpack --mode production",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "NODE_ENV=production webpack"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/oslabs-beta/kafkafix.git"
-  },
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo",
-    "typescript"
-  ],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/oslabs-beta/kafkafix/issues"
-  },
-  "homepage": "https://github.com/oslabs-beta/kafkafix#readme",
-  "dependencies": {
-    "@types/commander": "^2.12.2",
-    "@types/react": "^17.0.11",
-    "@types/react-dom": "^17.0.8",
-    "@types/ws": "^7.4.5",
-    "commander": "latest",
-    "dotenv": "latest",
-    "electron": "^13.1.4",
-    "electron-builder": "^22.11.7",
-    "electron-is-dev": "^2.0.0",
-    "express": "latest",
-    "kafkajs": "^1.15.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.1.0",
-    "redux-thunk": "^2.3.0",
-    "wait-on": "^6.0.0",
-    "ws": "latest"
-  },
-  "devDependencies": {
-    "@types/node": "latest",
-    "@types/react-redux": "^7.1.16",
-    "@types/redux": "^3.6.0",
-    "@types/redux-thunk": "^2.1.0",
-    "concurrently": "^6.2.0",
-    "css-loader": "^5.2.6",
-    "electron-is-dev": "^2.0.0",
-    "eslint": "latest",
-    "html-webpack-plugin": "^5.3.2",
-    "nodemon": "^1.18.11",
-    "style-loader": "^3.0.0",
-    "ts-loader": "^9.2.3",
-    "typescript": "^4.3.4",
-    "webpack": "^5.41.0",
-    "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2"
-  }
+	"name": "kafkafix",
+	"version": "1.0.0",
+	"description": "kafkafix",
+	"main": "main.ts",
+	"scripts": {
+		"start": "concurrently \"npm run electron\" \"nodemon ./server/index.ts\"",
+		"convert": "tsc -p ./",
+		"electron": "concurrently \" npm run dev\" \"wait-on http://localhost:9000 && electron .\"",
+		"dev": "webpack serve",
+		"build": "webpack --mode production",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"bundle": "NODE_ENV=production webpack"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/oslabs-beta/kafkafix.git"
+	},
+	"keywords": [
+		"Electron",
+		"quick",
+		"start",
+		"tutorial",
+		"demo",
+		"typescript"
+	],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/oslabs-beta/kafkafix/issues"
+	},
+	"homepage": "https://github.com/oslabs-beta/kafkafix#readme",
+	"dependencies": {
+		"commander": "^8.0.0",
+		"cors": "^2.8.5",
+		"dotenv": "^10.0.0",
+		"electron": "^13.1.4",
+		"electron-builder": "^22.11.7",
+		"electron-is-dev": "^2.0.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"kafkajs": "^1.15.0",
+		"mongoose": "^5.13.0",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-redux": "^7.2.4",
+		"react-router-dom": "^5.2.0",
+		"redux": "^4.1.0",
+		"redux-thunk": "^2.3.0",
+		"wait-on": "^6.0.0",
+		"ws": "^7.5.1"
+	},
+	"devDependencies": {
+		"@types/commander": "^2.12.2",
+		"@types/cors": "^2.8.10",
+		"@types/dotenv": "^8.2.0",
+		"@types/express": "^4.17.12",
+		"@types/jsonwebtoken": "^8.5.2",
+		"@types/node": "^15.14.0",
+		"@types/react": "^17.0.11",
+		"@types/react-dom": "^17.0.8",
+		"@types/react-redux": "^7.1.16",
+		"@types/redux": "^3.6.0",
+		"@types/redux-thunk": "^2.1.0",
+		"@types/ws": "^7.4.5",
+		"concurrently": "^6.2.0",
+		"css-loader": "^5.2.6",
+		"electron-is-dev": "^2.0.0",
+		"html-webpack-plugin": "^5.3.2",
+		"nodemon": "^1.19.4",
+		"style-loader": "^3.0.0",
+		"ts-loader": "^9.2.3",
+		"ts-node": "^10.0.0",
+		"typescript": "^4.3.4",
+		"webpack": "^5.41.0",
+		"webpack-cli": "^4.7.2",
+		"webpack-dev-server": "^3.11.2"
+	}
 }
