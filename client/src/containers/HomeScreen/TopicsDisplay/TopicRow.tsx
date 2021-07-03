@@ -1,4 +1,7 @@
-import React, { FC, MouseEvent } from "react";
+import React, { FC, MouseEvent } from 'react';
+
+// importing IPCReder
+const {ipcRenderer} = window.require("electron")
 
 interface TopicRowProps {
   name: string;
@@ -10,6 +13,7 @@ interface TopicRowProps {
 export const TopicRow: FC<TopicRowProps> = (props) => {
   const handleClickTopic = (e: MouseEvent) => {
     console.log(e.target);
+    ipcRenderer.send('open-partition');
   };
   return (
     <tr onClick={handleClickTopic}>

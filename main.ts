@@ -1,5 +1,6 @@
 // requiring in app and browser window modules
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+// import IPCmain from electron
 
 // importing electron is dev
 const isDev = require('electron-is-dev');
@@ -14,15 +15,11 @@ function createWindow() {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
-  // if in dev mode - use local host:9000, if not use index.html
-  // if (isDev) {
-  //   console.log('Electron is in DEV MODE YOMA');
-  // } else {
-  //   console.log('Its not working haha');
-  // }
   const startURL = isDev
     ? 'http://localhost:9000'
     : `file://${path.join(__dirname, './client/src/index.html')}`;
@@ -44,4 +41,16 @@ app.whenReady().then(() => {
   app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit();
   });
+});
+
+// fucntion for creating partition window
+function createPartitionWindow() {
+  const win = new BrowserWindow({
+    width: 200,
+    height: 200,
+  });
+}
+
+ipcMain.on('open-partition', () => {
+  createPartitionWindow();
 });
