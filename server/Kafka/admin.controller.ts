@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import { Kafka } from 'kafkajs';
+import * as WebSocket from 'ws';
 
 import handleAsync from '../common/handleAsync';
 import { consumer, producer } from './kafka.controller';
@@ -11,7 +12,8 @@ import { consumer, producer } from './kafka.controller';
 export class AdminController {
 	static kafka: RequestHandler = async (req, res, next) => {
 		console.log('admin: kafka');
-		const { PORT }: { PORT: number } = req.body;
+		const PORT: number = req.body.PORT;
+		const ws: WebSocket = req.app.locals.ws;
 
 		const kafka = new Kafka({
 			clientId: 'my-app',
@@ -21,82 +23,24 @@ export class AdminController {
 		const [, error] = await handleAsync(admin.connect());
 
 		if (error) return next(error);
-
 		res.locals.admin = admin;
 
 		producer(kafka);
-		consumer(kafka, PORT);
+		consumer(kafka, ws, PORT);
 
 		return next();
 	};
 
-	static getTopics: RequestHandler = async (req, res, next) => {
+	/**
+	 * get information about the broker cluster
+	 * @returns { brokers: [ nodeId: number, host: string, port: number], controller: number, clusterId: string}
+	 */
+	static describeCluster: RequestHandler = async (rq, res, next) => {
 		const { admin } = res.locals;
-		const [topics, error] = await handleAsync(admin.listTopics());
+		const [cluster, error] = await handleAsync(admin.describeCluster());
 
 		if (error) return next(error);
-		res.locals.topics = topics;
-
-		return next();
-	};
-
-	static createTopic: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
-		const { topic, partitions } = req.body;
-		const [, error] = await handleAsync(
-			admin.createTopics({ topics: [{ topic, partitions }] })
-		);
-
-		if (error) return next(error);
-
-		return next();
-	};
-
-	static deleteTopic: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
-		const { topic } = req.body;
-		const [, error] = await handleAsync(
-			admin.deleteTopics({ topics: [topic] })
-		);
-
-		if (error) return next(error);
-
-		return next();
-	};
-
-	static createPartition: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
-		const { topic, count } = req.body;
-		const [, error] = await handleAsync(
-			admin.createPartitions({ topicPartitions: [{ topic, count }] })
-		);
-
-		if (error) return next(error);
-
-		return next();
-	};
-
-	static getTopicMetadata: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
-		const { topic } = req.body;
-		const [metadata, error] = await handleAsync(
-			await admin.fetchTopicMetadata({ topics: [topic] })
-		);
-
-		if (error) return next(error);
-		res.locals.metadata = metadata;
-
-		return next();
-	};
-
-	static getAllMetadata: RequestHandler = async (rq, res, next) => {
-		const { admin } = res.locals;
-		const [metadatas, error] = await handleAsync(
-			await admin.fetchTopicMetadata()
-		);
-
-		if (error) return next(error);
-		res.locals.metadatas = metadatas;
+		res.locals.cluster = cluster;
 
 		return next();
 	};

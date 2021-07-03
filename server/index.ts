@@ -8,6 +8,7 @@ import { Mongoose } from './common/db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
 import { KafkaRoutes } from './kafka/kafka.routes';
+import { GroupRoutes, TopicRoutes } from './kafka';
 
 dotenv.config();
 
@@ -15,23 +16,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
-
-// initialize WebSocket server instance
-// {noServer: true}
 const wss = new WebSocket.Server({ server });
-
-// handle all incoming connections from clients
-wss.on('connection', (ws: WebSocket) => {
-	// called on every message sent by the client
-	ws.on('message', (message: string) => {
-		// log received message and send it back to the clinet
-		console.log('received: ', message);
-		ws.send(`hi, you sent: ${message}`);
-	});
-
-	// immediately send back message
-	ws.send('send immediately a feedback to the incoming connection');
-});
 
 // start DB
 new Mongoose();
@@ -44,7 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 // routes
 const routes: Array<RouteConfig> = [];
 routes.push(new AuthRoutes(app));
+routes.push(new GroupRoutes(app));
 routes.push(new KafkaRoutes(app));
+routes.push(new TopicRoutes(app));
 
 // 404
 app.use('*', (req: Request, res: Response) => {
@@ -68,4 +55,13 @@ server.listen(PORT, () => {
 	routes.forEach((route: RouteConfig) => {
 		console.log(`Route configured: ${route.routeName()}`);
 	});
+});
+
+// websocket server
+// CHECK if wss.on vs wss.once
+wss.once('connection', (ws: WebSocket) => {
+	app.locals.ws = ws;
+	console.log('ws connected');
+
+	ws.on('close', () => console.log('ws disconnected'));
 });

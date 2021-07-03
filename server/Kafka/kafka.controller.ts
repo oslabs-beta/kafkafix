@@ -1,5 +1,5 @@
 import { Kafka } from 'kafkajs';
-import WebSocket from 'ws';
+import * as WebSocket from 'ws';
 
 import handleAsync from '../common/handleAsync';
 import { mockData } from '../common/mockData';
@@ -24,10 +24,11 @@ export const producer = async (kafka: Kafka) => {
 				},
 			],
 		});
+		console.log('message produced');
 	}, 1000);
 };
 
-export const consumer = async (kafka: Kafka, PORT: number) => {
+export const consumer = async (kafka: Kafka, ws: WebSocket, PORT: number) => {
 	const topic = 'test-topic';
 	const groupId = 'group1';
 	const consumer = kafka.consumer({ groupId });
@@ -40,17 +41,16 @@ export const consumer = async (kafka: Kafka, PORT: number) => {
 	if (connectErr) return connectErr;
 	if (subscribeErr) return subscribeErr;
 
-	const client = new WebSocket(`ws://localhost:${PORT}`);
-
-	console.log('client', client);
-
-	// CHECK ws wrap consumer.run? or keep
-	// client.on('open', async () => {
-	// 	await consumer.run({
-	// 		eachMessage: async ({ message }) => {
-	// 			// console.log(`Received: ${message.value}`);
-	// 			client.send(`Received: ${message.value}`);
-	// 		},
-	// 	});
-	// });
+	// CHECK with client side
+	ws.on('open', async () => {
+		console.log('open');
+		// ERROR does not run
+		await consumer.run({
+			eachMessage: async ({ message }) => {
+				console.log('hi2');
+				console.log(`Received: ${message.value}`);
+				ws.send(`Received: ${message.value}`);
+			},
+		});
+	});
 };
