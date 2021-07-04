@@ -7,9 +7,7 @@ import cors from 'cors';
 import { Mongoose } from './common/db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
-import { KafkaRoutes } from './kafka/kafka.routes';
-import { GroupRoutes, TopicRoutes } from './kafka';
-import { consumer } from './kafka/kafka.controller';
+import { GroupRoutes, KafkaRoutes, TopicRoutes } from './kafka';
 
 dotenv.config();
 
@@ -51,7 +49,6 @@ app.use(((err, req, res, next) => {
 
 // server
 server.listen(PORT, () => {
-	app.locals.server = server; //!
 	console.log(`Server on port ${PORT}`);
 
 	routes.forEach((route: RouteConfig) => {
