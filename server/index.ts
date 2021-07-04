@@ -9,6 +9,7 @@ import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
 import { KafkaRoutes } from './kafka/kafka.routes';
 import { GroupRoutes, TopicRoutes } from './kafka';
+import { consumer } from './kafka/kafka.controller';
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ app.use(((err, req, res, next) => {
 
 // server
 server.listen(PORT, () => {
+	app.locals.server = server; //!
 	console.log(`Server on port ${PORT}`);
 
 	routes.forEach((route: RouteConfig) => {
@@ -62,8 +64,6 @@ server.listen(PORT, () => {
 wss.once('connection', (ws: WebSocket) => {
 	app.locals.ws = ws;
 	console.log('ws connected');
-
-	ws.on('open', () => console.log('ws open'));
 
 	ws.on('close', () => console.log('ws disconnected'));
 });

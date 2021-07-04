@@ -19,7 +19,7 @@ const Connect: FC = (props) => {
   );
 
   const dispatch = useDispatch();
-  dispatch(connectedActionCreator());
+  // dispatch(connectedActionCreator());
   console.log(isConnected);
 
   const handleSubmit = (e: any) => {

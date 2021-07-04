@@ -14,6 +14,7 @@ export class AdminController {
 		console.log('admin: kafka');
 		const PORT: number = req.body.PORT;
 		const ws: WebSocket = req.app.locals.ws;
+		const server = req.app.locals.server;
 
 		const kafka = new Kafka({
 			clientId: 'my-app',
@@ -26,7 +27,7 @@ export class AdminController {
 		res.locals.admin = admin;
 
 		producer(kafka);
-		consumer(kafka, ws, PORT);
+		consumer(kafka, ws, server);
 
 		return next();
 	};
