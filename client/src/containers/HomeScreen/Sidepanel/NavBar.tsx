@@ -14,7 +14,14 @@ import {
 } from '@material-ui/core';
 
 // importing icons
-import { Notifications, Menu } from '@material-ui/icons';
+import {
+  Notifications,
+  Menu,
+  Assessment,
+  BugReport,
+  Brightness4,
+  Description,
+} from '@material-ui/icons';
 
 // importing Link from react router dom
 import { Link } from 'react-router-dom';
@@ -25,13 +32,25 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+  navbar: {
+    marginBottom: 40,
+  },
   appbar: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: 'black',
   },
   list: {
     width: 200,
+  },
+  listItem: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  listItemText: {
+    marginLeft: 10,
   },
   logo: {
     color: 'white',
@@ -57,8 +76,12 @@ const NavBar = () => {
         <List>
           {/* list item 1 */}
           <Link to='metrics' style={{ textDecoration: 'none', color: 'black' }}>
-            <ListItem button key='Metrics'>
-              <ListItemText primary='Metrics' />
+            <ListItem button key='Metrics' className={classes.listItem}>
+              <Assessment></Assessment>
+              <ListItemText
+                primary='Metrics'
+                className={classes.listItemText}
+              />
             </ListItem>
           </Link>
 
@@ -67,8 +90,12 @@ const NavBar = () => {
             to='failureReports'
             style={{ textDecoration: 'none', color: 'black' }}
           >
-            <ListItem button key='Failure Reports'>
-              <ListItemText primary='Failure Reports' />
+            <ListItem button key='Failure Reports' className={classes.listItem}>
+              <BugReport></BugReport>
+              <ListItemText
+                primary='Failure Reports'
+                className={classes.listItemText}
+              />
             </ListItem>
           </Link>
         </List>
@@ -76,14 +103,22 @@ const NavBar = () => {
 
         <List>
           {/* list item 3 */}
-          <ListItem button key='Dark Mode'>
-            <ListItemText primary='Dark Mode' />
+          <ListItem button key='Dark Mode' className={classes.listItem}>
+            <Brightness4></Brightness4>
+            <ListItemText
+              primary='Dark Mode'
+              className={classes.listItemText}
+            />
           </ListItem>
 
           {/* list item 4  -- need to add a link to our documentation */}
 
-          <ListItem button key='Documentation'>
-            <ListItemText primary='Documentation' />
+          <ListItem button key='Documentation' className={classes.listItem}>
+            <Description></Description>
+            <ListItemText
+              primary='Documentation'
+              className={classes.listItemText}
+            />
           </ListItem>
         </List>
       </div>
@@ -91,7 +126,7 @@ const NavBar = () => {
   };
 
   return (
-    <div>
+    <div className={classes.navbar}>
       <React.Fragment>
         <AppBar className={classes.appbar}>
           {/* menu button on nav bar */}

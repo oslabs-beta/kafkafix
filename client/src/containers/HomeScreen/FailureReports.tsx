@@ -1,15 +1,10 @@
 import React, { FC } from 'react';
-
-import { Button } from '@material-ui/core';
-
-import { Link } from 'react-router-dom';
+import NavBar from './Sidepanel/NavBar';
 
 const FailureReports: FC = () => {
   return (
     <>
-      <Link to='/'>
-        <Button>Back</Button>
-      </Link>
+      <NavBar></NavBar>
       <div id='failureReports' className='navBlock'>
         <i className='fas fa-print'></i>
         <div>Failure Report</div>
