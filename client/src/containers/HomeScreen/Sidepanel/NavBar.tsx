@@ -35,6 +35,7 @@ const useStyles = makeStyles({
   },
   logo: {
     color: 'white',
+    textDecoration: 'none',
   },
 });
 
@@ -55,14 +56,17 @@ const NavBar = () => {
       >
         <List>
           {/* list item 1 */}
-          <Link to='metrics'>
+          <Link to='metrics' style={{ textDecoration: 'none', color: 'black' }}>
             <ListItem button key='Metrics'>
               <ListItemText primary='Metrics' />
             </ListItem>
           </Link>
 
           {/* list item 2 */}
-          <Link to='failureReports'>
+          <Link
+            to='failureReports'
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
             <ListItem button key='Failure Reports'>
               <ListItemText primary='Failure Reports' />
             </ListItem>
@@ -99,7 +103,7 @@ const NavBar = () => {
 
           {/* Kafka fix logo on Nav bar - takes you back home */}
           <Toolbar>
-            <Link to='/'>
+            <Link to='/' style={{ textDecoration: 'none' }}>
               <Button>
                 <Typography
                   variant='h4'
