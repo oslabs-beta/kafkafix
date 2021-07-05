@@ -43,7 +43,19 @@ const useStyles = makeStyles({
     backgroundColor: 'black',
   },
   list: {
+    display: 'flex',
+    flexDirection: 'column',
     width: 200,
+    height: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  topHalfList: {
+    marginTop: 25,
+  },
+  bottomHalfList: {
+    // marginTop: 250,
+    justifySelf: 'end',
   },
   listItem: {
     display: 'flex',
@@ -57,8 +69,16 @@ const useStyles = makeStyles({
     color: 'white',
     textDecoration: 'none',
   },
+  logoOnMenu: {
+    color: 'black',
+    textDecoration: 'none',
+  },
   buttonGroup: {
     color: 'black',
+  },
+  imgIcon: {
+    height: '100%',
+    width: '100%',
   },
 });
 
@@ -77,8 +97,21 @@ const NavBar = () => {
         onClick={() => setState({ open: false })}
         className={classes.list}
       >
-        <List>
+        <List className={classes.topHalfList}>
+          {/* KafkaFix Logo  */}
+          <Link to='/' style={{ textDecoration: 'none' }}>
+            <Button>
+              <Typography
+                variant='h4'
+                component='h2'
+                className={classes.logoOnMenu}
+              >
+                KafkaFix
+              </Typography>
+            </Button>
+          </Link>
           {/* list item 1 */}
+          <Divider />
           <Link to='metrics' style={{ textDecoration: 'none', color: 'black' }}>
             <ListItem button key='Metrics' className={classes.listItem}>
               <Assessment></Assessment>
@@ -102,11 +135,12 @@ const NavBar = () => {
               />
             </ListItem>
           </Link>
+          <Divider />
         </List>
-        <Divider />
 
-        <List>
+        <List className={classes.bottomHalfList}>
           {/* list item 3 */}
+          <Divider />
           <ListItem button key='Dark Mode' className={classes.listItem}>
             <Brightness4></Brightness4>
             <ListItemText
