@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  ButtonGroup,
 } from '@material-ui/core';
 
 // importing icons
@@ -55,6 +56,9 @@ const useStyles = makeStyles({
   logo: {
     color: 'white',
     textDecoration: 'none',
+  },
+  buttonGroup: {
+    color: 'black',
   },
 });
 
@@ -119,6 +123,15 @@ const NavBar = () => {
               primary='Documentation'
               className={classes.listItemText}
             />
+          </ListItem>
+
+          {/* List item 5 -- need to add a link to our privacy policies and need to add a link to our Terms and conditions */}
+
+          <ListItem key='ButtonGroup' className={classes.listItem}>
+            <ButtonGroup className={classes.buttonGroup}>
+              <Button>Privacy</Button>
+              <Button>Terms</Button>
+            </ButtonGroup>
           </ListItem>
         </List>
       </div>
