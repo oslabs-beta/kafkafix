@@ -5,6 +5,9 @@ import { overallState } from '../../../state/reducers';
 import { connectedActionCreator } from '../../../state/actions/actions';
 import WebSocket from 'ws';
 
+// importing componenets from Material UI
+import { Button, List, Divider, Typography, Input } from '@material-ui/core';
+
 interface Options {
   headers: {};
   body: string;
