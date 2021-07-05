@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 
 // importing items for menu from Material-UI
 import {
+  AppBar,
+  Toolbar,
   Drawer,
   Button,
   List,
   Divider,
   ListItem,
   ListItemText,
+  Typography,
 } from '@material-ui/core';
+
+// importing icons
+import { Notifications, Menu } from '@material-ui/icons';
 
 // importing Link from react router dom
 import { Link } from 'react-router-dom';
@@ -19,11 +25,16 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+  appbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   list: {
     width: 200,
   },
-  fullList: {
-    width: 'auto',
+  logo: {
+    color: 'white',
   },
 });
 
@@ -78,40 +89,50 @@ const NavBar = () => {
   return (
     <div>
       <React.Fragment>
-        <Button onClick={() => setState({ open: true })}>Menu</Button>
-        <Drawer
-          anchor='left'
-          open={state.open}
-          onClose={() => setState({ open: false })}
-        >
-          {state.open ? menuItems() : null}
-        </Drawer>
+        <AppBar className={classes.appbar}>
+          {/* menu button on nav bar */}
+          <Toolbar>
+            <Button onClick={() => setState({ open: true })}>
+              <Menu fontSize='large' style={{ color: 'white' }} />
+            </Button>
+          </Toolbar>
+
+          {/* Kafka fix logo on Nav bar - takes you back home */}
+          <Toolbar>
+            <Link to='/'>
+              <Button>
+                <Typography
+                  variant='h4'
+                  component='h2'
+                  className={classes.logo}
+                >
+                  KafkaFix
+                </Typography>
+              </Button>
+            </Link>
+          </Toolbar>
+
+          {/* Notifications on Nav bar - opens a notifications drawer*/}
+          <Toolbar>
+            <Button>
+              <Notifications fontSize='large' style={{ color: 'white' }} />
+            </Button>
+          </Toolbar>
+
+          {/* Drawer for menu click */}
+          <Drawer
+            anchor='left'
+            open={state.open}
+            onClose={() => setState({ open: false })}
+          >
+            {state.open ? menuItems() : null}
+          </Drawer>
+
+          {/* Need to implement a drawer for notifications */}
+        </AppBar>
       </React.Fragment>
     </div>
   );
 };
 
 export default NavBar;
-
-{
-  /* <div>
-      <div id='metrics' className='navBlock'>
-        <i className='fas fa-circle-notch'></i>
-        <div>Metrics</div>
-        <a>Key insights into your Kafka system</a>
-      </div>
-      <div id='failureReports' className='navBlock'>
-        <i className='fas fa-print'></i>
-        <div>Failure Report</div>
-        <a>Key insights into your Kafka system</a>
-      </div>
-      <div id='darkMode' className='navBlock'>
-        <i className='fas fa-cog'></i>
-        Dark Mode
-      </div>
-      <div id='documentation' className='navBlock'>
-        <i className='fas fa-info-circle'></i>
-        Documentation
-      </div>
-    </div> */
-}

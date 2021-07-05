@@ -32,6 +32,8 @@
 	"homepage": "https://github.com/oslabs-beta/kafkafix#readme",
 	"dependencies": {
 		"@material-ui/core": "^4.11.4",
+		"@material-ui/icons": "^4.11.2",
+		"@svgr/webpack": "^5.5.0",
 		"clsx": "^1.1.1",
 		"commander": "^8.0.0",
 		"cors": "^2.8.5",
@@ -49,6 +51,7 @@
 		"react-router-dom": "^5.2.0",
 		"redux": "^4.1.0",
 		"redux-thunk": "^2.3.0",
+		"url-loader": "^4.1.1",
 		"wait-on": "^6.0.0",
 		"ws": "^7.5.1"
 	},
