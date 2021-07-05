@@ -6,7 +6,15 @@ import { connectedActionCreator } from '../../../state/actions/actions';
 import WebSocket from 'ws';
 
 // importing componenets from Material UI
-import { Button, List, Divider, Typography, Input } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  List,
+  Divider,
+  Typography,
+  Input,
+  makeStyles,
+} from '@material-ui/core';
 
 interface Options {
   headers: {};
@@ -14,6 +22,28 @@ interface Options {
   method: string;
 }
 // export let ws: any;
+
+// styles for connect Component
+const useStyles = makeStyles({
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'auto',
+    width: 'auto',
+    // justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: 10,
+    boxShadow: '10px 5px 5px lightgrey;',
+  },
+  title: {
+    fontWeight: 'bold',
+  },
+  input: {},
+  button: {
+    marginTop: 10,
+    backgroundColor: 'red',
+  },
+});
 
 const Connect: FC = (props) => {
   // display form function -> onSubmit -> send fetch request to backend with Broker URI
@@ -24,6 +54,9 @@ const Connect: FC = (props) => {
   const dispatch = useDispatch();
   dispatch(connectedActionCreator());
   console.log(isConnected);
+
+  // creating a classes variable to customize styles
+  const classes = useStyles();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -70,19 +103,41 @@ const Connect: FC = (props) => {
     // display form on click - using state
     <div>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Enter Your Broker Port Number</label>
-        </div>
-        <input
-          id='brokerID'
-          name='brokerID'
-          placeholder='Your Broker Port Number'
-          pattern='[0-9]+'
-        ></input>
-        <button>{isConnected ? 'Disconnect' : 'Connect'}</button>
+        <Card className={classes.card}>
+          <Typography variant='h6' className={classes.title}>
+            Enter Your Broker Port Number
+          </Typography>
+          <Divider></Divider>
+          <Input
+            id='brokerID'
+            name='brokerID'
+            type='number'
+            placeholder='9092'
+            required={true}
+            autoFocus={true}
+          ></Input>
+          <Button
+            className={classes.button}
+            variant='contained'
+            color='primary'
+          >
+            {isConnected ? 'Disconnect' : 'Connect'}
+          </Button>
+        </Card>
       </form>
     </div>
   );
 };
 
 export default Connect;
+
+// <div>
+//   <label>Enter Your Broker Port Number</label>
+// </div>
+// <input
+//   id='brokerID'
+//   name='brokerID'
+//   placeholder='Your Broker Port Number'
+//   pattern='[0-9]+'
+// ></input>
+// <button>{isConnected ? 'Disconnect' : 'Connect'}</button>

@@ -32,6 +32,7 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
+// styles for Navbar component - using makeStyles hook - invoked within function
 const useStyles = makeStyles({
   navbar: {
     marginBottom: 40,
