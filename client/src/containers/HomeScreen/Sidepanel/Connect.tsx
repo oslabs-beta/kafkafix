@@ -25,6 +25,10 @@ interface Options {
 
 // styles for connect Component
 const useStyles = makeStyles({
+  form: {
+    alignSelf: 'start',
+    margin: 30,
+  },
   card: {
     display: 'flex',
     flexDirection: 'column',
@@ -101,31 +105,26 @@ const Connect: FC = (props) => {
 
   return (
     // display form on click - using state
-    <div>
-      <form onSubmit={handleSubmit}>
-        <Card className={classes.card}>
-          <Typography variant='h6' className={classes.title}>
-            Enter Your Broker Port Number
-          </Typography>
-          <Divider></Divider>
-          <Input
-            id='brokerID'
-            name='brokerID'
-            type='number'
-            placeholder='9092'
-            required={true}
-            autoFocus={true}
-          ></Input>
-          <Button
-            className={classes.button}
-            variant='contained'
-            color='primary'
-          >
-            {isConnected ? 'Disconnect' : 'Connect'}
-          </Button>
-        </Card>
-      </form>
-    </div>
+
+    <form onSubmit={handleSubmit} className={classes.form}>
+      <Card className={classes.card}>
+        <Typography variant='h6' className={classes.title}>
+          Enter Your Broker Port Number
+        </Typography>
+        <Divider></Divider>
+        <Input
+          id='brokerID'
+          name='brokerID'
+          type='number'
+          placeholder='9092'
+          required={true}
+          autoFocus={true}
+        ></Input>
+        <Button className={classes.button} variant='contained' color='primary'>
+          {isConnected ? 'Disconnect' : 'Connect'}
+        </Button>
+      </Card>
+    </form>
   );
 };
 
