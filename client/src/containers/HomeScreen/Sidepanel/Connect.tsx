@@ -119,13 +119,13 @@ const createData = (
     //     isr: partitionData[0].isr[0],
     //   },
     // ],
-    partitionData: partitionData.map((el:any) => ({
-    id: el.partitionId,
-    partitionErrorCode: el.partitionErrorCode,
-    leader: !!el.leader,
-    replicas: el.replicas[0],
-    isr: el.isr[0],
-    }))
+    partitionData: partitionData.map((el: any) => ({
+      id: el.partitionId,
+      partitionErrorCode: el.partitionErrorCode,
+      leader: !!el.leader,
+      replicas: el.replicas[0],
+      isr: el.isr[0],
+    })),
   };
 };
 
@@ -142,7 +142,6 @@ const Connect: FC = (props) => {
 
   // creating a classes variable to customize styles
   const classes = useStyles();
-
 
   const handleSubmit = (e: any) => {
     console.log('make it inside handlesubmit');
@@ -182,7 +181,9 @@ const Connect: FC = (props) => {
         console.log(data);
         // const { metadata: { topics: array } } = data;
         const array = data.metadata.topics;
-        const rows = array.map( (el:any) => createData(el.name, el.partition.length, el.partitions));
+        const rows = array.map((el: any) =>
+          createData(el.name, el.partitions.length, el.partitions)
+        );
         // dummy data after converting data we get back into format we want
         // const rows = [
         //   createData('topic 1', 3, [
