@@ -3,7 +3,6 @@ import { Kafka } from 'kafkajs';
 import handleAsync from '../../common/handleAsync';
 import { mockData } from '../../common/mockData';
 
-// ADD handle multiple topics
 // ADD variable topic // multiple topics
 export const producer = async (kafka: Kafka) => {
 	const topic = 'test-topic';
@@ -18,7 +17,6 @@ export const producer = async (kafka: Kafka) => {
 			topic,
 			messages: [
 				{
-					key: String(i),
 					value: JSON.stringify(mockData[i++]),
 				},
 			],

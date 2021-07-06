@@ -18,9 +18,15 @@ export const consumer = async (kafka: Kafka, ws: WebSocket) => {
 	if (subscribeErr) return subscribeErr;
 
 	await consumer.run({
-		eachMessage: async ({ message }) => {
-			console.log(`Consumer Received: ${message.value}`);
-			ws.send(`Received: ${message.value}`);
+		partitionsConsumedConcurrently: 1,
+		eachMessage: async ({
+			topic,
+			partition,
+			message: { timestamp, value },
+		}) => {
+			const messageFormat = `timestamp: ${timestamp} topic: ${topic} partition: ${partition} message: ${value}`;
+			console.log(`Consumer Received: ${messageFormat}`);
+			ws.send(messageFormat);
 		},
 	});
 };

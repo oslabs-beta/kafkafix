@@ -15,10 +15,12 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app.route('/api/connect').post([
 			KafkaController.kafka,
+			KafkaController.admin,
 			KafkaController.describeCluster,
 			TopicController.getAllTopicMetadata,
 			(req: Request, res: Response) => {
 				const { cluster, metadata } = res.locals;
+				console.log(JSON.stringify({ cluster, metadata }));
 				return res.status(200).json({ cluster, metadata });
 			},
 		]);
