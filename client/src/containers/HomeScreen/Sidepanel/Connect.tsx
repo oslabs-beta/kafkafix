@@ -51,56 +51,6 @@ const useStyles = makeStyles({
     backgroundColor: 'red',
   },
 });
-// interface Object1 {
-// }
-// {
-//   "cluster": {
-//     "brokers": [
-//       {
-//         "nodeId": 1,
-//         "host": "127.0.0.1",
-//         "port": 9092
-//       }
-//     ],
-//     "controller": 1,
-//     "clusterId": "hHw9KPFZSYmAOLJdIR15FQ"
-//   },
-//   "metadata": {
-//     "topics": [
-//       {
-//         "name": "kafkafix",
-//         "partitions": [
-//           {
-//             "partitionErrorCode": 0,
-//             "partitionId": 0,
-//             "leader": 1,
-//             "replicas": [
-//               1
-//             ],
-//             "isr": [
-//               1
-//             ],
-//             "offlineReplicas": []
-//           }
-//         ]
-//       },
-//       {
-//         "name": "test-topic",
-//         "partitions": [
-//           {
-//             "partitionErrorCode": 0,
-//             "partitionId": 0,
-//             "leader": 1,
-//             "replicas": [
-//               1
-//             ],
-//             "isr": [
-//               1
-//             ],
-//             "offlineReplicas": []
-//           }
-//         ]
-//       },
 
 const createData = (
   topicName: string,
@@ -110,22 +60,13 @@ const createData = (
   return {
     topicName: topicName,
     partitions: partitions,
-    // partitionData: [
-    //   {
-    //     id: partitionData[0].id,
-    //     parttionErrode: partitionData[0].parttionErrode,
-    //     leader: partitionData[0].leader ? 'true' : 'false',
-    //     replicas: partitionData[0].replicas[0],
-    //     isr: partitionData[0].isr[0],
-    //   },
-    // ],
-    partitionData: partitionData.map((el:any) => ({
-    id: el.partitionId,
-    partitionErrorCode: el.partitionErrorCode,
-    leader: !!el.leader,
-    replicas: el.replicas[0],
-    isr: el.isr[0],
-    }))
+    partitionData: partitionData.map((el: any) => ({
+      id: el.partitionId,
+      partitionErrorCode: el.partitionErrorCode,
+      leader: !!el.leader,
+      replicas: el.replicas[0],
+      isr: el.isr[0],
+    })),
   };
 };
 
@@ -136,13 +77,11 @@ const Connect: FC = (props) => {
   );
 
   const dispatch = useDispatch();
-  // dispatch(connectedActionCreator());
 
   console.log('from connect component =>', isConnected);
 
   // creating a classes variable to customize styles
   const classes = useStyles();
-
 
   const handleSubmit = (e: any) => {
     console.log('make it inside handlesubmit');
@@ -163,7 +102,7 @@ const Connect: FC = (props) => {
 
     if (!isConnected) {
       method = 'POST';
-      console.log(inputField);
+      console.log('106 =>', inputField);
     } else {
       method = 'PUT';
     }
@@ -174,7 +113,7 @@ const Connect: FC = (props) => {
       body,
     };
     // move down into fetch
-
+    console.log(options);
     //edit the fetch api
     fetch('/api/connect', options)
       .then((data) => data.json())

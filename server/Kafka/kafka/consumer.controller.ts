@@ -27,7 +27,7 @@ export const consumer = async (kafka: Kafka, ws: WebSocket) => {
 		}) => {
 			const messageFormat = `timestamp: ${timestamp} topic: ${topic} partition: ${partition} message: ${value}`;
 			console.log(`Consumer Received: ${messageFormat}`);
-			ws.send(messageFormat);
+			// ws.send(messageFormat);
 		},
 	});
 };

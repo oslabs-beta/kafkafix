@@ -7,7 +7,11 @@ import cors from 'cors';
 import { Mongoose } from './common/db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
-import { GroupRoutes, KafkaRoutes, LogRoutes, TopicRoutes } from './kafka';
+// import { GroupRoutes, KafkaRoutes, LogRoutes, TopicRoutes } from './kafka';
+import { GroupRoutes } from './kafka/group/group.routes';
+import { KafkaRoutes } from './kafka/kafka/kafka.routes';
+import { LogRoutes } from './kafka/log/log.routes';
+import { TopicRoutes } from './kafka/topic/topic.routes';
 
 dotenv.config();
 
@@ -18,7 +22,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // start DB
-new Mongoose();
+// new Mongoose();
 
 // middlewares
 app.use(cors());
