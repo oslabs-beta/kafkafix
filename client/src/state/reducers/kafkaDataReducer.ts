@@ -1,5 +1,5 @@
-import { Type } from "../constants/constants";
-import { Action } from "../actions/actions";
+import { Type } from '../constants/constants';
+import { Action } from '../actions/actions';
 
 export interface TopicData {
   name: string;
@@ -9,7 +9,7 @@ export interface TopicData {
 }
 
 const dummy: TopicData = {
-  name: "topic1",
+  name: 'topic1',
   partitionNum: 12,
   consumerNum: 2,
   producerNum: 1,
@@ -29,7 +29,7 @@ export const kafkaDataReducer = (
 ): KafkaState => {
   switch (action.type) {
     case Type.CONNECTED:
-      console.log("arrived here");
+      console.log('arrived here in kafkaDataReducer under connected');
       return {
         ...state,
         isConnected: true,

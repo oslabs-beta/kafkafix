@@ -57,7 +57,7 @@ const Connect: FC = (props) => {
 
   const dispatch = useDispatch();
   dispatch(connectedActionCreator());
-  console.log("from connect component =>",isConnected);
+  console.log('from connect component =>', isConnected);
 
   // creating a classes variable to customize styles
   const classes = useStyles();
@@ -115,7 +115,7 @@ const Connect: FC = (props) => {
           name='brokerID'
           type='number'
           placeholder='9092'
-          required={true}
+          // required={true}
           autoFocus={true}
         ></Input>
         <Button className={classes.button} variant='contained' color='primary'>

@@ -2,7 +2,11 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { overallState } from '../../state/reducers';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
-import { TopicRow } from './TopicsDisplay/TopicRow';
+
+/*
+------------------------------Update------------------------
+Topics Row is now part of topics display becasue of the collapsable table
+*/
 
 // importing IPCReder
 const { ipcRenderer } = window.require('electron');

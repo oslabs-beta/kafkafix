@@ -46,8 +46,8 @@ app.whenReady().then(() => {
 // fucntion for creating partition window
 function createPartitionWindow() {
   const win = new BrowserWindow({
-    width: 200,
-    height: 200,
+    width: 500,
+    height: 500,
   });
 }
 
