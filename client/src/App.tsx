@@ -1,14 +1,27 @@
-import React from "react";
+import React from 'react';
 // app renders 1 component -- Home Screen --
 
-// importing HomeScreen
-import HomeScreen from "./containers/HomeScreen";
+// importing browser capabilities
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+// importing HomeScreen and router components
+import HomeScreen from './containers/HomeScreen';
+import FailureReports from './containers/HomeScreen/FailureReports';
+import Metrics from './containers/HomeScreen/Metrics';
+import Partitions from './containers/HomeScreen/TopicsDisplay/Partitions';
 
 const App: React.FC = () => {
   return (
     <>
       <div>KafkaFix logo</div>
-      <HomeScreen />
+      <Router>
+        <Switch>
+          <Route path='/' exact component={HomeScreen} />
+          <Route path='/metrics' component={Metrics} />
+          <Route path='/failureReports' component={FailureReports} />
+          <Route path='/partition' component={Partitions} />
+        </Switch>
+      </Router>
     </>
   );
 };

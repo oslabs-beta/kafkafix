@@ -3,4 +3,5 @@ export enum Type {
   CONNECTED,
   DISCONNECTED,
   POPULATE_TOPICS,
+  POPULATE_DATA,
 }
