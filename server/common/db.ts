@@ -1,6 +1,6 @@
 import { connect } from 'mongoose';
 import dotenv from 'dotenv';
-import handleAsync from './handleAsync';
+import { handleAsync } from './';
 
 dotenv.config();
 

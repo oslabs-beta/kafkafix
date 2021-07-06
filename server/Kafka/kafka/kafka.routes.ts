@@ -20,7 +20,6 @@ export class KafkaRoutes extends RouteConfig {
 			TopicController.getAllTopicMetadata,
 			(req: Request, res: Response) => {
 				const { cluster, metadata } = res.locals;
-				console.log(JSON.stringify({ cluster, metadata }));
 				return res.status(200).json({ cluster, metadata });
 			},
 		]);

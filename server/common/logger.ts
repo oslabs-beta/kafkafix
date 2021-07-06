@@ -4,14 +4,14 @@ const winston = require('winston'); // WHY ES6 import does not wor
 require('winston-mongodb').MongoDB;
 
 interface IProps {
-	namespace: any;
-	level: any;
-	label: any;
-	log: any;
+	namespace: string;
+	level: number;
+	label: string;
+	log: any; //! object
 }
 
 const { createLogger, transports } = winston;
-const { combine, json, timestamp } = format;
+const { combine, json, timestamp, printf } = format;
 
 const toWinstonLogLevel = (level: any) => {
 	switch (level) {
@@ -27,6 +27,10 @@ const toWinstonLogLevel = (level: any) => {
 	}
 };
 
+const myFormat = printf(({ namespace, message }) => {
+	return `${namespace} ${message}`;
+});
+
 export const logCreator = (logLevel: any) => {
 	const logger = createLogger({
 		level: toWinstonLogLevel(logLevel),
@@ -38,23 +42,19 @@ export const logCreator = (logLevel: any) => {
 				db: process.env.MONGO_URI,
 				options: { useUnifiedTopology: true },
 				collection: 'logs',
-				format: combine(timestamp(), json()),
+				format: combine(timestamp(), json(), myFormat),
 			}),
 		],
 	});
 
 	return ({ namespace, level, label, log }: IProps) => {
-		console.log('logger types: namespace', typeof namespace);
-		console.log('logger types: level', typeof level);
-		console.log('logger types: label', typeof label);
-		console.log('logger types: lgo', typeof log);
-
-		console.log('from logger: namespace', namespace);
-		console.log('from logger: label', label);
+		console.log('logger: ', log);
+		console.log('label: ', label);
 
 		const { message, ...extra } = log;
 		logger.log({
 			level: toWinstonLogLevel(level),
+			namespace,
 			message,
 			extra,
 		});

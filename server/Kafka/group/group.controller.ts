@@ -1,5 +1,7 @@
 import { RequestHandler } from 'express';
-import handleAsync from '../../common/handleAsync';
+import { Admin } from 'kafkajs';
+
+import { handleAsync } from '../../common';
 
 export class GroupController {
 	/**
@@ -8,7 +10,7 @@ export class GroupController {
 	 * @returns   {[]{}}
 	 */
 	static groupOffsets: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { groupId, topic } = req.body;
 		const [offsets, error] = await handleAsync(
 			admin.fetchOffsets({ groupId, topic, resolveOffsets: true })
@@ -24,11 +26,14 @@ export class GroupController {
 	 * @desc    resets the consumer group offsets to the earliest or latest offset
 	 * @param   {string}  groupId
 	 * @param   {string}  topic
+	 * @param   {boolean}  earliest
 	 */
 	static resetGroupOffsets: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
-		const { groupId, topic } = req.body;
-		const [, error] = await handleAsync(admin.resetOffsets({ groupId, topic }));
+		const admin: Admin = req.app.locals.admin;
+		const { groupId, topic, earliest } = req.body;
+		const [, error] = await handleAsync(
+			admin.resetOffsets({ groupId, topic, earliest })
+		);
 
 		if (error) return next(error);
 
@@ -44,7 +49,7 @@ export class GroupController {
 	 * @param   {string}  offset
 	 */
 	static setGroupOffsets: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { groupId, topic, partition, offset } = req.body;
 		const [, error] = await handleAsync(
 			admin.setOffsets({ groupId, topic, partitions: [{ partition, offset }] })
@@ -70,7 +75,7 @@ export class GroupController {
 	 * @returns   {[]{}}
 	 */
 	static listGroups: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const [groups, error] = await handleAsync(admin.listGroups());
 
 		if (error) return next(error);
@@ -82,10 +87,10 @@ export class GroupController {
 	/**
 	 * @desc      describe consumer groups by groupIds
 	 * @param     {string}  groupId
-   * @returns   {[]{}}
+	 * @returns   {[]{}}
 	 */
 	static describeGroups: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { groupId } = req.body;
 		const [groups, error] = await handleAsync(admin.describeGroups([groupId]));
 
@@ -100,7 +105,7 @@ export class GroupController {
 	 * @param     {string}  groupId
 	 */
 	static deleteGroups: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { groupId } = req.body;
 		const [, error] = await handleAsync(admin.deleteGroups([groupId]));
 

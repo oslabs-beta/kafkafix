@@ -1,11 +1,10 @@
 import { RequestHandler } from 'express';
-import { Kafka, logLevel } from 'kafkajs';
+import { Admin, Kafka, logLevel } from 'kafkajs';
 import * as WebSocket from 'ws';
 
-import handleAsync from '../../common/handleAsync';
 import { consumer } from './consumer.controller';
 import { producer } from './producer.controller';
-import { logCreator } from '../../logger/logger';
+import { handleAsync, logCreator } from '../../common';
 
 // ADD - commander -  User must run zookeeper and server on their own
 // ADD a command to start docker compose file
@@ -25,21 +24,18 @@ export class KafkaController {
 			logCreator,
 		});
 
-		req.app.locals.kafka = { [PORT]: kafka };
+		req.app.locals.kafka = kafka;
 		return next();
 	};
 
 	static admin: RequestHandler = async (req, res, next) => {
-		const PORT: number = req.body.PORT;
 		const ws: WebSocket = req.app.locals.ws;
-		const kafka: Kafka = req.app.locals.kafka[PORT];
+		const kafka: Kafka = req.app.locals.kafka;
 		const admin = kafka.admin();
 		const [, error] = await handleAsync(admin.connect());
 
 		if (error) return next(error);
-		req.app.locals.admin = { PORT: admin };
-
-		res.locals.admin = admin;
+		req.app.locals.admin = admin;
 
 		producer(kafka);
 		consumer(kafka, ws);
@@ -52,7 +48,7 @@ export class KafkaController {
 	 * @returns   {{}}
 	 */
 	static describeCluster: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const [cluster, error] = await handleAsync(admin.describeCluster());
 
 		if (error) return next(error);

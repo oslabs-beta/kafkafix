@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 
-import handleAsync from '../common/handleAsync';
+import { handleAsync } from '../common';
 import { User } from './user.model';
 
 export class AuthController {

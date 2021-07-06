@@ -1,5 +1,7 @@
 import { RequestHandler } from 'express';
-import handleAsync from '../../common/handleAsync';
+import { Admin } from 'kafkajs';
+
+import { handleAsync } from '../../common';
 
 export class TopicController {
 	/**
@@ -7,7 +9,7 @@ export class TopicController {
 	 * @returns   {string[]}
 	 */
 	static listTopics: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const [topics, error] = await handleAsync(admin.listTopics());
 
 		if (error) return next(error);
@@ -24,7 +26,7 @@ export class TopicController {
 	 * @returns {boolean}
 	 */
 	static createTopics: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic, partitions } = req.body;
 		const [success, error] = await handleAsync(
 			admin.createTopics({ topics: [{ topic, numPartitions: partitions }] })
@@ -42,7 +44,7 @@ export class TopicController {
 	 * @param   { string }  topic
 	 */
 	static deleteTopic: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic } = req.body;
 		const [, error] = await handleAsync(
 			admin.deleteTopics({ topics: [topic] })
@@ -61,7 +63,7 @@ export class TopicController {
 	 * @param   {number}  count
 	 */
 	static createPartition: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic, count } = req.body;
 		const [, error] = await handleAsync(
 			admin.createPartitions({ topicPartitions: [{ topic, count }] })
@@ -79,7 +81,7 @@ export class TopicController {
 	 * @returns   // CHECK
 	 */
 	static topicMetadata: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic } = req.body;
 		const [metadata, error] = await handleAsync(
 			admin.fetchTopicMetadata({ topics: [topic] })
@@ -95,8 +97,8 @@ export class TopicController {
 	 * @desc     get metadata for all topics
 	 * @returns  // CHECK
 	 */
-	static getAllTopicMetadata: RequestHandler = async (rq, res, next) => {
-		const { admin } = res.locals;
+	static getAllTopicMetadata: RequestHandler = async (req, res, next) => {
+		const admin: Admin = req.app.locals.admin;
 		const [metadata, error] = await handleAsync(admin.fetchTopicMetadata());
 
 		if (error) return next(error);
@@ -111,7 +113,7 @@ export class TopicController {
 	 * @returns   {[]{}}
 	 */
 	static topicOffsets: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic } = req.body;
 		const [offsets, error] = await handleAsync(admin.fetchTopicOffsets(topic));
 
@@ -128,7 +130,7 @@ export class TopicController {
 	 * @returns   {[]{}}
 	 */
 	static TopicOffsetsByTimestamp: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { timestamp, topic } = req.body;
 		const [offsets, error] = await handleAsync(
 			admin.fetchTopicOffsetsByTimestamp(topic, timestamp)
@@ -148,7 +150,7 @@ export class TopicController {
 	 * @param   {string}  offset
 	 */
 	static deleteTopicRecords: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic, partition, offset } = req.body;
 		const [, error] = await handleAsync(
 			admin.deleteTopicRecords({ topic, partitions: [{ partition, offset }] })

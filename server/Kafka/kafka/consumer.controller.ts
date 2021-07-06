@@ -1,19 +1,20 @@
 import { Kafka } from 'kafkajs';
 import * as WebSocket from 'ws';
 
-import handleAsync from '../../common/handleAsync';
+import { handleAsync } from '../../common';
 
 // convert to class
 // ADD add each consumer to app.locals
 export const consumer = async (kafka: Kafka, ws: WebSocket) => {
-	const topic = 'test-topic';
-	const groupId = 'group1';
+	const topic = 'kafkafix';
+	const groupId = 'group2';
 	const consumer = kafka.consumer({ groupId });
 
 	const [, connectErr] = await handleAsync(consumer.connect());
 	const [, subscribeErr] = await handleAsync(
 		consumer.subscribe({ topic, fromBeginning: true })
 	);
+
 	if (connectErr) return connectErr;
 	if (subscribeErr) return subscribeErr;
 
