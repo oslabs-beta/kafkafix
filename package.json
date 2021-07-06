@@ -54,6 +54,8 @@
 		"redux-thunk": "^2.3.0",
 		"url-loader": "^4.1.1",
 		"wait-on": "^6.0.0",
+		"winston": "^3.3.3",
+		"winston-mongodb": "^5.0.7",
 		"ws": "^7.5.1"
 	},
 	"devDependencies": {

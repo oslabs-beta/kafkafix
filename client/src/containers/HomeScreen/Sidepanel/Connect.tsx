@@ -137,10 +137,12 @@ const Connect: FC = (props) => {
 
   const dispatch = useDispatch();
   // dispatch(connectedActionCreator());
+
   console.log('from connect component =>', isConnected);
 
   // creating a classes variable to customize styles
   const classes = useStyles();
+
 
   const handleSubmit = (e: any) => {
     console.log('make it inside handlesubmit');

@@ -1,13 +1,15 @@
 import { RequestHandler } from 'express';
-import handleAsync from '../../common/handleAsync';
+import { Admin } from 'kafkajs';
+
+import { handleAsync } from '../../common';
 
 export class TopicController {
 	/**
-	 * list the names of all existing topics
-	 * @returns {string[]}
+	 * @desc      list the names of all existing topics
+	 * @returns   {string[]}
 	 */
 	static listTopics: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const [topics, error] = await handleAsync(admin.listTopics());
 
 		if (error) return next(error);
@@ -17,17 +19,17 @@ export class TopicController {
 	};
 
 	/** // ADD handle multiple topics
-	 * create topics
-	 * @param {string[]{}} topics
-	 * @topic {string}
-	 * @partitions {string}
+	 * @desc    create topics
+	 * @param   {string[]{}}  topics
+	 * @param   {string}      topic
+	 * @param   {number}      partitions
 	 * @returns {boolean}
 	 */
 	static createTopics: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic, partitions } = req.body;
 		const [success, error] = await handleAsync(
-			admin.createTopics({ topics: [{ topic, partitions }] })
+			admin.createTopics({ topics: [{ topic, numPartitions: partitions }] })
 		);
 
 		if (error) return next(error);
@@ -36,12 +38,13 @@ export class TopicController {
 		return next();
 	};
 
-	/**
-	 * @param {string[]} topics
-	 * @topic string
+	/** // CHECK timeout prop optional? timeout: <Number>
+	 * @desc    delete a topic
+	 * @param   {string[]}  topics
+	 * @param   { string }  topic
 	 */
 	static deleteTopic: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic } = req.body;
 		const [, error] = await handleAsync(
 			admin.deleteTopics({ topics: [topic] })
@@ -53,13 +56,14 @@ export class TopicController {
 	};
 
 	/**
-	 * create partitions for a topic. It will resolve in case of success. In case of errors, method will throw exceptions
-	 * @param topicPartitions {[]{}}
-	 * @topic {string}
-	 * @count {number}
+	 * @desc    create partitions for a topic.
+	 * @secs    It will resolve in case of success. In case of errors, method will throw exceptions
+	 * @param   {[]{}}    topicPartitions
+	 * @param   {string}  topic
+	 * @param   {number}  count
 	 */
 	static createPartition: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic, count } = req.body;
 		const [, error] = await handleAsync(
 			admin.createPartitions({ topicPartitions: [{ topic, count }] })
@@ -70,8 +74,14 @@ export class TopicController {
 		return next();
 	};
 
+	/**
+	 * @desc    get metadata of a topic
+	 * @param   {string[]}  topics
+	 * @param   {string}    topic
+	 * @returns   // CHECK
+	 */
 	static topicMetadata: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic } = req.body;
 		const [metadata, error] = await handleAsync(
 			admin.fetchTopicMetadata({ topics: [topic] })
@@ -83,8 +93,12 @@ export class TopicController {
 		return next();
 	};
 
-	static getAllTopicMetadata: RequestHandler = async (rq, res, next) => {
-		const { admin } = res.locals;
+	/**
+	 * @desc     get metadata for all topics
+	 * @returns  // CHECK
+	 */
+	static getAllTopicMetadata: RequestHandler = async (req, res, next) => {
+		const admin: Admin = req.app.locals.admin;
 		const [metadata, error] = await handleAsync(admin.fetchTopicMetadata());
 
 		if (error) return next(error);
@@ -94,10 +108,12 @@ export class TopicController {
 	};
 
 	/**
-	 * @returns most recent offset for a topic
+	 * @desc      get most recent offset for a topic
+	 * @param     {string}  topic
+	 * @returns   {[]{}}
 	 */
 	static topicOffsets: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { topic } = req.body;
 		const [offsets, error] = await handleAsync(admin.fetchTopicOffsets(topic));
 
@@ -108,10 +124,13 @@ export class TopicController {
 	};
 
 	/**
-	 * @returns most recent offset for a topic
+	 * @desc      get offset for a topic specified by timestamp
+	 * @param     {string}  topic
+	 * @param     {// ADD}  timestamp
+	 * @returns   {[]{}}
 	 */
 	static TopicOffsetsByTimestamp: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
+		const admin: Admin = req.app.locals.admin;
 		const { timestamp, topic } = req.body;
 		const [offsets, error] = await handleAsync(
 			admin.fetchTopicOffsetsByTimestamp(topic, timestamp)
@@ -124,15 +143,17 @@ export class TopicController {
 	};
 
 	/**
-	 * Delete records from selected topic.
-	 * @param {string} topic
-	 * @param {[{ parition: number, offset: string }]} partitions
+	 * @desc    delete records from selected topic.
+	 * @param   {string}  topic
+	 * @param   {[]{}}    partitions
+	 * @param   {number}  partition
+	 * @param   {string}  offset
 	 */
 	static deleteTopicRecords: RequestHandler = async (req, res, next) => {
-		const { admin } = res.locals;
-		const { topic, partitions } = req.body;
+		const admin: Admin = req.app.locals.admin;
+		const { topic, partition, offset } = req.body;
 		const [, error] = await handleAsync(
-			admin.deleteTopicRecords({ topic, partitions })
+			admin.deleteTopicRecords({ topic, partitions: [{ partition, offset }] })
 		);
 
 		if (error) return next(error);
