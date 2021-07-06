@@ -1,7 +1,8 @@
 import { Application, Request, Response } from 'express';
 
 import { RouteConfig } from '../../common/route.config';
-import { KafkaController, TopicController } from '..';
+import { KafkaController } from './kafka.controller';
+import { TopicController } from '../topic/topic.controller';
 
 export class KafkaRoutes extends RouteConfig {
 	constructor(app: Application) {
