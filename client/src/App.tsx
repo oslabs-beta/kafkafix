@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import HomeScreen from './containers/HomeScreen';
 import FailureReports from './containers/HomeScreen/FailureReports';
 import Metrics from './containers/HomeScreen/Metrics';
+import Partitions from './containers/HomeScreen/TopicsDisplay/Partitions';
 
 const App: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: React.FC = () => {
           <Route path='/' exact component={HomeScreen} />
           <Route path='/metrics' component={Metrics} />
           <Route path='/failureReports' component={FailureReports} />
+          <Route path='/partition' component={Partitions} />
         </Switch>
       </Router>
     </>

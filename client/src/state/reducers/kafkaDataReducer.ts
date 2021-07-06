@@ -16,11 +16,14 @@ const dummy: TopicData = {
 };
 export interface KafkaState {
   isConnected: boolean;
-  topics: TopicData[];
+  // topics: TopicData[];
+  data: any[];
 }
+
 const initialState: KafkaState = {
   isConnected: false,
-  topics: [dummy, dummy, dummy],
+  // topics: [dummy, dummy, dummy],
+  data: [],
 };
 
 export const kafkaDataReducer = (
@@ -39,10 +42,15 @@ export const kafkaDataReducer = (
         ...state,
         isConnected: false,
       };
-    case Type.POPULATE_TOPICS:
+    // case Type.POPULATE_TOPICS:
+    //   return {
+    //     ...state,
+    //     topics: action.payload,
+    //   };
+    case Type.POPULATE_DATA:
       return {
         ...state,
-        topics: action.payload,
+        data: action.payload,
       };
     default:
       return state;

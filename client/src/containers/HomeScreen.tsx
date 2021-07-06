@@ -1,6 +1,7 @@
 import React from 'react';
 import Partitions from './HomeScreen/TopicsDisplay/Partitions';
 
+
 /* ----------------- Update -----------------
 I removed the side panel component and moved Navbar and connect to be part of Homescreen.
 

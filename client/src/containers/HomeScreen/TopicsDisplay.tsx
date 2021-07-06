@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { overallState } from '../../state/reducers';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
+import { TopicRow } from './TopicsDisplay/TopicRow';
 
 /*
 ------------------------------Update------------------------
@@ -56,154 +57,20 @@ const useRowStyles = makeStyles({
   },
 });
 
-// function to add data to a row (consumers and producers may not be available to display- talk to kyu)
-const createData = (
-  topicName: string,
-  partitions: number,
-  partitionData: any
-) => {
-  return {
-    topicName: topicName,
-    partitions: partitions,
-    partitionData: [
-      {
-        id: partitionData[0].id,
-        parttionErrode: partitionData[0].parttionErrode,
-        leader: partitionData[0].leader ? 'true' : 'false',
-        replicas: partitionData[0].replicas[0],
-        isr: partitionData[0].isr[0],
-      },
-    ],
-  };
-};
-
-// function to create rows
-const Row = (props: { row: ReturnType<typeof createData> }) => {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
-
-  // function to handle partition click -- opens a new window -- we need to know which partiton to show live data for
-  const handleClickPartition = (topic: any) => {
-    console.log(topic);
-    ipcRenderer.send('open-partition');
-  };
-
-  return (
-    <React.Fragment>
-      <TableRow className={classes.root}>
-        <TableCell>
-          {/* onclick - arrow changes */}
-          <IconButton
-            aria-label='expand row'
-            size='small'
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-          </IconButton>
-        </TableCell>
-
-        <TableCell component='th' scope='row'>
-          {row.topicName}
-        </TableCell>
-        <TableCell>{row.partitions}</TableCell>
-      </TableRow>
-
-      {/* Create another TableRow for the partitions*/}
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
-          <Collapse in={open} timeout='auto' unmountOnExit>
-            <Box margin={3}>
-              <Typography
-                style={{ fontWeight: 'bold' }}
-                align='left'
-                variant='h6'
-                gutterBottom
-                component='div'
-              >
-                Partitions
-              </Typography>
-
-              {/* Table headers for Partitions */}
-              <Table size='small' aria-label='partitions'>
-                <TableHead>
-                  <TableRow className={classes.tableHeaderRow}>
-                    <TableCell className={classes.tableHeaderText}>
-                      Id
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      Leader
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      Parttion-errode
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      ISR
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      Replicas
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-
-                {/* Table Body */}
-                {/* Mapping through array of partitions -- row needs to be state */}
-                <TableBody>
-                  {row.partitionData.map((data) => (
-                    <TableRow
-                      hover={true}
-                      key={data.id}
-                      onClick={() => handleClickPartition(row.topicName)}
-                    >
-                      <TableCell component='th' scope='row'>
-                        {data.id}
-                      </TableCell>
-                      <TableCell>{data.leader}</TableCell>
-                      <TableCell>{data.parttionErrode}</TableCell>
-                      <TableCell>{data.isr}</TableCell>
-                      <TableCell>{data.replicas}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
-  );
-};
-
-// rows array-- temoporary state for information, need to use redux to store data
-
-const rows = [
-  createData('topic 1', 3, [
-    { id: 1, parttionErrode: 'test', leader: true, replicas: [3], isr: [1] },
-  ]),
-  createData('topic 2', 3, [
-    { id: 1, parttionErrode: 'test', leader: true, replicas: [3], isr: [1] },
-  ]),
-  createData('topic 3', 3, [
-    { id: 1, parttionErrode: 'test', leader: true, replicas: [3], isr: [1] },
-  ]),
-  createData('topic 4', 3, [
-    { id: 1, parttionErrode: 'test', leader: true, replicas: [3], isr: [1] },
-  ]),
-  createData('topic 5', 3, [
-    { id: 1, parttionErrode: 'test', leader: true, replicas: [3], isr: [1] },
-  ]),
-  createData('topic 6', 3, [
-    { id: 1, parttionErrode: 'test', leader: true, replicas: [3], isr: [1] },
-  ]),
-];
-
 // create fucntion that returns table
 
 // CollapsibleTable was the previous TopicsDisplay
 
 const TopicsDisplay = () => {
   const classes = useRowStyles();
-
+  const isConnected = useSelector<overallState, KafkaState['isConnected']>(
+    (state) => state.kafka.isConnected
+  );
+  const rows = useSelector<overallState, KafkaState['data']>(
+    (state) => state.kafka.data
+  ); // [{topicName, partitions, ... }, {}]
+  console.log('rows/data grabbed from store ', rows);
+  // useSelector( (state) => state.kafka.data)
   // state
 
   return (
@@ -223,11 +90,13 @@ const TopicsDisplay = () => {
         </TableHead>
 
         {/* Table Body - why is it not centered*/}
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.topicName} row={row} />
-          ))}
-        </TableBody>
+        {isConnected && (
+          <TableBody>
+            {rows.map((row) => (
+              <TopicRow key={row.topicName} row={row} />
+            ))}
+          </TableBody>
+        )}
       </Table>
     </TableContainer>
   );
