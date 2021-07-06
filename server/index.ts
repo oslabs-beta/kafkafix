@@ -4,7 +4,7 @@ import * as WebSocket from 'ws';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import { Mongoose } from './common/db';
+import { Mongoose } from './db/db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
 import { GroupRoutes, KafkaRoutes, LogRoutes, TopicRoutes } from './kafka';
