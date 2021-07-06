@@ -24,3 +24,10 @@ export const populateTopicsActionsCreator = (input: KafkaState[]): Action => {
     payload: input,
   };
 };
+
+export const populateDataActionCreator =(input: any) => {
+  return {
+    type: Type.POPULATE_DATA,
+    payload: input
+  };
+}

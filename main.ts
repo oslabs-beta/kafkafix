@@ -10,22 +10,22 @@ const path = require('path');
 
 // function for creating a window
 function createWindow() {
-	const win = new BrowserWindow({
-		width: 2000,
-		height: 1800,
-		webPreferences: {
-			preload: path.join(__dirname, 'preload.js'),
-			nodeIntegration: true,
-			contextIsolation: false,
-		},
-	});
+  const win = new BrowserWindow({
+    width: 1000,
+    height: 800,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
 
-	const startURL = isDev
-		? 'http://localhost:9000'
-		: `file://${path.join(__dirname, './client/src/index.html')}`;
+  const startURL = isDev
+    ? 'http://localhost:9000'
+    : `file://${path.join(__dirname, './client/src/index.html')}`;
 
-	// loading the html file
-	win.loadURL(startURL);
+  // loading the html file
+  win.loadURL(startURL);
 }
 
 app.whenReady().then(() => {
@@ -45,10 +45,10 @@ app.whenReady().then(() => {
 
 // fucntion for creating partition window
 function createPartitionWindow() {
-	const win = new BrowserWindow({
-		width: 200,
-		height: 200,
-	});
+  const win = new BrowserWindow({
+    width: 500,
+    height: 500,
+  });
 }
 
 ipcMain.on('open-partition', () => {
