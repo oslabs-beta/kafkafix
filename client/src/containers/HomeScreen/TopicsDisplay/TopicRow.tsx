@@ -66,33 +66,33 @@ export const TopicRow = (props: { row: any }) => {
   };
 
   const handleCreatePartition = () => {
-    // import state
-    const input: HTMLInputElement | null =
-      document.querySelector('#inputPartition');
-    console.log(input);
-    if (input && input.value === '') {
-      alert('cannot leave the name field empty for the partition');
-      return;
-    }
-    // fetch
-    const options: RequestInit | Options = {
-      method: 'POST',
-      body: JSON.stringify({ name: input?.value }),
-    };
+    // // import state
+    // const input: HTMLInputElement | null =
+    //   document.querySelector('#inputPartition');
+    // console.log(input);
+    // if (input && input.value === '') {
+    //   alert('cannot leave the name field empty for the partition');
+    //   return;
+    // }
+    // // fetch
+    // const options: RequestInit | Options = {
+    //   method: 'POST',
+    //   body: JSON.stringify({ name: input?.value }),
+    // };
 
-    //finish the then after getting reposne
-    fetch('api/', options)
-      .then((data: any) => data.json())
-      .then()
-      .catch((e) => console.log(e));
+    // //finish the then after getting reposne
+    // fetch('api/', options)
+    //   .then((data: any) => data.json())
+    //   .then()
+    //   .catch((e) => console.log(e));
   };
 
   const openModal = () => {
-    setOpenModal(true);
+    // setOpenModal(true);
   };
 
   const closeModal = () => {
-    setOpenModal(false);
+    // setOpenModal(false);
   };
 
   return (
