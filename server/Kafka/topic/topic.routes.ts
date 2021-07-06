@@ -1,6 +1,7 @@
 import { Application, Request, Response } from 'express';
 
 import { RouteConfig } from '../../common/route.config';
+// import { TopicController } from './topic.controller';
 import { TopicController } from './topic.controller';
 
 export class TopicRoutes extends RouteConfig {
