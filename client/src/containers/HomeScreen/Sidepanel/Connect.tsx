@@ -57,7 +57,7 @@ const Connect: FC = (props) => {
 
   const dispatch = useDispatch();
   dispatch(connectedActionCreator());
-  console.log(isConnected);
+  console.log("from connect component =>",isConnected);
 
   // creating a classes variable to customize styles
   const classes = useStyles();
@@ -104,8 +104,6 @@ const Connect: FC = (props) => {
   };
 
   return (
-    // display form on click - using state
-
     <form onSubmit={handleSubmit} className={classes.form}>
       <Card className={classes.card}>
         <Typography variant='h6' className={classes.title}>

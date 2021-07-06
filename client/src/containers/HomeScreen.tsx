@@ -1,11 +1,10 @@
 import React from 'react';
 import Partitions from './HomeScreen/TopicsDisplay/Partitions';
-// Home screen renders two componenets - the left panel (Sidepane) and the right topics display (topicsDisplay)
 
 /* ----------------- Update -----------------
 I removed the side panel component and moved Navbar and connect to be part of Homescreen.
 
-I removed the partiton component from homescreen. The parttions componet will be rendered (via ReactRouter) when a user clicks on a topic
+I removed the partiton component from homescreen. Clicking on topic dropsdown to show more info about topic(including partitions) -- clicking on a partition opens a new window (which shows the live data stream)
 ---------------------------------------------*/
 
 // importing TopicsDisplay
@@ -31,7 +30,7 @@ const useStyles = makeStyles({
   homeWrapper: {
     display: 'flex',
     height: '100vh',
-    alignItems: 'center',
+    alignItems: 'start',
   },
   rightSideWrapper: {
     height: '100%',
@@ -47,9 +46,7 @@ const HomeScreen = () => {
       <NavBar />
       <div className={classes.homeWrapper}>
         <Connect />
-        {/* the table showing topics - clicking on topic routes to metadata about topic */}
         <TopicsDisplay />
-        <Partitions />
       </div>
     </React.Fragment>
   );
