@@ -10,7 +10,7 @@ export class KafkaRoutes extends RouteConfig {
 
 	routes() {
 		/**
-		 * @GET     Initialize kafka
+		 * @POST     Initialize kafka
 		 * @desc    sends cluster info and all metadata
 		 */
 		this.app.route('/api/connect').post([
