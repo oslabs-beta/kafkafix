@@ -1,5 +1,5 @@
 import { Application, Request, Response } from 'express';
-import { RouteConfig } from '../common/route.config';
+import { RouteConfig } from '../../common/route.config';
 import { LogController } from './log.controller';
 
 export class LogRoutes extends RouteConfig {

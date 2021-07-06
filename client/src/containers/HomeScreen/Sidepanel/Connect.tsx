@@ -182,7 +182,7 @@ const Connect: FC = (props) => {
         console.log(data);
         // const { metadata: { topics: array } } = data;
         const array = data.metadata.topics;
-        const rows = array.map( (el:any) => createData(el.name, el.partition.length, el.partitions));
+        const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
         // dummy data after converting data we get back into format we want
         // const rows = [
         //   createData('topic 1', 3, [

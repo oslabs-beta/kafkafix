@@ -7,11 +7,19 @@ export class AuthRoutes extends RouteConfig {
 	}
 
 	routes() {
-		this.app.route('/signup').post([], (req: Request, res: Response) => {
+    /**
+     * @POST    api/signup
+     * @desc    sign up user 
+     */
+		this.app.route('/api/signup').post([], (req: Request, res: Response) => {
 			res.status(200).send('signup');
 		});
 
-		this.app.route('/login').get([], (req: Request, res: Response) => {
+    /**
+     * @POST    api/login
+     * @desc    login user
+     */
+		this.app.route('/api/login').get([], (req: Request, res: Response) => {
 			res.status(200).send('login');
 		});
 
