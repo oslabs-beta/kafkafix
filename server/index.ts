@@ -7,7 +7,7 @@ import cors from 'cors';
 import { Mongoose } from './common/db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
-import { GroupRoutes, KafkaRoutes, TopicRoutes } from './kafka';
+import { GroupRoutes, KafkaRoutes, LogRoutes, TopicRoutes } from './kafka';
 
 dotenv.config();
 
@@ -30,6 +30,7 @@ const routes: Array<RouteConfig> = [];
 routes.push(new AuthRoutes(app));
 routes.push(new GroupRoutes(app));
 routes.push(new KafkaRoutes(app));
+routes.push(new LogRoutes(app));
 routes.push(new TopicRoutes(app));
 
 // 404

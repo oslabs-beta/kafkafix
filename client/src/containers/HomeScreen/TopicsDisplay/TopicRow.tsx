@@ -7,6 +7,7 @@ const { ipcRenderer } = window.require('electron');
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 
 import {
+<<<<<<< HEAD
   Button,
   Box,
   Collapse,
@@ -23,27 +24,44 @@ import {
   Input,
   makeStyles,
   Modal,
+=======
+	Button,
+	Box,
+	Collapse,
+	Divider,
+	IconButton,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+	Typography,
+	Input,
+	makeStyles,
+>>>>>>> feb72631abe5ab973260ec7e4ceb6ad672894627
 } from '@material-ui/core';
 
 import { ErrorRounded } from '@material-ui/icons';
 
 const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-  tableWrapper: {
-    margin: 30,
-    boxShadow: '10px 5px 5px lightgrey;',
-  },
-  tableHeaderRow: {
-    backgroundColor: 'black',
-  },
-  tableHeaderText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
+	root: {
+		'& > *': {
+			borderBottom: 'unset',
+		},
+	},
+	tableWrapper: {
+		margin: 30,
+		boxShadow: '10px 5px 5px lightgrey;',
+	},
+	tableHeaderRow: {
+		backgroundColor: 'black',
+	},
+	tableHeaderText: {
+		color: 'white',
+		fontWeight: 'bold',
+	},
 });
 
 interface Options {
@@ -53,18 +71,23 @@ interface Options {
 }
 
 export const TopicRow = (props: { row: any }) => {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
+	const { row } = props;
+	const [open, setOpen] = React.useState(false);
+	const classes = useRowStyles();
 
+<<<<<<< HEAD
   const [isOpenModal, setOpenModal] = useState(false);
+=======
+	// import state
+>>>>>>> feb72631abe5ab973260ec7e4ceb6ad672894627
 
-  // function to handle partition click -- opens a new window -- we need to know which partiton to show live data for
-  const handleClickPartition = (topic: any) => {
-    console.log(topic);
-    ipcRenderer.send('open-partition');
-  };
+	// function to handle partition click -- opens a new window -- we need to know which partiton to show live data for
+	const handleClickPartition = (topic: any) => {
+		console.log(topic);
+		ipcRenderer.send('open-partition');
+	};
 
+<<<<<<< HEAD
   const handleCreatePartition = () => {
     // // import state
     // const input: HTMLInputElement | null =
@@ -94,64 +117,83 @@ export const TopicRow = (props: { row: any }) => {
   const closeModal = () => {
     // setOpenModal(false);
   };
+=======
+	const handleDeletePartition = (partitionID: number) => {
+		// import state
 
-  return (
-    <React.Fragment>
-      <TableRow className={classes.root}>
-        <TableCell>
-          {/* onclick - arrow changes */}
-          <IconButton
-            aria-label='expand row'
-            size='small'
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-          </IconButton>
-        </TableCell>
+		console.log(partitionID);
+		// fetch
+		const options = {
+			method: 'DELETE',
+			body: { partitionID },
+		};
 
-        <TableCell component='th' scope='row'>
-          {row.topicName}
-        </TableCell>
-        <TableCell>{row.partitions}</TableCell>
-      </TableRow>
+		//finish the then after getting reposne
+		//   fetch('api/', options)
+		//     .then((data) => data.json())
+		//     .then()
+		//     .catch();
+	};
+>>>>>>> feb72631abe5ab973260ec7e4ceb6ad672894627
 
-      {/* Create another TableRow for the partitions*/}
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
-          <Collapse in={open} timeout='auto' unmountOnExit>
-            <Box margin={3}>
-              <Typography
-                style={{ fontWeight: 'bold' }}
-                align='left'
-                variant='h6'
-                gutterBottom
-                component='div'
-              >
-                Partitions
-              </Typography>
+	return (
+		<React.Fragment>
+			<TableRow className={classes.root}>
+				<TableCell>
+					{/* onclick - arrow changes */}
+					<IconButton
+						aria-label='expand row'
+						size='small'
+						onClick={() => setOpen(!open)}
+					>
+						{open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+					</IconButton>
+				</TableCell>
 
-              {/* Table headers for Partitions */}
-              <Table size='small' aria-label='partitions'>
-                <TableHead>
-                  <TableRow className={classes.tableHeaderRow}>
-                    <TableCell className={classes.tableHeaderText}>
-                      Id
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      Leader
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      Parttion-errode
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      ISR
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      Replicas
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
+				<TableCell component='th' scope='row'>
+					{row.topicName}
+				</TableCell>
+				<TableCell>{row.partitions}</TableCell>
+			</TableRow>
 
+			{/* Create another TableRow for the partitions*/}
+			<TableRow>
+				<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
+					<Collapse in={open} timeout='auto' unmountOnExit>
+						<Box margin={3}>
+							<Typography
+								style={{ fontWeight: 'bold' }}
+								align='left'
+								variant='h6'
+								gutterBottom
+								component='div'
+							>
+								Partitions
+							</Typography>
+
+							{/* Table headers for Partitions */}
+							<Table size='small' aria-label='partitions'>
+								<TableHead>
+									<TableRow className={classes.tableHeaderRow}>
+										<TableCell className={classes.tableHeaderText}>
+											Id
+										</TableCell>
+										<TableCell className={classes.tableHeaderText}>
+											Leader
+										</TableCell>
+										<TableCell className={classes.tableHeaderText}>
+											Parttion-errode
+										</TableCell>
+										<TableCell className={classes.tableHeaderText}>
+											ISR
+										</TableCell>
+										<TableCell className={classes.tableHeaderText}>
+											Replicas
+										</TableCell>
+									</TableRow>
+								</TableHead>
+
+<<<<<<< HEAD
                 {/* Table Body */}
                 {/* Mapping through array of partitions -- row needs to be state */}
                 <TableBody>
@@ -207,4 +249,37 @@ export const TopicRow = (props: { row: any }) => {
       </TableRow>
     </React.Fragment>
   );
+=======
+								{/* Table Body */}
+								{/* Mapping through array of partitions -- row needs to be state */}
+								<TableBody>
+									{row.partitionData.map((data: any) => (
+										<>
+											<TableRow
+												hover={true}
+												key={data.id}
+												onClick={() => handleClickPartition(row.topicName)}
+											>
+												<TableCell component='th' scope='row'>
+													{data.id}
+												</TableCell>
+												<TableCell>{data.leader}</TableCell>
+												<TableCell>{data.partitionErrorCode}</TableCell>
+												<TableCell>{data.isr}</TableCell>
+												<TableCell>{data.replicas}</TableCell>
+											</TableRow>
+											<Button onClick={() => handleDeletePartition(data.id)}>
+												Delete
+											</Button>
+										</>
+									))}
+								</TableBody>
+							</Table>
+						</Box>
+					</Collapse>
+				</TableCell>
+			</TableRow>
+		</React.Fragment>
+	);
+>>>>>>> feb72631abe5ab973260ec7e4ceb6ad672894627
 };
