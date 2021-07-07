@@ -4,13 +4,12 @@ import * as WebSocket from 'ws';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import { Mongoose } from './db/db';
+import { DB } from './db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
-// import { GroupRoutes, KafkaRoutes, LogRoutes, TopicRoutes } from './kafka';
 import { GroupRoutes } from './kafka/group/group.routes';
 import { KafkaRoutes } from './kafka/kafka/kafka.routes';
-import { LogRoutes } from './kafka/log/log.routes';
+import { LogRoutes } from './log/log.routes';
 import { TopicRoutes } from './kafka/topic/topic.routes';
 
 dotenv.config();
@@ -22,7 +21,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // start DB
-// new Mongoose();
+new DB();
 
 // middlewares
 app.use(cors());

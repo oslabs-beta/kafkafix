@@ -6,7 +6,7 @@ dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI!;
 
-export class Mongoose {
+export class DB {
 	private options = {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,

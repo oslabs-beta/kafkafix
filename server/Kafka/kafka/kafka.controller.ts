@@ -20,8 +20,8 @@ export class KafkaController {
 		const kafka = new Kafka({
 			clientId: 'kafkafix',
 			brokers: [`localhost:${PORT}`],
-			// logLevel: logLevel.ERROR,
-			// logCreator,
+			logLevel: logLevel.ERROR,
+			logCreator,
 		});
 
 		req.app.locals.kafka = kafka;
