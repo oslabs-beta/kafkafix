@@ -12,6 +12,7 @@ export class LogRoutes extends RouteConfig {
 		 * @GET     api/errors
 		 * @desc    get all previous errors
 		 */
+    // CHECK format for errors
 		this.app
 			.route('/api/errors')
 			.get([LogController.getErrors], (req: Request, res: Response) => {
