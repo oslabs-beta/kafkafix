@@ -27,6 +27,12 @@ const useStyles = makeStyles({
     padding: 10,
     boxShadow: '10px 5px 5px lightgrey;',
   },
+  div: {
+    marginBottom: 30,
+  },
+  text: {
+    fontWeight: 'bold',
+  },
 });
 
 const Partitions = () => {
@@ -68,23 +74,23 @@ const Partitions = () => {
       <React.Fragment key={messages.length - 1 - i}>
         <Card className={classes.card}>
           <CardContent>
-            <Typography variant='h6'>
-              {messages[messages.length - 1 - i]['full name']}
+            <Typography variant='h6' className={classes.text}>
+              Name: {messages[messages.length - 1 - i]['full name']}
             </Typography>
-            <Typography variant='h6'>
-              {messages[messages.length - 1 - i].address.street}
+            <Typography variant='subtitle1'>
+              Street: {messages[messages.length - 1 - i].address.street}
             </Typography>
-            <Typography variant='h6'>
-              {messages[messages.length - 1 - i].address.city}
+            <Typography variant='subtitle1'>
+              City: {messages[messages.length - 1 - i].address.city}
             </Typography>
-            <Typography variant='h6'>
-              {messages[i]['Bitcoin Address']}
+            <Typography variant='body1'>
+              BitCoin Address: {messages[i]['Bitcoin Address']}
             </Typography>
-            <Typography variant='h6'>
-              {messages[messages.length - 1 - i]['Product Name']}
+            <Typography variant='body2' className={classes.text}>
+              Product Name: {messages[messages.length - 1 - i]['Product Name']}
             </Typography>
-            <Typography variant='h6'>
-              {messages[messages.length - 1 - i].Price}
+            <Typography variant='body2' className={classes.text}>
+              Price: {messages[messages.length - 1 - i].Price}
             </Typography>
           </CardContent>
         </Card>
@@ -94,7 +100,7 @@ const Partitions = () => {
   return (
     <>
       <NavBar />
-      <h1>We are in partitions</h1>
+      <div className={classes.div}></div>
       {arr}
     </>
   );

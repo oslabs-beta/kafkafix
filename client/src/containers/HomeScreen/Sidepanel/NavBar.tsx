@@ -35,7 +35,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // styles for Navbar component - using makeStyles hook - invoked within function
 const useStyles = makeStyles({
   navbar: {
-    marginBottom: 40,
+    marginBottom: 70,
   },
   appbar: {
     display: 'flex',

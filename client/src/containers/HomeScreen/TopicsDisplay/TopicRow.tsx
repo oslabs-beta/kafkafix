@@ -46,6 +46,9 @@ const useRowStyles = makeStyles({
     color: 'white',
     fontWeight: 'bold',
   },
+  partitionButtons: {
+    backgroundColor: 'white',
+  },
 });
 
 interface Options {
@@ -170,21 +173,25 @@ export const TopicRow = (props: { row: any }) => {
                         <TableCell>{data.isr}</TableCell>
                         <TableCell>{data.replicas}</TableCell>
                       </TableRow>
-                      <Link to='partition'>
-                        <Button variant='contained' color='secondary'>
+                      <Link to='partition' style={{ textDecoration: 'none' }}>
+                        <Button
+                          size='small'
+                          className={classes.partitionButtons}
+                        >
                           Visualize Streams
                         </Button>
                       </Link>
+                      <div style={{ margin: 15 }}></div>
                     </>
                   ))}
-                  <Button
+                  {/* <Button
                     onClick={openModal}
                     variant='contained'
                     color='secondary'
                   >
                     Create Partition
-                  </Button>
-                  <Modal
+                  </Button> */}
+                  {/* <Modal
                     open={isOpenModal}
                     onClose={closeModal}
                     aria-labelledby='create-partition'
@@ -205,7 +212,7 @@ export const TopicRow = (props: { row: any }) => {
                         Create
                       </Button>
                     </>
-                  </Modal>
+                  </Modal> */}
                 </TableBody>
               </Table>
             </Box>

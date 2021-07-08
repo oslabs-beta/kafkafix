@@ -7,7 +7,7 @@ import {
   populateDataActionCreator,
 } from '../../../state/actions/actions';
 import WebSocket from 'ws';
-import { Redirect } from 'react-router-dom';
+
 
 // importing componenets from Material UI
 import {
@@ -95,7 +95,6 @@ const Connect: FC = (props) => {
       console.log(inputField.value);
       // move down to fetch
       body = JSON.stringify({ PORT: inputField.value });
-      // inputField.setAttribute("disabled", "true");
     } else {
       alert('Cannot connect because Broker ID field is empty');
       return;
@@ -117,15 +116,14 @@ const Connect: FC = (props) => {
     console.log(options);
     //edit the fetch api
     fetch('/api/connect', options)
-      .then((data) => data.json())
+    .then((data) => data.json())
       .then((data) => {
         console.log(data);
         // const { metadata: { topics: array } } = data;
         const array = data.metadata.topics;
-        const rows = array.map((el: any) =>
-          createData(el.name, el.partitions.length, el.partitions)
-        );
+        const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
         // dummy data after converting data we get back into format we want
+        // inputField.setAttribute("disabled", "true");
         // const rows = [
         //   createData('topic 1', 3, [
         //     {
@@ -177,7 +175,7 @@ const Connect: FC = (props) => {
           onClick={handleSubmit}
         >
           {isConnected ? 'Disconnect' : 'Connect'}
-          {/* {isConnected && <Redirect to='/partition' />} */}
+          {/* {isConnected && <Redirect to='/partition'/>} */}
         </Button>
       </Card>
     </form>
