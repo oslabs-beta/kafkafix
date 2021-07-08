@@ -9,7 +9,7 @@ import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
 // import { GroupRoutes, KafkaRoutes, LogRoutes, TopicRoutes } from './kafka';
 import { GroupRoutes } from './kafka/group/group.routes';
-import { KafkaRoutes } from './kafka/kafka/kafka.routes';
+	import { KafkaRoutes } from './kafka/kafka/kafka.routes';
 import { LogRoutes } from './kafka/log/log.routes';
 import { TopicRoutes } from './kafka/topic/topic.routes';
 
@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-const routes: Array<RouteConfig> = [];
+const routes: Array<RouteConfig> = [];``
 routes.push(new AuthRoutes(app));
 routes.push(new GroupRoutes(app));
 routes.push(new KafkaRoutes(app));
