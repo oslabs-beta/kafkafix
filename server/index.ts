@@ -20,8 +20,6 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-console.log('wss', wss);
-
 // start DB
 new DB();
 

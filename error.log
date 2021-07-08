@@ -1,3 +1,0 @@
-{"level":"error","namespace":"Connection","message":"Response Metadata(key: 3, version: 6)","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","clientId":"kafkafix","broker":"localhost:9092"}
-{"level":"error","namespace":"Connection","message":"Response Heartbeat(key: 12, version: 2)","error":"The group is rebalancing, so a rejoin is needed","clientId":"kafkafix","broker":"127.0.0.1:9092"}
-{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'broker' of undefined"}
