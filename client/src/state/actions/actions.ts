@@ -30,4 +30,11 @@ export const populateDataActionCreator =(input: any) => {
     type: Type.POPULATE_DATA,
     payload: input
   };
-}
+};
+
+export const appendMessageActionCreator = (input: any) => {
+return {
+    type: Type.APPEND_MESSAGE,
+    payload: input
+  };
+};
