@@ -6,7 +6,7 @@ require('winston-mongodb').MongoDB; //! check
 
 interface IProps {
 	namespace: string;
-	level: string;
+	level: any; //! why not string
 	log: any; // CHECK type
 }
 
@@ -44,8 +44,7 @@ export const logCreator = (logLevel: any) => {
 	});
 
 	return ({ namespace, level, log }: IProps) => {
-		const { message, broker, clientId, error } = log;
-		console.log('LOGGER TYPE', log);
+		const { message, broker, clientId, error, groupId } = log;
 		logger.log({
 			level: toWinstonLogLevel(level),
 			namespace,
@@ -53,6 +52,7 @@ export const logCreator = (logLevel: any) => {
 			error,
 			clientId,
 			broker,
+			groupId,
 		});
 	};
 };

@@ -6,14 +6,16 @@ import { handleAsync } from '../../common';
 // convert to class
 // ADD add each consumer to app.locals based on groupId
 export const consumer = async (kafka: Kafka, ws: WebSocket) => {
-	const topic = 'kafkafix3';
-	const groupId = 'group4';
+	const topic = 'kafkafix';
+	const groupId = 'group1';
 	const consumer = kafka.consumer({ groupId });
 
 	const [, connectErr] = await handleAsync(consumer.connect());
 	const [, subscribeErr] = await handleAsync(
 		consumer.subscribe({ topic, fromBeginning: true })
 	);
+
+	console.log('ws at consumer', ws);
 
 	if (connectErr) return connectErr;
 	if (subscribeErr) return subscribeErr;

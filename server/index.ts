@@ -20,6 +20,8 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+console.log('server ws', wss);
+
 // start DB
 new DB();
 
@@ -68,3 +70,15 @@ wss.on('connection', (ws: WebSocket) => {
 
 	ws.on('close', () => console.log('ws disconnected'));
 });
+
+// 1. narrative
+// - end with a question
+// - don't say project say product, platform: OSLab - tech accelerator
+// - talk about their product, roadmap, vc, board, their job - talk about them
+
+// always negotiate
+// talk about range of salary
+// conversion
+// confident with algo
+// don't have to know everthing - just ask if you don't know
+// email the vc firm that invested. 
