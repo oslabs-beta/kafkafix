@@ -12,6 +12,8 @@ import { KafkaRoutes } from './kafka/kafka/kafka.routes';
 import { LogRoutes } from './log/log.routes';
 import { TopicRoutes } from './kafka/topic/topic.routes';
 
+const path = require('path');
+
 dotenv.config();
 
 // initialize configuration

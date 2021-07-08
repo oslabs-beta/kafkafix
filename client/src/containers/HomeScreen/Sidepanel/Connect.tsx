@@ -7,6 +7,7 @@ import {
   populateDataActionCreator,
 } from '../../../state/actions/actions';
 import WebSocket from 'ws';
+import { Redirect } from 'react-router-dom';
 
 // importing componenets from Material UI
 import {
@@ -121,7 +122,9 @@ const Connect: FC = (props) => {
         console.log(data);
         // const { metadata: { topics: array } } = data;
         const array = data.metadata.topics;
-        const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
+        const rows = array.map((el: any) =>
+          createData(el.name, el.partitions.length, el.partitions)
+        );
         // dummy data after converting data we get back into format we want
         // const rows = [
         //   createData('topic 1', 3, [
@@ -174,6 +177,7 @@ const Connect: FC = (props) => {
           onClick={handleSubmit}
         >
           {isConnected ? 'Disconnect' : 'Connect'}
+          {/* {isConnected && <Redirect to='/partition' />} */}
         </Button>
       </Card>
     </form>
