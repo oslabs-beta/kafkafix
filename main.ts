@@ -29,18 +29,18 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-	// calling the function above
-	createWindow();
+  // calling the function above
+  createWindow();
 
-	// activating the app when no windows are available opens a new one
-	app.on('activate', () => {
-		if (BrowserWindow.getAllWindows().length === 0) createWindow();
-	});
+  // activating the app when no windows are available opens a new one
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
 
-	// closes app when all windows are closed - for windows/linux
-	app.on('window-all-closed', function () {
-		if (process.platform !== 'darwin') app.quit();
-	});
+  // closes app when all windows are closed - for windows/linux
+  app.on('window-all-closed', function () {
+    if (process.platform !== 'darwin') app.quit();
+  });
 });
 
 // fucntion for creating partition window
@@ -49,8 +49,10 @@ function createPartitionWindow() {
     width: 500,
     height: 500,
   });
+
+  win.loadURL('http://localhost:9000/partition');
 }
 
 ipcMain.on('open-partition', () => {
-	createPartitionWindow();
+  createPartitionWindow();
 });

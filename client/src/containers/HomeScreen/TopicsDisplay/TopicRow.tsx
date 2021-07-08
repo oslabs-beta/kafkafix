@@ -6,6 +6,8 @@ const { ipcRenderer } = window.require('electron');
 
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 
+import { Link } from 'react-router-dom';
+
 import {
   Button,
   Box,
@@ -44,6 +46,9 @@ const useRowStyles = makeStyles({
     color: 'white',
     fontWeight: 'bold',
   },
+  partitionButtons: {
+    backgroundColor: 'white',
+  },
 });
 
 interface Options {
@@ -60,8 +65,7 @@ export const TopicRow = (props: { row: any }) => {
   const [isOpenModal, setOpenModal] = useState(false);
 
   // function to handle partition click -- opens a new window -- we need to know which partiton to show live data for
-  const handleClickPartition = (topic: any) => {
-    console.log(topic);
+  const handleClickPartition = () => {
     ipcRenderer.send('open-partition');
   };
 
@@ -155,28 +159,39 @@ export const TopicRow = (props: { row: any }) => {
                 {/* Mapping through array of partitions -- row needs to be state */}
                 <TableBody>
                   {row.partitionData.map((data: any) => (
-                    <TableRow
-                      hover={true}
-                      key={data.id}
-                      onClick={() => handleClickPartition(row.topicName)}
-                    >
-                      <TableCell component='th' scope='row'>
-                        {data.id}
-                      </TableCell>
-                      <TableCell>{data.leader}</TableCell>
-                      <TableCell>{data.partitionErrorCode}</TableCell>
-                      <TableCell>{data.isr}</TableCell>
-                      <TableCell>{data.replicas}</TableCell>
-                    </TableRow>
+                    <>
+                      <TableRow
+                        hover={true}
+                        key={data.id}
+                        // onClick={() => handleClickPartition()}
+                      >
+                        <TableCell component='th' scope='row'>
+                          {data.id}
+                        </TableCell>
+                        <TableCell>{data.leader}</TableCell>
+                        <TableCell>{data.partitionErrorCode}</TableCell>
+                        <TableCell>{data.isr}</TableCell>
+                        <TableCell>{data.replicas}</TableCell>
+                      </TableRow>
+                      <Link to='partition' style={{ textDecoration: 'none' }}>
+                        <Button
+                          size='small'
+                          className={classes.partitionButtons}
+                        >
+                          Visualize Streams
+                        </Button>
+                      </Link>
+                      <div style={{ margin: 15 }}></div>
+                    </>
                   ))}
-                  <Button
+                  {/* <Button
                     onClick={openModal}
                     variant='contained'
                     color='secondary'
                   >
                     Create Partition
-                  </Button>
-                  <Modal
+                  </Button> */}
+                  {/* <Modal
                     open={isOpenModal}
                     onClose={closeModal}
                     aria-labelledby='create-partition'
@@ -197,7 +212,7 @@ export const TopicRow = (props: { row: any }) => {
                         Create
                       </Button>
                     </>
-                  </Modal>
+                  </Modal> */}
                 </TableBody>
               </Table>
             </Box>
