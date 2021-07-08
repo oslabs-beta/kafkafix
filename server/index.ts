@@ -20,6 +20,8 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+console.log('wss', wss);
+
 // start DB
 new DB();
 
@@ -62,7 +64,7 @@ server.listen(PORT, () => {
 
 // websocket server
 // CHECK if wss.on vs wss.once
-wss.once('connection', (ws: WebSocket) => {
+wss.on('connection', (ws: WebSocket) => {
 	app.locals.ws = ws;
 	console.log('ws connected');
 

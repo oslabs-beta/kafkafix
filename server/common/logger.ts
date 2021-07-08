@@ -3,11 +3,22 @@ import { format } from 'winston';
 const winston = require('winston'); // WHY ES6 import does not wor
 require('winston-mongodb').MongoDB;
 
+type ILog = {
+	timestamp: String;
+	logger: String;
+	message: String;
+	broker: String;
+	clientId: String;
+	error: String;
+	correlationId: Number;
+	size: Number;
+};
+
 interface IProps {
 	namespace: string;
 	level: number;
 	label: string;
-	log: any; //! object
+	log: any; // CHECK type
 }
 
 const { createLogger, transports } = winston;
@@ -27,8 +38,9 @@ const toWinstonLogLevel = (level: any) => {
 	}
 };
 
-const myFormat = printf(({ namespace, message }) => {
-	return `${namespace} ${message}`;
+const myFormat = printf(({ namespace, message, log }) => {
+	const { broker, clientId, error } = log;
+	return ` ${namespace} ${message} ${broker} ${clientId} ${error}`;
 });
 
 export const logCreator = (logLevel: any) => {
@@ -47,16 +59,26 @@ export const logCreator = (logLevel: any) => {
 		],
 	});
 
-	return ({ namespace, level, label, log }: IProps) => {
-		console.log('logger: ', log);
-		console.log('label: ', label);
-
-		const { message, ...extra } = log;
+	return ({ namespace, level, log }: IProps) => {
+		const { message, broker, clientId, error } = log;
 		logger.log({
 			level: toWinstonLogLevel(level),
 			namespace,
 			message,
-			extra,
+			error,
+			clientId,
+			broker,
 		});
 	};
 };
+
+// [1] logger:  {
+// [1]   timestamp: '2021-07-08T05:36:17.661Z',
+// [1]   logger: 'kafkajs',
+// [1]   message: 'Response GroupCoordinator(key: 10, version: 2)',
+// [1]   broker: '127.0.0.1:9092',
+// [1]   clientId: 'kafkafix',
+// [1]   error: 'The group coordinator is not available',
+// [1]   correlationId: 0,
+// [1]   size: 22
+// [1] }
