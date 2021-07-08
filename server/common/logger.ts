@@ -1,28 +1,17 @@
 import { logLevel } from 'kafkajs';
 import { format } from 'winston';
-const winston = require('winston'); // WHY ES6 import does not wor
-require('winston-mongodb').MongoDB;
-
-type ILog = {
-	timestamp: String;
-	logger: String;
-	message: String;
-	broker: String;
-	clientId: String;
-	error: String;
-	correlationId: Number;
-	size: Number;
-};
+// import winston from 'winston'; // WHY types
+const winston = require('winston');
+require('winston-mongodb').MongoDB; //! check
 
 interface IProps {
 	namespace: string;
-	level: number;
-	label: string;
+	level: any; //! why not string
 	log: any; // CHECK type
 }
 
 const { createLogger, transports } = winston;
-const { combine, json, timestamp, printf } = format;
+const { combine, json, metadata } = format;
 
 const toWinstonLogLevel = (level: any) => {
 	switch (level) {
@@ -38,11 +27,6 @@ const toWinstonLogLevel = (level: any) => {
 	}
 };
 
-const myFormat = printf(({ namespace, message, log }) => {
-	const { broker, clientId, error } = log;
-	return ` ${namespace} ${message} ${broker} ${clientId} ${error}`;
-});
-
 export const logCreator = (logLevel: any) => {
 	const logger = createLogger({
 		level: toWinstonLogLevel(logLevel),
@@ -54,13 +38,13 @@ export const logCreator = (logLevel: any) => {
 				db: process.env.MONGO_URI,
 				options: { useUnifiedTopology: true },
 				collection: 'logs',
-				format: combine(timestamp(), json(), myFormat),
+				format: combine(json(), metadata()),
 			}),
 		],
 	});
 
 	return ({ namespace, level, log }: IProps) => {
-		const { message, broker, clientId, error } = log;
+		const { message, broker, clientId, error, groupId } = log;
 		logger.log({
 			level: toWinstonLogLevel(level),
 			namespace,
@@ -68,17 +52,7 @@ export const logCreator = (logLevel: any) => {
 			error,
 			clientId,
 			broker,
+			groupId,
 		});
 	};
 };
-
-// [1] logger:  {
-// [1]   timestamp: '2021-07-08T05:36:17.661Z',
-// [1]   logger: 'kafkajs',
-// [1]   message: 'Response GroupCoordinator(key: 10, version: 2)',
-// [1]   broker: '127.0.0.1:9092',
-// [1]   clientId: 'kafkafix',
-// [1]   error: 'The group coordinator is not available',
-// [1]   correlationId: 0,
-// [1]   size: 22
-// [1] }

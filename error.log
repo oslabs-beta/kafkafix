@@ -1,3 +1,42 @@
-{"level":"error","namespace":"Connection","message":"Response Metadata(key: 3, version: 6)","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","clientId":"kafkafix","broker":"localhost:9092"}
-{"level":"error","namespace":"Connection","message":"Response Heartbeat(key: 12, version: 2)","error":"The group is rebalancing, so a rejoin is needed","clientId":"kafkafix","broker":"127.0.0.1:9092"}
-{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'broker' of undefined"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 329ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 273ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 299ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 319ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 312ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 260ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 254ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 313ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 340ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 275ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 353ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 269ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 248ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 351ms","groupId":"group1"}
