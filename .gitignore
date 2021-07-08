@@ -3,4 +3,5 @@
 /.env
 /zk-kafka
 /tsc
-/error.log
+error.log
+firebase.ts

@@ -1,4 +1,4 @@
-export const handleAsync = async <T>(promise: Promise<T>) => {
+export const handleAsync = async <T>(promise: PromiseLike<T>) => {
 	try {
 		const data = await promise;
 

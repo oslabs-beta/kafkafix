@@ -4,13 +4,12 @@ import * as WebSocket from 'ws';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import { Mongoose } from './common/db';
+import { DB } from './db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
-// import { GroupRoutes, KafkaRoutes, LogRoutes, TopicRoutes } from './kafka';
 import { GroupRoutes } from './kafka/group/group.routes';
 import { KafkaRoutes } from './kafka/kafka/kafka.routes';
-import { LogRoutes } from './kafka/log/log.routes';
+import { LogRoutes } from './log/log.routes';
 import { TopicRoutes } from './kafka/topic/topic.routes';
 
 dotenv.config();
@@ -21,8 +20,10 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+console.log('wss', wss);
+
 // start DB
-// new Mongoose();
+new DB();
 
 // middlewares
 app.use(cors());
@@ -63,7 +64,7 @@ server.listen(PORT, () => {
 
 // websocket server
 // CHECK if wss.on vs wss.once
-wss.once('connection', (ws: WebSocket) => {
+wss.on('connection', (ws: WebSocket) => {
 	app.locals.ws = ws;
 	console.log('ws connected');
 
