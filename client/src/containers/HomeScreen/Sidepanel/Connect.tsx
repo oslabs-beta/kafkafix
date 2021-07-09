@@ -6,6 +6,7 @@ import {
   connectedActionCreator,
   populateDataActionCreator,
 } from '../../../state/actions/actions';
+import { populateData } from '../../../helperFunctions/populateData';
 import WebSocket from 'ws';
 
 
@@ -53,23 +54,23 @@ const useStyles = makeStyles({
   },
 });
 
-const createData = (
-  topicName: string,
-  partitions: number,
-  partitionData: any
-) => {
-  return {
-    topicName: topicName,
-    partitions: partitions,
-    partitionData: partitionData.map((el: any) => ({
-      id: el.partitionId,
-      partitionErrorCode: el.partitionErrorCode,
-      leader: !!el.leader,
-      replicas: el.replicas[0],
-      isr: el.isr[0],
-    })),
-  };
-};
+// const createData = (
+//   topicName: string,
+//   partitions: number,
+//   partitionData: any
+// ) => {
+//   return {
+//     topicName: topicName,
+//     partitions: partitions,
+//     partitionData: partitionData.map((el: any) => ({
+//       id: el.partitionId,
+//       partitionErrorCode: el.partitionErrorCode,
+//       leader: !!el.leader,
+//       replicas: el.replicas[0],
+//       isr: el.isr[0],
+//     })),
+//   };
+// };
 
 const Connect: FC = (props) => {
   // display form function -> onSubmit -> send fetch request to backend with Broker URI
@@ -120,33 +121,11 @@ const Connect: FC = (props) => {
       .then((data) => {
         console.log(data);
         // const { metadata: { topics: array } } = data;
-        const array = data.metadata.topics;
-        const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
-        // dummy data after converting data we get back into format we want
-        // inputField.setAttribute("disabled", "true");
-        // const rows = [
-        //   createData('topic 1', 3, [
-        //     {
-        //       id: 1,
-        //       parttionErrode: 'test',
-        //       leader: true,
-        //       replicas: [3],
-        //       isr: [1],
-        //     },
-        //   ]),
-        //   createData('topic 2', 3, [
-        //     {
-        //       id: 1,
-        //       parttionErrode: 'test',
-        //       leader: true,
-        //       replicas: [3],
-        //       isr: [1],
-        //     },
-        //   ]),
-        // ];
+        // const array = data.metadata.topics;
+        // const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
+        // dispatch(populateDataActionCreator(rows));
         dispatch(connectedActionCreator());
-        dispatch(populateDataActionCreator(rows));
-        // ws = new WebSocket("ws://localhost:3000");
+        populateData(data);
       })
       .catch((e) => {
         console.log(e);

@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { overallState } from '../../state/reducers';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
 import { TopicRow } from './TopicsDisplay/TopicRow';
+import { populateData } from '../../helperFunctions/populateData';
 
 /*
 ------------------------------Update------------------------
@@ -31,6 +32,7 @@ import {
   Typography,
   Input,
   makeStyles,
+  Modal
 } from '@material-ui/core';
 import { ErrorRounded } from '@material-ui/icons';
 
@@ -57,21 +59,67 @@ const useRowStyles = makeStyles({
   },
 });
 
-// create fucntion that returns table
+interface Options {
+  method: string,
+  body: string
+}
 
-// CollapsibleTable was the previous TopicsDisplay
+const handleCreateTopic = () => {
+  const topicName: HTMLInputElement | null =
+    document.querySelector('#inputTopic');
+  if (topicName && topicName.value) {
+    const options: Options = {
+      method: 'POST',
+      body: JSON.stringify({topicName: topicName.value})
+    }
+
+    fetch('/api/topic', options)
+      .then(data => data.json())
+      .then(data => {
+        populateData(data);
+      })
+      .catch(e => console.log(e));
+  }
+};
+
+// onclick handler for deleting a topic
+const deleteTopicHandler = (topicName: String) => {
+
+  const options: Options = {
+    method: 'DELETE',
+    body: JSON.stringify({ topicName: topicName }),
+  };
+
+  fetch('/api/topic', options)
+    .then(data => data.json())
+    .then(data => {
+      populateData(data);
+    })
+    .catch((e) =>
+      console.log('error in deleting topic, ', e)
+    );
+};
 
 const TopicsDisplay = () => {
   const classes = useRowStyles();
   const isConnected = useSelector<overallState, KafkaState['isConnected']>(
     (state) => state.kafka.isConnected
-  );
+    );
+
   const rows = useSelector<overallState, KafkaState['data']>(
     (state) => state.kafka.data
   ); // [{topicName, partitions, ... }, {}]
-  console.log('rows/data grabbed from store ', rows);
-  // useSelector( (state) => state.kafka.data)
-  // state
+
+  const [isModalOpen, setOpenModal] = useState(false);
+
+
+  const openModal = () => {
+    setOpenModal(true);
+  };
+
+  const closeModal = () =>{
+    setOpenModal(false);
+  }
 
   return (
     <TableContainer component={Paper} className={classes.tableWrapper}>
@@ -88,14 +136,52 @@ const TopicsDisplay = () => {
             </TableCell>
           </TableRow>
         </TableHead>
+        <Button
+              variant='contained'
+              color='primary'
+              onClick={openModal}
+            >
+              Create Topic
+        </Button>
+        <Modal
+          open={isModalOpen}
+          onClose={closeModal}
+          aria-labelledby='create-partition'
+          aria-describedby='create-partition'
+        >
+          <>
+            <Typography variant='h6'>Enter Topic Name</Typography>
+            <Input
+              id='inputTopic'
+              type='text'
+              placeholder='Topic Name'
+            />
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleCreateTopic}
+            >
+              Create
+            </Button>
+          </>
+        </Modal>
 
-        {/* Table Body - why is it not centered*/}
+        {/* Table Body*/}
         {isConnected && (
           <TableBody>
             {rows.map((row) => (
-              <TopicRow key={row.topicName} row={row} />
+              <React.Fragment>
+                <TopicRow key={row.topicName} row={row} />
+                {/* // delete a topic */}
+                <Button
+                  onClick={() => deleteTopicHandler(row.topicName)}
+                >
+                  Delete
+                </Button>
+              </React.Fragment>
             ))}
           </TableBody>
+          // create a topic
         )}
       </Table>
     </TableContainer>
@@ -103,41 +189,3 @@ const TopicsDisplay = () => {
 };
 
 export default TopicsDisplay;
-
-// const TopicsDisplay: FC = (props) => {
-//   const isConnected = useSelector<overallState, KafkaState['isConnected']>(
-//     (state) => state.kafka.isConnected
-//   );
-
-//   const topicsArr = useSelector<overallState, KafkaState['topics']>((state) => {
-//     return state.kafka.topics;
-//   });
-
-//   // console.log(topicsArr);
-//   return (
-//     <table className='topicsDisplay'>
-//       <thead>
-//         <tr>
-//           <th>Topics</th>
-//           <th>Partitions</th>
-//           <th>Consumers</th>
-//           <th>Products</th>
-//         </tr>
-//       </thead>
-//       <tbody>
-//         {isConnected &&
-//           topicsArr.map((el, i) => (
-//             <TopicRow
-//               key={i}
-//               name={el.name}
-//               partitionNum={el.partitionNum}
-//               consumerNum={el.consumerNum}
-//               producerNum={el.producerNum}
-//             />
-//           ))}
-//       </tbody>
-//     </table>
-//   );
-// };
-
-// export default TopicsDisplay;
