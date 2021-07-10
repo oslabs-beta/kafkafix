@@ -72,7 +72,7 @@ server.listen(PORT, () => {
 
 // websocket server
 // CHECK if wss.on vs wss.once
-wss.on('connection', (ws: WebSocket) => {
+wss.once('connection', (ws: WebSocket) => {
 	app.locals.ws = ws;
 	console.log('ws connected');
 

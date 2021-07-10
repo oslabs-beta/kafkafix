@@ -28,6 +28,8 @@ export class TopicController {
 	static createTopics: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
 		const { topic, partitions } = req.body;
+		console.log(req.body, 'body');
+		console.log('topic name', topic);
 		const [success, error] = await handleAsync(
 			admin.createTopics({ topics: [{ topic, numPartitions: partitions }] })
 		);

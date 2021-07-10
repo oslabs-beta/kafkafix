@@ -35,7 +35,7 @@ export class TopicRoutes extends RouteConfig {
 				],
 				(req: Request, res: Response) => {
 					const { cluster, metadata } = res.locals;
-					return res.send(200).json({ cluster, metadata });
+					return res.status(200).json({ cluster, metadata });
 				}
 			);
 
@@ -66,7 +66,7 @@ export class TopicRoutes extends RouteConfig {
 				],
 				(req: Request, res: Response) => {
 					const { cluster, metadata } = res.locals;
-					return res.send(200).json({ cluster, metadata });
+					return res.status(200).json({ cluster, metadata });
 				}
 			);
 
@@ -84,7 +84,7 @@ export class TopicRoutes extends RouteConfig {
 				],
 				(req: Request, res: Response) => {
 					const { cluster, metadata } = res.locals;
-					return res.send(200).json({ cluster, metadata });
+					return res.status(200).json({ cluster, metadata });
 				}
 			);
 
