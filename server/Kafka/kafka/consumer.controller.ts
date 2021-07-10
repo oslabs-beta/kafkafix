@@ -15,8 +15,6 @@ export const consumer = async (kafka: Kafka, ws: WebSocket) => {
 		consumer.subscribe({ topic, fromBeginning: true })
 	);
 
-	console.log('ws at consumer', ws);
-
 	if (connectErr) return connectErr;
 	if (subscribeErr) return subscribeErr;
 

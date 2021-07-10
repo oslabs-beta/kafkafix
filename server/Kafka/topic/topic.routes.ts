@@ -1,7 +1,7 @@
 import { Application, Request, Response } from 'express';
 
 import { RouteConfig } from '../../common/route.config';
-// import { TopicController } from './topic.controller';
+import { KafkaController } from '../kafka/kafka.controller';
 import { TopicController } from './topic.controller';
 
 export class TopicRoutes extends RouteConfig {
@@ -27,9 +27,17 @@ export class TopicRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/topic')
-			.post([TopicController.createTopics], (req: Request, res: Response) => {
-				return res.sendStatus(200);
-			});
+			.post(
+				[
+					TopicController.createTopics,
+					KafkaController.describeCluster,
+					TopicController.getAllTopicMetadata,
+				],
+				(req: Request, res: Response) => {
+					const { cluster, metadata } = res.locals;
+					return res.send(200).json({ cluster, metadata });
+				}
+			);
 
 		/**
 		 * @PUT     api/topic
@@ -50,9 +58,17 @@ export class TopicRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/topic')
-			.delete([TopicController.deleteTopic], (req: Request, res: Response) => {
-				return res.sendStatus(200);
-			});
+			.delete(
+				[
+					TopicController.deleteTopic,
+					KafkaController.describeCluster,
+					TopicController.getAllTopicMetadata,
+				],
+				(req: Request, res: Response) => {
+					const { cluster, metadata } = res.locals;
+					return res.send(200).json({ cluster, metadata });
+				}
+			);
 
 		/**
 		 * @POST    api/partition
@@ -61,9 +77,14 @@ export class TopicRoutes extends RouteConfig {
 		this.app
 			.route('/api/partition')
 			.post(
-				[TopicController.createPartition],
+				[
+					TopicController.createPartition,
+					KafkaController.describeCluster,
+					TopicController.getAllTopicMetadata,
+				],
 				(req: Request, res: Response) => {
-					return res.sendStatus(200);
+					const { cluster, metadata } = res.locals;
+					return res.send(200).json({ cluster, metadata });
 				}
 			);
 
