@@ -182,6 +182,7 @@ const Connect: FC = (props) => {
 
               // options for fetch request
               const options = {
+                method: 'POST',
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },
@@ -229,6 +230,7 @@ const Connect: FC = (props) => {
 
               // options for fetch request
               const options = {
+                method: 'POST',
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },

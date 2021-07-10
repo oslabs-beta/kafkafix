@@ -1,4 +1,4 @@
-import React, { FC, useState, MouseEvent } from 'React';
+import React, { FC, useState } from 'React';
 import { MTPaginationOptions } from './MTPaginationOptions';
 
 import {
@@ -75,11 +75,11 @@ export const MessageTable: FC<MessageTableProps> = ({
     emptyRows.push(<TableRow />);
   }
 
-  const handleChangePage = (e: Event, pageIndex: number) => {
+  const handleChangePage = (e: React.MouseEvent<HTMLButtonElement> | null, pageIndex: number) => {
     setPageIndex(pageIndex);
   };
 
-  const handleChangePageSize = (e: MouseEvent<HTMLInputElement>) => {
+  const handleChangePageSize = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,) => {
     const newPageIndex = Math.floor(start / parseInt(e.target.value));
     setPageSize(parseInt(e.target.value));
     setPageIndex(newPageIndex);
@@ -123,7 +123,7 @@ export const MessageTable: FC<MessageTableProps> = ({
                 }}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangePageSize}
-                ActionsComponent={() => MTPaginationOptions()}
+                ActionsComponent={MTPaginationOptions}
               />
             </TableRow>
           </TableFooter>
