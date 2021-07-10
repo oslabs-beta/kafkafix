@@ -17,6 +17,7 @@ import {
 // importing icons
 import {
   Notifications,
+  AccountCircle,
   Menu,
   Assessment,
   BugReport,
@@ -203,6 +204,9 @@ const NavBar = () => {
           <Toolbar>
             <Button>
               <Notifications fontSize='large' style={{ color: 'white' }} />
+            </Button>
+            <Button>
+              <AccountCircle fontSize='large' style={{ color: 'white' }} />
             </Button>
           </Toolbar>
 

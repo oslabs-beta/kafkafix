@@ -11,7 +11,7 @@ interface PartitionScreenProps {
 }
 
 export const PartitionScreen: FC<PartitionScreenProps> = (props) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const messages = useSelector<overallState, KafkaState['messages']>(
   //   (state) => state.kafka.messages
   // );
@@ -20,24 +20,13 @@ export const PartitionScreen: FC<PartitionScreenProps> = (props) => {
 
   const ws = new WebSocket('ws://localhost:3000');
 	ws.onopen = () => console.log('connected to websocket');
-  ws.onmessage = (event: any) => {
-    console.log('client received: ', event.data);
-    // console.log('type of data for event.data', typeof event.data);
-    const array = event.data.split('message: ');
-    // console.log(array);
-    // console.log(array[1]);
-    const data = JSON.parse(array[1]);
-    // console.log('data after parse', data);
-    // dispatch(appendMessageActionCreator(data));
-    setMessages([...messages, data]);
-  };
 
   // const messages = useSelector<overallState, KafkaState['messages']>(
   //   (state) => state.kafka.messages
   // );
   return (
     <>
-      <MessageTable messages={messages} />
+      <MessageTable messages={messages} ws={ws} setMessages={setMessages}/>
       <SideView />
     </>
   );
