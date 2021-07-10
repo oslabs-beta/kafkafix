@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { overallState } from '../../state/reducers';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
 import { TopicRow } from './TopicsDisplay/TopicRow';
@@ -64,41 +64,6 @@ interface Options {
   body: string
 }
 
-const handleCreateTopic = () => {
-  const topicName: HTMLInputElement | null =
-    document.querySelector('#inputTopic');
-  if (topicName && topicName.value) {
-    const options: Options = {
-      method: 'POST',
-      body: JSON.stringify({topicName: topicName.value})
-    }
-
-    fetch('/api/topic', options)
-      .then(data => data.json())
-      .then(data => {
-        populateData(data);
-      })
-      .catch(e => console.log(e));
-  }
-};
-
-// onclick handler for deleting a topic
-const deleteTopicHandler = (topicName: String) => {
-
-  const options: Options = {
-    method: 'DELETE',
-    body: JSON.stringify({ topicName: topicName }),
-  };
-
-  fetch('/api/topic', options)
-    .then(data => data.json())
-    .then(data => {
-      populateData(data);
-    })
-    .catch((e) =>
-      console.log('error in deleting topic, ', e)
-    );
-};
 
 const TopicsDisplay = () => {
   const classes = useRowStyles();
@@ -108,9 +73,11 @@ const TopicsDisplay = () => {
 
   const rows = useSelector<overallState, KafkaState['data']>(
     (state) => state.kafka.data
-  ); // [{topicName, partitions, ... }, {}]
+    ); // [{topicName, partitions, ... }, {}]
 
   const [isModalOpen, setOpenModal] = useState(false);
+
+  const dispatch = useDispatch();
 
 
   const openModal = () => {
@@ -120,6 +87,44 @@ const TopicsDisplay = () => {
   const closeModal = () =>{
     setOpenModal(false);
   }
+
+  const handleCreateTopic = () => {
+    const topicName: HTMLInputElement | null =
+      document.querySelector('#inputTopic');
+    if (topicName && topicName.value) {
+      const options: Options = {
+        method: 'POST',
+        body: JSON.stringify({topicName: topicName.value})
+      }
+
+      fetch('/api/topic', options)
+        .then(data => data.json())
+        .then(data => {
+          populateData(data, dispatch);
+          closeModal();
+          alert('got a response');
+        })
+        .catch(e => console.log(e));
+    }
+  };
+
+  // onclick handler for deleting a topic
+  const deleteTopicHandler = (topicName: String) => {
+
+    const options: Options = {
+      method: 'DELETE',
+      body: JSON.stringify({ topicName: topicName }),
+    };
+
+    fetch('/api/topic', options)
+      .then(data => data.json())
+      .then(data => {
+        populateData(data, dispatch);
+      })
+      .catch((e) =>
+        console.log('error in deleting topic, ', e)
+      );
+  };
 
   return (
     <TableContainer component={Paper} className={classes.tableWrapper}>

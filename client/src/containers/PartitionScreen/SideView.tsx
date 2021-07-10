@@ -1,5 +1,5 @@
-import React, { FC } from 'React';
+// import React, { FC } from 'React';
 
-export const SideView: FC = () => {
-  return <></>;
-};
+// export const SideView: FC = () => {
+//   return <></>;
+// };

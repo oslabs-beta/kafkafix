@@ -50,12 +50,12 @@ const useRowStyles = makeStyles({
     backgroundColor: 'white',
   },
   modal: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: rgba(117, 190, 218, 0.5);
-  }
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#75BEDA',
+  },
 });
 
 interface Options {
@@ -81,7 +81,7 @@ export const TopicRow = (props: { row: any }) => {
     const input: HTMLInputElement | null =
       document.querySelector('#inputPartition');
 
-      // input validation
+    // input validation
     if (input && input.value === '') {
       alert('cannot leave the name field empty for the partition');
       return;

@@ -10,9 +10,9 @@ import { populateData } from '../../../helperFunctions/populateData';
 import WebSocket from 'ws';
 
 // importing electron and fileSystem modules
-import electron from 'electron';
-import path from 'path';
-import fs from 'fs';
+const electron = window.require('electron');
+// import * as path from 'path';
+// import * as fs from 'fs';
 
 // importing componenets from Material UI
 import {
@@ -111,123 +111,123 @@ const Connect: FC = (props) => {
         // const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
         // dispatch(populateDataActionCreator(rows));
         dispatch(connectedActionCreator());
-        populateData(data);
+        populateData(data, dispatch);
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
-  const handleUpload = (e: any) => {
-    // first we need to get the filePath, then read the file using the filePath then send it to backend
+  // const handleUpload = (e: any) => {
+  //   // first we need to get the filePath, then read the file using the filePath then send it to backend
 
-    console.log('made it inside handleUpload function in Connect.Tsx');
+  //   console.log('made it inside handleUpload function in Connect.Tsx');
 
-    // Importing dialog module using remote
-    const dialog = electron.remote.dialog;
+  //   // Importing dialog module using remote
+  //   const dialog = electron.remote.dialog;
 
-    // Initializing a file path Variable to store user-selected file
-    // let filePath = undefined;
+  //   // Initializing a file path Variable to store user-selected file
+  //   // let filePath = undefined;
 
-    // if using Windows or Linux
-    if (process.platform !== 'darwin') {
-      // Resolves to a Promise<Object>
-      dialog
-        .showOpenDialog({
-          title: 'Select your docker-compose file',
-          defaultPath: path.join(__dirname, '../assets/'),
-          buttonLabel: 'Upload',
-          // Restricting the user to only YML Files.
-          filters: [
-            {
-              name: 'YML file',
-              extensions: ['yml'],
-            },
-          ],
-          // Specifying the File Selector Property
-          properties: ['openFile'],
-        })
-        .then((file) => {
-          // if file wasn't canceled
-          if (!file.canceled) {
-            const filePath: string = file.filePaths[0].toString();
-            console.log(filePath);
+  //   // if using Windows or Linux
+  //   if (process.platform !== 'darwin') {
+  //     // Resolves to a Promise<Object>
+  //     dialog
+  //       .showOpenDialog({
+  //         title: 'Select your docker-compose file',
+  //         defaultPath: path.join(__dirname, '../assets/'),
+  //         buttonLabel: 'Upload',
+  //         // Restricting the user to only YML Files.
+  //         filters: [
+  //           {
+  //             name: 'YML file',
+  //             extensions: ['yml'],
+  //           },
+  //         ],
+  //         // Specifying the File Selector Property
+  //         properties: ['openFile'],
+  //       })
+  //       .then((file: any) => {
+  //         // if file wasn't canceled
+  //         if (!file.canceled) {
+  //           const filePath: string = file.filePaths[0].toString();
+  //           console.log(filePath);
 
-            // sending the file info to back end
-            if (filePath && !file.canceled) {
-              const formData = new FormData();
-              const stream = fs.createReadStream(filePath);
-              stream.on('data', (chunk: Buffer | string) => {
-                if (typeof chunk !== 'string') chunk = chunk.toString();
-                formData.append('file', chunk);
-              });
+  //           // sending the file info to back end
+  //           if (filePath && !file.canceled) {
+  //             const formData = new FormData();
+  //             const stream = fs.createReadStream(filePath);
+  //             stream.on('data', (chunk: Buffer | string) => {
+  //               if (typeof chunk !== 'string') chunk = chunk.toString();
+  //               formData.append('file', chunk);
+  //             });
 
-              // options for fetch request
-              const options = {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-                body: JSON.stringify(formData),
-              };
+  //             // options for fetch request
+  //             const options = {
+  //               method: 'POST',
+  //               headers: {
+  //                 'Content-Type': 'multipart/form-data',
+  //               },
+  //               body: JSON.stringify(formData),
+  //             };
 
-              fetch('/api/dockerfile', options).catch((e) =>
-                console.log('error in sending fetch request for file', e)
-              );
-            }
-          }
-        })
-        .catch((e) => console.log('error in upload => ', e));
-    }
-    // if using MacOS
-    else {
-      dialog
-        .showOpenDialog({
-          title: 'Select your docker-compose file',
-          defaultPath: path.join(__dirname, '../assets/'),
-          buttonLabel: 'Upload',
-          // Restricting the user to only YML Files.
-          filters: [
-            {
-              name: 'YML file',
-              extensions: ['yml'],
-            },
-          ],
-          // Specifying the File Selector and Directory selector Property In macOS
-          properties: ['openFile', 'openDirectory'],
-        })
-        .then((file) => {
-          if (!file.canceled) {
-            const filePath: string = file.filePaths[0].toString();
-            console.log(filePath);
+  //             fetch('/api/dockerfile', options).catch((e) =>
+  //               console.log('error in sending fetch request for file', e)
+  //             );
+  //           }
+  //         }
+  //       })
+  //       .catch((e: any) => console.log('error in upload => ', e));
+  //   }
+  //   // if using MacOS
+  //   else {
+  //     dialog
+  //       .showOpenDialog({
+  //         title: 'Select your docker-compose file',
+  //         defaultPath: path.join(__dirname, '../assets/'),
+  //         buttonLabel: 'Upload',
+  //         // Restricting the user to only YML Files.
+  //         filters: [
+  //           {
+  //             name: 'YML file',
+  //             extensions: ['yml'],
+  //           },
+  //         ],
+  //         // Specifying the File Selector and Directory selector Property In macOS
+  //         properties: ['openFile', 'openDirectory'],
+  //       })
+  //       .then((file: any) => {
+  //         if (!file.canceled) {
+  //           const filePath: string = file.filePaths[0].toString();
+  //           console.log(filePath);
 
-            // sending the file info to back end
-            if (filePath && !file.canceled) {
-              const formData = new FormData();
-              const stream = fs.createReadStream(filePath);
-              stream.on('data', (chunk: Buffer | string) => {
-                if (typeof chunk !== 'string') chunk = chunk.toString();
-                formData.append('file', chunk);
-              });
+  //           // sending the file info to back end
+  //           if (filePath && !file.canceled) {
+  //             const formData = new FormData();
+  //             const stream = fs.createReadStream(filePath);
+  //             stream.on('data', (chunk: Buffer | string) => {
+  //               if (typeof chunk !== 'string') chunk = chunk.toString();
+  //               formData.append('file', chunk);
+  //             });
 
-              // options for fetch request
-              const options = {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-                body: JSON.stringify(formData),
-              };
+  //             // options for fetch request
+  //             const options = {
+  //               method: 'POST',
+  //               headers: {
+  //                 'Content-Type': 'multipart/form-data',
+  //               },
+  //               body: JSON.stringify(formData),
+  //             };
 
-              fetch('/api/dockerfile', options).catch((e) =>
-                console.log('error in sending fetch request for file', e)
-              );
-            }
-          }
-        })
-        .catch((e) => console.log('error in uplaoding file', e));
-    }
-  };
+  //             fetch('/api/dockerfile', options).catch((e) =>
+  //               console.log('error in sending fetch request for file', e)
+  //             );
+  //           }
+  //         }
+  //       })
+  //       .catch((e: any) => console.log('error in uplaoding file', e));
+  //   }
+  // };
 
   return (
     <form className={classes.form}>
