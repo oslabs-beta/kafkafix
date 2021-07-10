@@ -12,6 +12,7 @@ import {
   ListItemText,
   Typography,
   ButtonGroup,
+  Paper,
 } from '@material-ui/core';
 
 // importing icons
@@ -180,9 +181,18 @@ const NavBar = () => {
   };
 
   const notifItems = () => {
+    // fetch request for new notifs
+    fetch('/api/notification')
+      .then((data: any) => JSON.parse(data))
+      .then()
+      .catch((e) => console.log('error in fetching data from notifs', e));
+
+    // init a websocket connection
+
     return (
       <div role='presentation' onClick={() => setNotif({ open: false })}>
         {/* use cards for the errors */}
+        <Paper>{/* map from state */}</Paper>
       </div>
     );
   };

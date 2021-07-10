@@ -66,6 +66,8 @@ export const MessageTable: FC<MessageTableProps> = ({
   const [pageIndex, setPageIndex] = useState(
     Math.floor(messages.length / pageSize)
   );
+  const [togglePause, setTogglePause] = useState(false);
+  if (!togglePause) setPageIndex(Math.floor(messages.length / pageSize));
   const start = (pageIndex + 1) * pageSize;
   const end = Math.min(start + pageSize, messages.length);
   const showMessages = messages.slice(start, end);
@@ -75,11 +77,16 @@ export const MessageTable: FC<MessageTableProps> = ({
     emptyRows.push(<TableRow />);
   }
 
-  const handleChangePage = (e: React.MouseEvent<HTMLButtonElement> | null, pageIndex: number) => {
+  const handleChangePage = (
+    e: React.MouseEvent<HTMLButtonElement> | null,
+    pageIndex: number
+  ) => {
     setPageIndex(pageIndex);
   };
 
-  const handleChangePageSize = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,) => {
+  const handleChangePageSize = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const newPageIndex = Math.floor(start / parseInt(e.target.value));
     setPageSize(parseInt(e.target.value));
     setPageIndex(newPageIndex);
@@ -123,7 +130,16 @@ export const MessageTable: FC<MessageTableProps> = ({
                 }}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangePageSize}
-                ActionsComponent={MTPaginationOptions}
+                ActionsComponent={(props) => (
+                  <MTPaginationOptions
+                    {...props}
+                    togglePause={togglePause}
+                    setTogglePause={setTogglePause}
+                    pageIndex={pageIndex}
+                    pageSize={pageSize}
+                    totalMessages={messages.length}
+                  />
+                )}
               />
             </TableRow>
           </TableFooter>

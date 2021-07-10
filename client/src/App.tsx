@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { appendMessageActionCreator } from './state/actions/actions';
 import { KafkaState } from './state/reducers/kafkaDataReducer';
 import { overallState } from './state/reducers/index';
+import { PartitionScreen } from './containers/PartitionScreen/PartitionScreen';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,17 +22,17 @@ const App: React.FC = () => {
   //   (state) => state.kafka.messages
   // );
   // console.log(messages);
-  const wss = ws();
-  wss.onmessage = (event: any) => {
-    console.log('client received: ', event.data);
-    // console.log('type of data for event.data', typeof event.data);
-    const array = event.data.split('message: ');
-    // console.log(array);
-    // console.log(array[1]);
-    const data = JSON.parse(array[1]);
-    // console.log('data after parse', data);
-    dispatch(appendMessageActionCreator(data));
-  };
+  // const wss = ws();
+  // wss.onmessage = (event: any) => {
+  //   console.log('client received: ', event.data);
+  //   // console.log('type of data for event.data', typeof event.data);
+  //   const array = event.data.split('message: ');
+  //   // console.log(array);
+  //   // console.log(array[1]);
+  //   const data = JSON.parse(array[1]);
+  //   // console.log('data after parse', data);
+  //   dispatch(appendMessageActionCreator(data));
+  // };
   return (
     <>
       <Router>
@@ -39,7 +40,7 @@ const App: React.FC = () => {
           <Route path='/' exact component={HomeScreen} />
           <Route path='/metrics' component={Metrics} />
           <Route path='/failureReports' component={FailureReports} />
-          <Route path='/partition' component={Partitions} />
+          <Route path='/partition' component={PartitionScreen} />
         </Switch>
       </Router>
     </>
