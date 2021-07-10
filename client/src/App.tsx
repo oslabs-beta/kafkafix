@@ -14,13 +14,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { appendMessageActionCreator } from './state/actions/actions';
 import { KafkaState } from './state/reducers/kafkaDataReducer';
 import { overallState } from './state/reducers/index';
+// import { PartitionScreen } from './containers/PartitionScreen/PartitionScreen';
+
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
-  // const messages = useSelector<overallState, KafkaState['messages']>(
-  //   (state) => state.kafka.messages
-  // );
-  // console.log(messages);
+  const messages = useSelector<overallState, KafkaState['messages']>(
+    (state) => state.kafka.messages
+  );
+  console.log(messages);
   const wss = ws();
   wss.onmessage = (event: any) => {
     console.log('client received: ', event.data);

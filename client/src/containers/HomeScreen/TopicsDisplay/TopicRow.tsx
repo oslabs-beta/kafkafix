@@ -49,6 +49,13 @@ const useRowStyles = makeStyles({
   partitionButtons: {
     backgroundColor: 'white',
   },
+  modal: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#75BEDA',
+  },
 });
 
 interface Options {
@@ -70,24 +77,24 @@ export const TopicRow = (props: { row: any }) => {
   };
 
   const handleCreatePartition = () => {
-    // // import state
-    // const input: HTMLInputElement | null =
-    //   document.querySelector('#inputPartition');
-    // console.log(input);
-    // if (input && input.value === '') {
-    //   alert('cannot leave the name field empty for the partition');
-    //   return;
-    // }
-    // // fetch
-    // const options: RequestInit | Options = {
-    //   method: 'POST',
-    //   body: JSON.stringify({ name: input?.value }),
-    // };
-    // //finish the then after getting reposne
-    // fetch('api/', options)
-    //   .then((data: any) => data.json())
-    //   .then()
-    //   .catch((e) => console.log(e));
+    // grabbing input
+    const input: HTMLInputElement | null =
+      document.querySelector('#inputPartition');
+
+    // input validation
+    if (input && input.value === '') {
+      alert('cannot leave the name field empty for the partition');
+      return;
+    }
+    // fetch request
+    const options: RequestInit | Options = {
+      method: 'POST',
+      body: JSON.stringify({ name: input?.value }),
+    };
+    //finish the then after getting reposne
+    fetch('api/partition', options)
+      .then((data: any) => data.json())
+      .catch((e) => console.log(e));
   };
 
   const openModal = () => {
@@ -184,18 +191,19 @@ export const TopicRow = (props: { row: any }) => {
                       <div style={{ margin: 15 }}></div>
                     </>
                   ))}
-                  {/* <Button
+                  <Button
                     onClick={openModal}
                     variant='contained'
                     color='secondary'
                   >
                     Create Partition
-                  </Button> */}
+                  </Button>
                   {/* <Modal
                     open={isOpenModal}
                     onClose={closeModal}
                     aria-labelledby='create-partition'
                     aria-describedby='create-partition'
+                    className= {classes.modal}
                   >
                     <>
                       <Typography variant='h6'>Name your Partition</Typography>
