@@ -4,7 +4,7 @@ import { RouteConfig } from '../../common/route.config';
 import { KafkaController } from './kafka.controller';
 import { TopicController } from '../topic/topic.controller';
 import { Docker } from './docker.controller';
-import { JMXController } from '../../jmx/jmx.controller';
+import { KafkaMetricsController } from '../../jmx/kafka.metrics.controller';
 
 export class KafkaRoutes extends RouteConfig {
 	constructor(app: Application) {
@@ -18,7 +18,7 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app.route('/api/connect').post([
 			// Docker.docker,
-			JMXController.fetchData,
+			KafkaMetricsController.purgatorySize,
 			KafkaController.kafka,
 			KafkaController.admin,
 			KafkaController.describeCluster,
