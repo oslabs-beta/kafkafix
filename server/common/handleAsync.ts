@@ -1,8 +1,8 @@
-export const handleAsync = async <T>(promise: Promise<T>) => {
+export const handleAsync = async <T>(promise: PromiseLike<T>) => {
 	try {
 		const data = await promise;
-
-		return [data, null];
+			return [data, null];
+		
 	} catch (e) {
 		const error = {
 			status: 500,

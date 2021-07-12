@@ -8,22 +8,18 @@ export interface TopicData {
   producerNum: number;
 }
 
-const dummy: TopicData = {
-  name: 'topic1',
-  partitionNum: 12,
-  consumerNum: 2,
-  producerNum: 1,
-};
 export interface KafkaState {
   isConnected: boolean;
   // topics: TopicData[];
   data: any[];
+  messages: any[];
 }
 
 const initialState: KafkaState = {
   isConnected: false,
   // topics: [dummy, dummy, dummy],
   data: [],
+  messages: [],
 };
 
 export const kafkaDataReducer = (
@@ -52,6 +48,11 @@ export const kafkaDataReducer = (
         ...state,
         data: action.payload,
       };
+    case Type.APPEND_MESSAGE:
+      return{
+        ...state,
+        messages: [...state.messages, action.payload]
+      }
     default:
       return state;
   }

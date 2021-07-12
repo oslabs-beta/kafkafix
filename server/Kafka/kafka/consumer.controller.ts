@@ -4,10 +4,10 @@ import * as WebSocket from 'ws';
 import { handleAsync } from '../../common';
 
 // convert to class
-// ADD add each consumer to app.locals
+// ADD add each consumer to app.locals based on groupId
 export const consumer = async (kafka: Kafka, ws: WebSocket) => {
-	const topic = 'kafkafix';
-	const groupId = 'group1';
+	const topic = 'kafkafix3';
+	const groupId = 'group4';
 	const consumer = kafka.consumer({ groupId });
 
 	const [, connectErr] = await handleAsync(consumer.connect());
@@ -27,7 +27,7 @@ export const consumer = async (kafka: Kafka, ws: WebSocket) => {
 		}) => {
 			const messageFormat = `timestamp: ${timestamp} topic: ${topic} partition: ${partition} message: ${value}`;
 			console.log(`Consumer Received: ${messageFormat}`);
-			// ws.send(messageFormat);
+			ws.send(messageFormat);
 		},
 	});
 };

@@ -1,6 +1,6 @@
 export const mockData = [
 	{
-		'full name': 'Jim Mitchell',
+		'full name': 'Jim Mitchell',  
 		address: { street: '0640 Elbert Haven', city: 'All Saints' },
 		'Bitcoin Address': '1D953iKyRbNvvi9GVK5k7TTa2YA85o9Nru',
 		'Product Name': 'Refined Steel Soap',
