@@ -48,6 +48,11 @@ module.exports = {
       },
     ],
   },
+  target: 'node', 
+  externals: {
+    fs: 'commonjs fs',
+    path: 'commonjs path',
+  },
 
   // Telling webpack which extensions
   // we are interested in.
