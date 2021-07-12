@@ -8,9 +8,11 @@ const isDev = require('electron-is-dev');
 // requring in path
 const path = require('path');
 
-// importing electron and fs modules
-const electron = require('electron');
+// importing electron, formdata, axios and fs modules
+const { dialog } = require('electron');
 const fs = require('fs');
+// const FormData = require('form-data');
+const axios = require('axios').default;
 
 // function for creating a window
 function createWindow() {
@@ -67,7 +69,7 @@ function uploadFile() {
   console.log('made it inside handleUpload function in Connect.tsx');
 
   //   // Importing dialog module using remote
-  const dialog = electron.remote.dialog;
+  // const dialog = electron.remote.dialog;
 
   //   // Initializing a file path Variable to store user-selected file
   // let filePath = undefined;
@@ -96,28 +98,27 @@ function uploadFile() {
           const filePath = file.filePaths[0].toString();
           console.log(filePath);
 
-          // // sending the file info to back end
-          // if (filePath && !file.canceled) {
-          //   const formData = new FormData();
-          //   const stream = fs.createReadStream(filePath);
-          //   stream.on('data', (chunk: Buffer | string) => {
-          //     if (typeof chunk !== 'string') chunk = chunk.toString();
-          //     formData.append('file', chunk);
-          //   });
+          // sending the file info to back end
 
-          //   // options for fetch request
-          //   const options = {
-          //     method: 'POST',
-          //     headers: {
-          //       'Content-Type': 'multipart/form-data',
-          //     },
-          //     body: JSON.stringify(formData),
-          //   };
+          if (filePath && !file.canceled) {
+            fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
+              if (!err) {
+                // formData.append('file', data);
+                let formData = '';
+                formData += data;
 
-          //   fetch('/api/dockerfile', options).catch((e) =>
-          //     console.log('error in sending fetch request for file', e)
-          //   );
-          // }
+                axios
+                  .post('http://localhost:3000/api/dockerfile', {
+                    data: formData,
+                  })
+                  .catch((e) =>
+                    console.log('error in sending fetch request for file', e)
+                  );
+              } else {
+                console.log('Error in reading file', err);
+              }
+            });
+          }
         }
       })
       .catch((e) => console.log('error in upload => ', e));
@@ -145,27 +146,26 @@ function uploadFile() {
           console.log(filePath);
 
           // sending the file info to back end
-          // if (filePath && !file.canceled) {
-          //   const formData = new FormData();
-          //   const stream = fs.createReadStream(filePath);
-          //   stream.on('data', (chunk: Buffer | string) => {
-          //     if (typeof chunk !== 'string') chunk = chunk.toString();
-          //     formData.append('file', chunk);
-          //   });
 
-          //   // options for fetch request
-          //   const options = {
-          //     method: 'POST',
-          //     headers: {
-          //       'Content-Type': 'multipart/form-data',
-          //     },
-          //     body: JSON.stringify(formData),
-          //   };
+          if (filePath && !file.canceled) {
+            fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
+              if (!err) {
+                // formData.append('file', data);
+                let formData = '';
+                formData += data;
 
-          //   fetch('/api/dockerfile', options).catch((e) =>
-          //     console.log('error in sending fetch request for file', e)
-          //   );
-          // }
+                axios
+                  .post('http://localhost:3000/api/dockerfile', {
+                    data: formData,
+                  })
+                  .catch((e) =>
+                    console.log('error in sending fetch request for file', e)
+                  );
+              } else {
+                console.log('Error in reading file', err);
+              }
+            });
+          }
         }
       })
       .catch((e) => console.log('error in uplaoding file', e));

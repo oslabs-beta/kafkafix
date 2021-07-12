@@ -46,6 +46,13 @@ app.get('/partition', (req, res) => {
     .status(200)
     .sendFile(path.resolve(__dirname, '../client/src/index.html'));
 });
+
+app.post('/api/dockerfile', (req, res) => {
+  console.log('this is the request body =>', req.body);
+
+  return res.status(200).json('recieved the dockerfile');
+});
+
 // 404
 app.use('*', (req: Request, res: Response) => {
   return res.status(404).send('Invalid Route');
@@ -89,4 +96,4 @@ wss.on('connection', (ws: WebSocket) => {
 // conversion
 // confident with algo
 // don't have to know everthing - just ask if you don't know
-// email the vc firm that invested. 
+// email the vc firm that invested.
