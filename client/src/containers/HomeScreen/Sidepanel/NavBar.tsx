@@ -31,6 +31,7 @@ import { Link } from 'react-router-dom';
 // clsx allows for conditional styling to be used - unsure if we will need clsx
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
+import { any } from 'prop-types';
 
 // styles for Navbar component - using makeStyles hook - invoked within function
 const useStyles = makeStyles({
@@ -122,7 +123,7 @@ const NavBar = () => {
               />
             </ListItem>
           </Link>
-
+          
           {/* list item 2 */}
           <Link
             to='failureReports'
@@ -135,7 +136,7 @@ const NavBar = () => {
                 className={classes.listItemText}
               />
             </ListItem>
-          </Link>
+          </Link> 
           <Divider />
         </List>
 

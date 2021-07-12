@@ -23,6 +23,11 @@ export class AuthRoutes extends RouteConfig {
 			res.status(200).send('login');
 		});
 
+		this.app.post('/api/logout', AuthController.logout, (req, res) => {
+			res.status(200).json('success');  
+			});
+			
+
 		return this.app;
 	}
 }
