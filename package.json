@@ -42,7 +42,6 @@
     "electron-is-dev": "^2.0.0",
     "express": "^4.17.1",
     "firebase": "^8.7.0",
-    "fs": "0.0.1-security",
     "kafkajs": "^1.15.0",
     "material-ui": "^0.20.2",
     "mongoose": "^5.13.0",

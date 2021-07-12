@@ -32,7 +32,7 @@ export const logCreator = (logLevel: any) => {
 		level: toWinstonLogLevel(logLevel),
 		transports: [
 			new transports.Console(),
-			new transports.File({ filename: 'error.log' }),
+			// new transports.File({ filename: 'error.log' }),
 			new transports.MongoDB({
 				level: 'error',
 				db: process.env.MONGO_URI,
