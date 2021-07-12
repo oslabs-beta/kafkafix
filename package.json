@@ -2,7 +2,7 @@
   "name": "kafkafix",
   "version": "1.0.0",
   "description": "kafkafix",
-  "main": "main.ts",
+  "main": "main.js",
   "scripts": {
     "start": "concurrently \"npm run electron\" \"nodemon ./server/index.ts\"",
     "convert": "tsc -p ./",
@@ -37,7 +37,7 @@
     "clsx": "^1.1.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
-    "electron": "^13.1.4",
+    "electron": "^13.1.6",
     "electron-builder": "^22.11.7",
     "electron-is-dev": "^2.0.0",
     "express": "^4.17.1",

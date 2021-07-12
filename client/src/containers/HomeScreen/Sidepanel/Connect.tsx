@@ -9,10 +9,8 @@ import {
 import { populateData } from '../../../helperFunctions/populateData';
 import WebSocket from 'ws';
 
-// importing electron and fileSystem modules
-const electron = window.require('electron');
-// import * as path from 'path';
-// import * as fs from 'fs';
+// importing IPC renderer form Electron
+const { ipcRenderer } = window.require('electron');
 
 // importing componenets from Material UI
 import {
@@ -118,116 +116,9 @@ const Connect: FC = (props) => {
       });
   };
 
-  // const handleUpload = (e: any) => {
-  //   // first we need to get the filePath, then read the file using the filePath then send it to backend
-
-  //   console.log('made it inside handleUpload function in Connect.Tsx');
-
-  //   // Importing dialog module using remote
-  //   const dialog = electron.remote.dialog;
-
-  //   // Initializing a file path Variable to store user-selected file
-  //   // let filePath = undefined;
-
-  //   // if using Windows or Linux
-  //   if (process.platform !== 'darwin') {
-  //     // Resolves to a Promise<Object>
-  //     dialog
-  //       .showOpenDialog({
-  //         title: 'Select your docker-compose file',
-  //         defaultPath: path.join(__dirname, '../assets/'),
-  //         buttonLabel: 'Upload',
-  //         // Restricting the user to only YML Files.
-  //         filters: [
-  //           {
-  //             name: 'YML file',
-  //             extensions: ['yml'],
-  //           },
-  //         ],
-  //         // Specifying the File Selector Property
-  //         properties: ['openFile'],
-  //       })
-  //       .then((file: any) => {
-  //         // if file wasn't canceled
-  //         if (!file.canceled) {
-  //           const filePath: string = file.filePaths[0].toString();
-  //           console.log(filePath);
-
-  //           // sending the file info to back end
-  //           if (filePath && !file.canceled) {
-  //             const formData = new FormData();
-  //             const stream = fs.createReadStream(filePath);
-  //             stream.on('data', (chunk: Buffer | string) => {
-  //               if (typeof chunk !== 'string') chunk = chunk.toString();
-  //               formData.append('file', chunk);
-  //             });
-
-  //             // options for fetch request
-  //             const options = {
-  //               method: 'POST',
-  //               headers: {
-  //                 'Content-Type': 'multipart/form-data',
-  //               },
-  //               body: JSON.stringify(formData),
-  //             };
-
-  //             fetch('/api/dockerfile', options).catch((e) =>
-  //               console.log('error in sending fetch request for file', e)
-  //             );
-  //           }
-  //         }
-  //       })
-  //       .catch((e: any) => console.log('error in upload => ', e));
-  //   }
-  //   // if using MacOS
-  //   else {
-  //     dialog
-  //       .showOpenDialog({
-  //         title: 'Select your docker-compose file',
-  //         defaultPath: path.join(__dirname, '../assets/'),
-  //         buttonLabel: 'Upload',
-  //         // Restricting the user to only YML Files.
-  //         filters: [
-  //           {
-  //             name: 'YML file',
-  //             extensions: ['yml'],
-  //           },
-  //         ],
-  //         // Specifying the File Selector and Directory selector Property In macOS
-  //         properties: ['openFile', 'openDirectory'],
-  //       })
-  //       .then((file: any) => {
-  //         if (!file.canceled) {
-  //           const filePath: string = file.filePaths[0].toString();
-  //           console.log(filePath);
-
-  //           // sending the file info to back end
-  //           if (filePath && !file.canceled) {
-  //             const formData = new FormData();
-  //             const stream = fs.createReadStream(filePath);
-  //             stream.on('data', (chunk: Buffer | string) => {
-  //               if (typeof chunk !== 'string') chunk = chunk.toString();
-  //               formData.append('file', chunk);
-  //             });
-
-  //             // options for fetch request
-  //             const options = {
-  //               method: 'POST',
-  //               headers: {
-  //                 'Content-Type': 'multipart/form-data',
-  //               },
-  //               body: JSON.stringify(formData),
-  //             };
-
-  //             fetch('/api/dockerfile', options).catch((e) =>
-  //               console.log('error in sending fetch request for file', e)
-  //             );
-  //           }
-  //         }
-  //       })
-  //       .catch((e: any) => console.log('error in uplaoding file', e));
-  //   }
-  // };
+  const handleUpload = (e: any) => {
+    ipcRenderer.send('upload-file');
+  };
 
   return (
     <form className={classes.form}>
@@ -254,14 +145,14 @@ const Connect: FC = (props) => {
           {/* {isConnected && <Redirect to='/partition'/>} */}
         </Button>
         <Typography variant='h6' className={classes.title}>
-          OR Upload Your Docker-compose File
+          Upload Your Docker-compose File
         </Typography>
         <Button
           className={classes.button}
           variant='contained'
           color='secondary'
           id='uploadButton'
-          //  onClick={handleUpload}
+          onClick={handleUpload}
         >
           Upload
         </Button>
@@ -271,3 +162,6 @@ const Connect: FC = (props) => {
 };
 
 export default Connect;
+function __non_webpack_require__(arg0: string) {
+  throw new Error('Function not implemented.');
+}
