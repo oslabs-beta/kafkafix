@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { model, Document, Schema } from 'mongoose';
 
 export interface ILog {
 	timestamp: Date;
@@ -16,6 +16,8 @@ export interface ILog {
 	};
 }
 
+export type LogDocument = ILog & Document;
+
 const logSchema = new Schema<ILog>({
 	timestamp: { type: Date, required: true },
 	level: { type: String, required: true },
@@ -32,4 +34,4 @@ const logSchema = new Schema<ILog>({
 	},
 });
 
-export const Log = model<ILog>('Log', logSchema);
+export const Log = model<ILog>('log', logSchema);

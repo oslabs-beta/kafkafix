@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import wsCreator from '../../../websocket';
-import NavBar from '../Sidepanel/NavBar';
-import { KafkaState } from '../../../state/reducers/kafkaDataReducer';
-import { overallState } from '../../../state/reducers/index';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import wsCreator from "../../../websocket";
+import NavBar from "../Sidepanel/NavBar";
+import { KafkaState } from "../../../state/reducers/kafkaDataReducer";
+import { overallState } from "../../../state/reducers/index";
+import { appendMessageActionCreator } from "../../../state/actions/actions";
 // importing componenets from Material UI
 import {
   Button,
@@ -13,35 +14,51 @@ import {
   Typography,
   makeStyles,
   CardContent,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 // styles for connect Component
 const useStyles = makeStyles({
   card: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: 'auto',
-    width: 'auto',
+    display: "flex",
+    flexDirection: "column",
+    height: "auto",
+    width: "auto",
     // justifyContent: 'space-around',
-    alignItems: 'center',
+    alignItems: "center",
     padding: 10,
-    boxShadow: '10px 5px 5px lightgrey;',
+    boxShadow: "10px 5px 5px lightgrey;",
   },
   div: {
     marginBottom: 30,
   },
   text: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
 const Partitions = () => {
   const classes = useStyles();
 
-  console.log('we are in partitions');
-  const messages = useSelector<overallState, KafkaState['messages']>(
+  // console.log('we are in partitions');
+  const dispatch = useDispatch();
+  const messages = useSelector<overallState, KafkaState["messages"]>(
     (state) => state.kafka.messages
   );
+
+  const wss = new WebSocket("ws://localhost:3000");
+  console.log("wss: ", wss);
+  wss.onopen = () => console.log("connected to websocket");
+  wss.onmessage = (event: any) => {
+    console.log("client received: ");
+    // console.log('type of data for event.data', typeof event.data);
+    const array = event.data.split("message: ");
+    // console.log(array);
+    // console.log(array[1]);
+    const data = JSON.parse(array[1]);
+    // console.log('data after parse', data);
+    dispatch(appendMessageActionCreator(data));
+    console.log(messages);
+  };
   console.log(messages);
   // const [messageList, setML] = useState<any[]>([
   //   {
@@ -74,22 +91,22 @@ const Partitions = () => {
       <React.Fragment key={messages.length - 1 - i}>
         <Card className={classes.card}>
           <CardContent>
-            <Typography variant='h6' className={classes.text}>
-              Name: {messages[messages.length - 1 - i]['full name']}
+            <Typography variant="h6" className={classes.text}>
+              Name: {messages[messages.length - 1 - i]["full name"]}
             </Typography>
-            <Typography variant='subtitle1'>
+            <Typography variant="subtitle1">
               Street: {messages[messages.length - 1 - i].address.street}
             </Typography>
-            <Typography variant='subtitle1'>
+            <Typography variant="subtitle1">
               City: {messages[messages.length - 1 - i].address.city}
             </Typography>
-            <Typography variant='body1'>
-              BitCoin Address: {messages[i]['Bitcoin Address']}
+            <Typography variant="body1">
+              BitCoin Address: {messages[i]["Bitcoin Address"]}
             </Typography>
-            <Typography variant='body2' className={classes.text}>
-              Product Name: {messages[messages.length - 1 - i]['Product Name']}
+            <Typography variant="body2" className={classes.text}>
+              Product Name: {messages[messages.length - 1 - i]["Product Name"]}
             </Typography>
-            <Typography variant='body2' className={classes.text}>
+            <Typography variant="body2" className={classes.text}>
               Price: {messages[messages.length - 1 - i].Price}
             </Typography>
           </CardContent>

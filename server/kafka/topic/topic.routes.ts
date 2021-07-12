@@ -27,9 +27,23 @@ export class TopicRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/topic')
+<<<<<<< HEAD:server/kafka/topic/topic.routes.ts
 			.post([TopicController.createTopics], (req: Request, res: Response) => {
 				return res.sendStatus(200);
 			});
+=======
+			.post(
+				[
+					TopicController.createTopics,
+					KafkaController.describeCluster,
+					TopicController.getAllTopicMetadata,
+				],
+				(req: Request, res: Response) => {
+					const { cluster, metadata } = res.locals;
+					return res.status(200).json({ cluster, metadata });
+				}
+			);
+>>>>>>> 94f474ceb001f5e94444843d43c6177911190be2:server/Kafka/topic/topic.routes.ts
 
 		/**
 		 * @PUT     api/topic
@@ -50,9 +64,23 @@ export class TopicRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/topic')
+<<<<<<< HEAD:server/kafka/topic/topic.routes.ts
 			.delete([TopicController.deleteTopic], (req: Request, res: Response) => {
 				return res.sendStatus(200);
 			});
+=======
+			.delete(
+				[
+					TopicController.deleteTopic,
+					KafkaController.describeCluster,
+					TopicController.getAllTopicMetadata,
+				],
+				(req: Request, res: Response) => {
+					const { cluster, metadata } = res.locals;
+					return res.status(200).json({ cluster, metadata });
+				}
+			);
+>>>>>>> 94f474ceb001f5e94444843d43c6177911190be2:server/Kafka/topic/topic.routes.ts
 
 		/**
 		 * @POST    api/partition
@@ -63,7 +91,12 @@ export class TopicRoutes extends RouteConfig {
 			.post(
 				[TopicController.createPartition],
 				(req: Request, res: Response) => {
+<<<<<<< HEAD:server/kafka/topic/topic.routes.ts
 					return res.sendStatus(200);
+=======
+					const { cluster, metadata } = res.locals;
+					return res.status(200).json({ cluster, metadata });
+>>>>>>> 94f474ceb001f5e94444843d43c6177911190be2:server/Kafka/topic/topic.routes.ts
 				}
 			);
 

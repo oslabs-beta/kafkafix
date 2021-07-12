@@ -1,16 +1,23 @@
-import React, { FC, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { KafkaState } from '../../../state/reducers/kafkaDataReducer';
-import { overallState } from '../../../state/reducers';
+import React, { FC, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { KafkaState } from "../../../state/reducers/kafkaDataReducer";
+import { overallState } from "../../../state/reducers";
 import {
   connectedActionCreator,
   populateDataActionCreator,
-} from '../../../state/actions/actions';
-import { populateData } from '../../../helperFunctions/populateData';
-import WebSocket from 'ws';
+} from "../../../state/actions/actions";
+import { populateData } from "../../../helperFunctions/populateData";
+import WebSocket from "ws";
 
+<<<<<<< HEAD
 // importing IPC renderer form Electron
 const { ipcRenderer } = window.require('electron');
+=======
+// importing electron and fileSystem modules
+// const electron = window.require('electron');
+// import * as path from 'path';
+// import * as fs from 'fs';
+>>>>>>> 6132b089941a2cdf99891a77af559ad5bf2ceecd
 
 // importing componenets from Material UI
 import {
@@ -21,7 +28,7 @@ import {
   Typography,
   Input,
   makeStyles,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 interface Options {
   headers: {};
@@ -33,74 +40,74 @@ interface Options {
 // styles for connect Component
 const useStyles = makeStyles({
   form: {
-    alignSelf: 'start',
+    alignSelf: "start",
     margin: 30,
   },
   card: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: 'auto',
-    width: 'auto',
+    display: "flex",
+    flexDirection: "column",
+    height: "auto",
+    width: "auto",
     // justifyContent: 'space-around',
-    alignItems: 'center',
+    alignItems: "center",
     padding: 10,
-    boxShadow: '10px 5px 5px lightgrey;',
+    boxShadow: "10px 5px 5px lightgrey;",
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   input: {},
   button: {
     marginTop: 10,
-    backgroundColor: 'red',
+    backgroundColor: "red",
   },
 });
 
 const Connect: FC = (props) => {
   // display form function -> onSubmit -> send fetch request to backend with Broker URI
-  const isConnected = useSelector<overallState, KafkaState['isConnected']>(
+  const isConnected = useSelector<overallState, KafkaState["isConnected"]>(
     (state) => state.kafka.isConnected
   );
 
   const dispatch = useDispatch();
 
-  console.log('from connect component =>', isConnected);
+  // console.log("from connect component =>", isConnected);
 
   // creating a classes variable to customize styles
   const classes = useStyles();
 
   const handleSubmit = (e: any) => {
-    console.log('make it inside handlesubmit');
+    // console.log("make it inside handlesubmit");
     e.preventDefault();
     let method;
     let inputField: HTMLInputElement | null =
-      document.querySelector('#brokerID');
+      document.querySelector("#brokerID");
     let body;
     if (inputField) {
-      console.log(inputField.value);
+      // console.log(inputField.value);
       // move down to fetch
       body = JSON.stringify({ PORT: inputField.value });
     } else {
-      alert('Cannot connect because Broker ID field is empty');
+      alert("Cannot connect because Broker ID field is empty");
       return;
     }
 
     if (!isConnected) {
-      method = 'POST';
-      console.log('106 =>', inputField);
+      method = "POST";
+      console.log("106 =>", inputField);
     } else {
-      method = 'PUT';
+      method = "PUT";
     }
 
     const options: Options = {
       method,
-      headers: { 'content-type': 'application/json' },
+      headers: { "content-type": "application/json" },
       body,
     };
     // move down into fetch
     console.log(options);
     //edit the fetch api
-    fetch('/api/connect', options)
+    fetch("/api/connect", options)
       .then((data) => data.json())
       .then((data) => {
         console.log(data);
@@ -123,27 +130,28 @@ const Connect: FC = (props) => {
   return (
     <form className={classes.form}>
       <Card className={classes.card}>
-        <Typography variant='h6' className={classes.title}>
+        <Typography variant="h6" className={classes.title}>
           Enter Your Broker Port Number
         </Typography>
         <Divider></Divider>
         <Input
-          id='brokerID'
-          name='brokerID'
-          type='number'
-          placeholder='9092'
+          id="brokerID"
+          name="brokerID"
+          type="number"
+          placeholder="9092"
           // required={true}
           autoFocus={true}
         ></Input>
         <Button
           className={classes.button}
-          variant='contained'
-          color='primary'
+          variant="contained"
+          color="primary"
           onClick={handleSubmit}
         >
-          {isConnected ? 'Disconnect' : 'Connect'}
+          {isConnected ? "Disconnect" : "Connect"}
           {/* {isConnected && <Redirect to='/partition'/>} */}
         </Button>
+<<<<<<< HEAD
         <Typography variant='h6' className={classes.title}>
           Upload Your Docker-compose File
         </Typography>
@@ -153,6 +161,17 @@ const Connect: FC = (props) => {
           color='secondary'
           id='uploadButton'
           onClick={handleUpload}
+=======
+        <Typography variant="h6" className={classes.title}>
+          OR Upload Your Docker-compose File
+        </Typography>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="secondary"
+          id="uploadButton"
+          //  onClick={handleUpload}
+>>>>>>> 6132b089941a2cdf99891a77af559ad5bf2ceecd
         >
           Upload
         </Button>

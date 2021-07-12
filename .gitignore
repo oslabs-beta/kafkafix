@@ -5,3 +5,4 @@
 /tsc
 error.log
 firebase.ts
+package-lock.json
