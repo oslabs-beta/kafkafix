@@ -47,5 +47,15 @@ export class AuthController {
 		  }
 	};
 
-	// static delete: RequestHandler = async (erq, res, next) => {};
+	static logout: RequestHandler = async (req, res, next) => {
+		try {
+			res.clearCookie("ssid");
+			return next();
+		  } catch (e) {
+    		next({
+      			log: "ERROR from AuthController.logout",
+      			message: { err: `Did not delete cookie properly ERROR: ${e}` },
+   			 });
+  			}
+	};
 }

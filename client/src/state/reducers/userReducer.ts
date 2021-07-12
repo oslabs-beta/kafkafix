@@ -9,13 +9,13 @@ const initialState = {
     LOGINLoading: false,
     error: false,
 };
+
 //    
 export const userReducer = (state = initialState, action: Action) => {
     switch(action.type){
     case types.CREATE_NEWUSER: return {
       ...state,
-      email: action.payload.email, // have we saved userInput email in some var?
-      // password: state.password.anchor, // have we saved userInput password in some var?
+      email: action.payload.email, 
       fullname: action.payload.fullName
     };
     case types.USER_LOGIN_REQUEST:
