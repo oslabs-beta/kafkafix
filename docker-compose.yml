@@ -17,7 +17,7 @@ services:
 
   kafka:
     build: .
-    hostname: kafka
+    # hostname: kafka
     ports:
       - '9092:9092'
       - '9999:9999'
@@ -34,7 +34,8 @@ services:
 
       # comma-separated list of listeners with their the host/ip and port.
       # This is the metadata that’s passed back to clients.
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:29092,OUTSIDE://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:29092,OUTSIDE://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      # KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:29092,OUTSIDE://localhost:9092
 
       # defines key/value pairs for the security protocol to use, per listener name.
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
@@ -42,6 +43,7 @@ services:
       # specifies the zookeeper connection string in the from hostname:port
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
+      KAFKA_LOG4J_LOGGERS: kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO
       KAFKA_OPTS: -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/usr/app/prom-jmx-agent-config.yml
 
       # configure JMX // CHECK
@@ -55,7 +57,7 @@ services:
       -Dcom.sun.management.jmxremote.ssl=false"
 
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - ./zk-kafka/kafka/data:/var/lib/kafka/data
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zookeeper

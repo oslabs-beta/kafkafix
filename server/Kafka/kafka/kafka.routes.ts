@@ -18,7 +18,7 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app.route('/api/connect').post([
 			// Docker.docker,
-			// JMXController.fetchData,
+			JMXController.fetchData,
 			KafkaController.kafka,
 			KafkaController.admin,
 			KafkaController.describeCluster,

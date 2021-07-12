@@ -16,8 +16,8 @@ services:
       - ./zk-kafka/zookeeper/datalog:/datalog
 
   kafka:
-    # image: confluentinc/cp-kafka:5.2.1
-    build: .
+    image: confluentinc/cp-kafka:5.2.1
+    # build: .
     hostname: kafka
     ports:
       - '9092:9092'
@@ -41,16 +41,16 @@ services:
       -Dcom.sun.management.jmxremote.ssl=false"
       KAFKA_OPTS: -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/usr/app/prom-jmx-agent-config.yml
     volumes:
-      # - ./zk-kafka/kafka/data:/var/lib/kafka/data
+      - ./zk-kafka/kafka/data:/var/lib/kafka/data
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zookeeper
 
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - '9090:9090'
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    links:
-      - kafka
+  # prometheus:
+  #   image: prom/prometheus
+  #   ports:
+  #     - '9090:9090'
+  #   volumes:
+  #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  #   links:
+  #     - kafka
