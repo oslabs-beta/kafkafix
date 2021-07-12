@@ -23,6 +23,7 @@ services:
     ports:
       - '9092:9092'
       - '9999:9999'
+      # - '7071:7071'
     environment:
       KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
@@ -31,15 +32,27 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_LOG4J_LOGGERS: 'kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO'
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      # KAFKA_JMX_PORT: 9999
-      # KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
-      # KAFKA_JMX_OPTS: "-Djava.rmi.server.hostname=kafka-1 
-      # -Dcom.sun.management.jmxremote.local.only=false 
-      # -Dcom.sun.management.jmxremote.rmi.port=9999 
-      # -Dcom.sun.management.jmxremote.port=9999 
-      # -Dcom.sun.management.jmxremote.authenticate=false 
-      # -Dcom.sun.management.jmxremote.ssl=false"
+      KAFKA_JMX_PORT: 9999
+      KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
+      KAFKA_JMX_OPTS: "-Djava.rmi.server.hostname=kafka
+      -Dcom.sun.management.jmxremote.local.only=false
+      -Dcom.sun.management.jmxremote.rmi.port=9999
+      -Dcom.sun.management.jmxremote.port=9999
+      -Dcom.sun.management.jmxremote.authenticate=false
+      -Dcom.sun.management.jmxremote.ssl=false"
+      # KAFKA_OPTS: -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/usr/app/prom-jmx-agent-config.yml
+
     volumes:
       - ./zk-kafka/kafka/data:/var/lib/kafka/data
     depends_on:
       - zookeeper
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - '9090:9090'
+      # - 9090:9090/tcp
+    # volumes:
+      #   - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      # - ./mount/prometheus:/etc/prometheus
+    links:
+      - kafka

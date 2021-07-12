@@ -1,3 +1,74 @@
 {"level":"error","namespace":"Connection","message":"Response Metadata(key: 3, version: 6)","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","clientId":"kafkafix","broker":"localhost:9092"}
-{"level":"error","namespace":"Connection","message":"Response Heartbeat(key: 12, version: 2)","error":"The group is rebalancing, so a rejoin is needed","clientId":"kafkafix","broker":"127.0.0.1:9092"}
-{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'broker' of undefined"}
+{"level":"error","namespace":"Connection","message":"Response GroupCoordinator(key: 10, version: 2)","error":"The group coordinator is not available","clientId":"kafkafix","broker":"127.0.0.1:9092"}
+{"level":"error","namespace":"Connection","message":"Response GroupCoordinator(key: 10, version: 2)","error":"The group coordinator is not available","clientId":"kafkafix","broker":"127.0.0.1:9092"}
+{"level":"error","namespace":"Connection","message":"Response GroupCoordinator(key: 10, version: 2)","error":"The group coordinator is not available","clientId":"kafkafix","broker":"127.0.0.1:9092"}
+{"level":"error","namespace":"Connection","message":"Response GroupCoordinator(key: 10, version: 2)","error":"The group coordinator is not available","clientId":"kafkafix","broker":"127.0.0.1:9092"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 311ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 352ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 312ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 310ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 252ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 327ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 274ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 328ms","groupId":"group1"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:3247)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:3247)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:5281)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:5281)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:5285)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:5285)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:5287)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:5287)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:5298)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:5298)"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 246ms","groupId":"group1"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:14036)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:14036)"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 294ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 274ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 304ms","groupId":"group1"}
+{"level":"error","namespace":"Runner","message":"Error when calling eachMessage","error":{}}
+{"level":"error","namespace":"Consumer","message":"Crash: KafkaJSNumberOfRetriesExceeded: Cannot read property 'send' of undefined","groupId":"group1"}
+{"level":"error","namespace":"Consumer","message":"Restarting the consumer in 304ms","groupId":"group1"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:9897)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:9897)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:9902)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:9902)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:9905)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:9905)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:9906)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:9906)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:14710)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:14710)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:6408)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:6408)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:6411)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:6411)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:6412)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:6412)"}
+{"level":"error","namespace":"Connection","message":"Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:12957)","clientId":"kafkafix","broker":"localhost:0"}
+{"level":"error","namespace":"BrokerPool","message":"Failed to connect to seed broker, trying another broker from the list: Connection error: connect EADDRNOTAVAIL 127.0.0.1 - Local (0.0.0.0:12957)"}

@@ -4,7 +4,7 @@ import { handleAsync, mockData } from '../../common';
 
 // ADD variable topic // multiple topics
 export const producer = async (kafka: Kafka) => {
-	const topic = 'kafkafix3';
+	const topic = 'kafkafix';
 	const producer = kafka.producer();
 	const [, error] = await handleAsync(producer.connect());
 
