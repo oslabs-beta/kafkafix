@@ -43,6 +43,7 @@ services:
       # specifies the zookeeper connection string in the from hostname:port
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_LOG4J_LOGGERS: kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO
       KAFKA_OPTS: -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/usr/app/prom-jmx-agent-config.yml
 
