@@ -2,7 +2,7 @@ import React, { FC, MouseEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import { overallState } from "../../../state/reducers";
 // // importing IPCReder
-// const { ipcRenderer } = window.require('electron');
+const { ipcRenderer } = window.require("electron");
 
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 
@@ -73,7 +73,7 @@ export const TopicRow = (props: { row: any }) => {
 
   // function to handle partition click -- opens a new window -- we need to know which partiton to show live data for
   const handleClickPartition = () => {
-    // ipcRenderer.send('open-partition');
+    ipcRenderer.send("open-partition");
   };
 
   const handleCreatePartition = () => {

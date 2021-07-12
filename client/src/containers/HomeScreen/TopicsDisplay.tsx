@@ -11,7 +11,7 @@ Topics Row is now part of topics display becasue of the collapsable table
 */
 
 // importing IPCReder
-// const { ipcRenderer } = window.require('electron');
+// const { ipcRenderer } = window.require("electron");
 
 // importing prop types
 import PropTypes from "prop-types";
