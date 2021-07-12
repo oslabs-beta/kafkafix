@@ -16,7 +16,7 @@ export class LogRoutes extends RouteConfig {
 		this.app
 			.route('/api/errors')
 			.get([LogController.getErrors], (req: Request, res: Response) => {
-				return res.status(200).json(res.locals.errors);
+        return res.status(200).json({ errors: res.locals.errors });
 			});
 
 		/**

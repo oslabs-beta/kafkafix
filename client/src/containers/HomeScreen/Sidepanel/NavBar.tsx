@@ -12,11 +12,13 @@ import {
   ListItemText,
   Typography,
   ButtonGroup,
+  Paper,
 } from '@material-ui/core';
 
 // importing icons
 import {
   Notifications,
+  AccountCircle,
   Menu,
   Assessment,
   BugReport,
@@ -32,6 +34,8 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { any } from 'prop-types';
+
+// import login function
 
 // styles for Navbar component - using makeStyles hook - invoked within function
 const useStyles = makeStyles({
@@ -87,6 +91,9 @@ const useStyles = makeStyles({
 const NavBar = () => {
   // state to determine if menu is open or close
   const [state, setState] = useState({ open: false });
+
+  // state to determine if notifications is open or closed
+  const [notifState, setNotif] = useState({ open: false });
 
   // creating a classes variable to customize styles
   const classes = useStyles();
@@ -174,6 +181,23 @@ const NavBar = () => {
     );
   };
 
+  const notifItems = () => {
+    // fetch request for new notifs
+    fetch('/api/notification')
+      .then((data: any) => JSON.parse(data))
+      .then()
+      .catch((e) => console.log('error in fetching data from notifs', e));
+
+    // init a websocket connection
+
+    return (
+      <div role='presentation' onClick={() => setNotif({ open: false })}>
+        {/* use cards for the errors */}
+        <Paper>{/* map from state */}</Paper>
+      </div>
+    );
+  };
+
   return (
     <div className={classes.navbar}>
       <React.Fragment>
@@ -200,10 +224,13 @@ const NavBar = () => {
             </Link>
           </Toolbar>
 
-          {/* Notifications on Nav bar - opens a notifications drawer*/}
+          {/* Notifications and login on Nav bar - open drawers on click*/}
           <Toolbar>
-            <Button>
+            <Button onClick={() => setNotif({ open: true })}>
               <Notifications fontSize='large' style={{ color: 'white' }} />
+            </Button>
+            <Button>
+              <AccountCircle fontSize='large' style={{ color: 'white' }} />
             </Button>
           </Toolbar>
 
@@ -216,7 +243,14 @@ const NavBar = () => {
             {state.open ? menuItems() : null}
           </Drawer>
 
-          {/* Need to implement a drawer for notifications */}
+          {/* Drawer for notifications */}
+          <Drawer
+            anchor='right'
+            open={notifState.open}
+            onClose={() => setNotif({ open: false })}
+          >
+            {notifState.open ? notifItems() : null}
+          </Drawer>
         </AppBar>
       </React.Fragment>
     </div>

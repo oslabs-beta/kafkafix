@@ -1,10 +1,13 @@
 import { RequestHandler } from 'express';
 import { Admin, Kafka, logLevel } from 'kafkajs';
 import * as WebSocket from 'ws';
+import dotenv from 'dotenv';
 
 import { consumer } from './consumer.controller';
 import { producer } from './producer.controller';
 import { handleAsync, logCreator } from '../../common';
+
+dotenv.config();
 
 // ADD - commander -  User must run zookeeper and server on their own
 // ADD a command to start docker compose file
@@ -12,48 +15,55 @@ import { handleAsync, logCreator } from '../../common';
 // ADD handle multiple mutliple brokers - broker discovery is done by kafka
 
 export class KafkaController {
-  /**
-   * @desc  starts an instance of kafka
-   */
-  static kafka: RequestHandler = async (req, res, next) => {
-    const PORT: number = req.body.PORT;
-    const kafka = new Kafka({
-      clientId: 'kafkafix',
-      brokers: [`localhost:${PORT}`],
-      // logLevel: logLevel.ERROR,
-      // logCreator,
-    });
+	/**
+	 * @desc  starts an instance of kafka
+	 */
+	static kafka: RequestHandler = async (req, res, next) => {
+		const PORT: number = req.body.PORT;
+		const { KAFKA_USERNAME: username, KAFKA_PW: password } = process.env;
+		const sasl =
+			username && password ? { username, password, mechanism: 'plain' } : null;
+		const ssl = !!sasl;
 
-    req.app.locals.kafka = kafka;
-    return next();
-  };
+		const kafka = new Kafka({
+			clientId: 'kafkafix',
+			brokers: [`localhost:${PORT}`],
+			logLevel: logLevel.ERROR,
+			logCreator,
+			// ssl,
+			// sasl, // CHECK types
+		});
 
-  static admin: RequestHandler = async (req, res, next) => {
-    const ws: WebSocket = req.app.locals.ws;
-    const kafka: Kafka = req.app.locals.kafka;
-    const admin = kafka.admin();
-    const [, error] = await handleAsync(admin.connect());
+		req.app.locals.kafka = kafka;
+		return next();
+	};
 
-    if (error) return next(error);
-    req.app.locals.admin = admin;
+	static admin: RequestHandler = async (req, res, next) => {
+		const ws: WebSocket = req.app.locals.ws;
+		const kafka: Kafka = req.app.locals.kafka;
+		const admin = kafka.admin();
+		const [, error] = await handleAsync(admin.connect());
 
-    producer(kafka);
-    consumer(kafka, ws);
+		if (error) return next(error);
+		req.app.locals.admin = admin;
 
-    return next();
-  };
+		producer(kafka);
+		consumer(kafka, ws);
 
-  /**
-   * @desc      get information about the broker cluster
-   * @returns   {{}}
-   */
-  static describeCluster: RequestHandler = async (req, res, next) => {
-    const admin: Admin = req.app.locals.admin;
-    const [cluster, error] = await handleAsync(admin.describeCluster());
+		return next();
+	};
 
-    if (error) return next(error);
-    res.locals.cluster = cluster;
+	/**
+	 * @desc      get information about the broker cluster
+	 * @returns   {{}}
+	 */
+	static describeCluster: RequestHandler = async (req, res, next) => {
+		const admin: Admin = req.app.locals.admin;
+		const [cluster, error] = await handleAsync(admin.describeCluster());
 
-    return next();
-  };
+		if (error) return next(error);
+		res.locals.cluster = cluster;
+
+		return next();
+	};
 }

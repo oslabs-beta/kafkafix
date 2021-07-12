@@ -6,8 +6,13 @@ import {
   connectedActionCreator,
   populateDataActionCreator,
 } from '../../../state/actions/actions';
+import { populateData } from '../../../helperFunctions/populateData';
 import WebSocket from 'ws';
 
+// importing electron and fileSystem modules
+const electron = window.require('electron');
+// import * as path from 'path';
+// import * as fs from 'fs';
 
 // importing componenets from Material UI
 import {
@@ -52,24 +57,6 @@ const useStyles = makeStyles({
     backgroundColor: 'red',
   },
 });
-
-const createData = (
-  topicName: string,
-  partitions: number,
-  partitionData: any
-) => {
-  return {
-    topicName: topicName,
-    partitions: partitions,
-    partitionData: partitionData.map((el: any) => ({
-      id: el.partitionId,
-      partitionErrorCode: el.partitionErrorCode,
-      leader: !!el.leader,
-      replicas: el.replicas[0],
-      isr: el.isr[0],
-    })),
-  };
-};
 
 const Connect: FC = (props) => {
   // display form function -> onSubmit -> send fetch request to backend with Broker URI
@@ -116,42 +103,131 @@ const Connect: FC = (props) => {
     console.log(options);
     //edit the fetch api
     fetch('/api/connect', options)
-    .then((data) => data.json())
+      .then((data) => data.json())
       .then((data) => {
         console.log(data);
         // const { metadata: { topics: array } } = data;
-        const array = data.metadata.topics;
-        const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
-        // dummy data after converting data we get back into format we want
-        // inputField.setAttribute("disabled", "true");
-        // const rows = [
-        //   createData('topic 1', 3, [
-        //     {
-        //       id: 1,
-        //       parttionErrode: 'test',
-        //       leader: true,
-        //       replicas: [3],
-        //       isr: [1],
-        //     },
-        //   ]),
-        //   createData('topic 2', 3, [
-        //     {
-        //       id: 1,
-        //       parttionErrode: 'test',
-        //       leader: true,
-        //       replicas: [3],
-        //       isr: [1],
-        //     },
-        //   ]),
-        // ];
+        // const array = data.metadata.topics;
+        // const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
+        // dispatch(populateDataActionCreator(rows));
         dispatch(connectedActionCreator());
-        dispatch(populateDataActionCreator(rows));
-        // ws = new WebSocket("ws://localhost:3000");
+        populateData(data, dispatch);
       })
       .catch((e) => {
         console.log(e);
       });
   };
+
+  // const handleUpload = (e: any) => {
+  //   // first we need to get the filePath, then read the file using the filePath then send it to backend
+
+  //   console.log('made it inside handleUpload function in Connect.Tsx');
+
+  //   // Importing dialog module using remote
+  //   const dialog = electron.remote.dialog;
+
+  //   // Initializing a file path Variable to store user-selected file
+  //   // let filePath = undefined;
+
+  //   // if using Windows or Linux
+  //   if (process.platform !== 'darwin') {
+  //     // Resolves to a Promise<Object>
+  //     dialog
+  //       .showOpenDialog({
+  //         title: 'Select your docker-compose file',
+  //         defaultPath: path.join(__dirname, '../assets/'),
+  //         buttonLabel: 'Upload',
+  //         // Restricting the user to only YML Files.
+  //         filters: [
+  //           {
+  //             name: 'YML file',
+  //             extensions: ['yml'],
+  //           },
+  //         ],
+  //         // Specifying the File Selector Property
+  //         properties: ['openFile'],
+  //       })
+  //       .then((file: any) => {
+  //         // if file wasn't canceled
+  //         if (!file.canceled) {
+  //           const filePath: string = file.filePaths[0].toString();
+  //           console.log(filePath);
+
+  //           // sending the file info to back end
+  //           if (filePath && !file.canceled) {
+  //             const formData = new FormData();
+  //             const stream = fs.createReadStream(filePath);
+  //             stream.on('data', (chunk: Buffer | string) => {
+  //               if (typeof chunk !== 'string') chunk = chunk.toString();
+  //               formData.append('file', chunk);
+  //             });
+
+  //             // options for fetch request
+  //             const options = {
+  //               method: 'POST',
+  //               headers: {
+  //                 'Content-Type': 'multipart/form-data',
+  //               },
+  //               body: JSON.stringify(formData),
+  //             };
+
+  //             fetch('/api/dockerfile', options).catch((e) =>
+  //               console.log('error in sending fetch request for file', e)
+  //             );
+  //           }
+  //         }
+  //       })
+  //       .catch((e: any) => console.log('error in upload => ', e));
+  //   }
+  //   // if using MacOS
+  //   else {
+  //     dialog
+  //       .showOpenDialog({
+  //         title: 'Select your docker-compose file',
+  //         defaultPath: path.join(__dirname, '../assets/'),
+  //         buttonLabel: 'Upload',
+  //         // Restricting the user to only YML Files.
+  //         filters: [
+  //           {
+  //             name: 'YML file',
+  //             extensions: ['yml'],
+  //           },
+  //         ],
+  //         // Specifying the File Selector and Directory selector Property In macOS
+  //         properties: ['openFile', 'openDirectory'],
+  //       })
+  //       .then((file: any) => {
+  //         if (!file.canceled) {
+  //           const filePath: string = file.filePaths[0].toString();
+  //           console.log(filePath);
+
+  //           // sending the file info to back end
+  //           if (filePath && !file.canceled) {
+  //             const formData = new FormData();
+  //             const stream = fs.createReadStream(filePath);
+  //             stream.on('data', (chunk: Buffer | string) => {
+  //               if (typeof chunk !== 'string') chunk = chunk.toString();
+  //               formData.append('file', chunk);
+  //             });
+
+  //             // options for fetch request
+  //             const options = {
+  //               method: 'POST',
+  //               headers: {
+  //                 'Content-Type': 'multipart/form-data',
+  //               },
+  //               body: JSON.stringify(formData),
+  //             };
+
+  //             fetch('/api/dockerfile', options).catch((e) =>
+  //               console.log('error in sending fetch request for file', e)
+  //             );
+  //           }
+  //         }
+  //       })
+  //       .catch((e: any) => console.log('error in uplaoding file', e));
+  //   }
+  // };
 
   return (
     <form className={classes.form}>
@@ -177,20 +253,21 @@ const Connect: FC = (props) => {
           {isConnected ? 'Disconnect' : 'Connect'}
           {/* {isConnected && <Redirect to='/partition'/>} */}
         </Button>
+        <Typography variant='h6' className={classes.title}>
+          OR Upload Your Docker-compose File
+        </Typography>
+        <Button
+          className={classes.button}
+          variant='contained'
+          color='secondary'
+          id='uploadButton'
+          //  onClick={handleUpload}
+        >
+          Upload
+        </Button>
       </Card>
     </form>
   );
 };
 
 export default Connect;
-
-// <div>
-//   <label>Enter Your Broker Port Number</label>
-// </div>
-// <input
-//   id='brokerID'
-//   name='brokerID'
-//   placeholder='Your Broker Port Number'
-//   pattern='[0-9]+'
-// ></input>
-// <button>{isConnected ? 'Disconnect' : 'Connect'}</button>

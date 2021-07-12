@@ -13,6 +13,7 @@ export interface KafkaState {
   // topics: TopicData[];
   data: any[];
   messages: any[];
+  notif: any[];
 }
 
 const initialState: KafkaState = {
@@ -20,6 +21,7 @@ const initialState: KafkaState = {
   // topics: [dummy, dummy, dummy],
   data: [],
   messages: [],
+  notif: [],
 };
 
 export const kafkaDataReducer = (
@@ -49,10 +51,15 @@ export const kafkaDataReducer = (
         data: action.payload,
       };
     case Type.APPEND_MESSAGE:
-      return{
+      return {
         ...state,
-        messages: [...state.messages, action.payload]
-      }
+        messages: [...state.messages, action.payload],
+      };
+    case Type.POPULATE_NOTIF:
+      return {
+        ...state,
+        notif: [...state.notif, action.payload],
+      };
     default:
       return state;
   }
