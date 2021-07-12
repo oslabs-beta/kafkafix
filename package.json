@@ -50,6 +50,7 @@
     "kafkajs": "^1.15.0",
     "material-ui": "^0.20.2",
     "mongoose": "^5.13.0",
+    "prom-client": "^13.1.0",
     "node-fetch": "^2.6.1",
     "path": "^0.12.7",
     "prop-types": "^15.7.2",
