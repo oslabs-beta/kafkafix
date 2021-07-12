@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express';
 import { RouteConfig } from '../common/route.config';
-
+import { AuthController } from './auth.controller';
 export class AuthRoutes extends RouteConfig {
 	constructor(app: Application) {
 		super(app, 'AuthRoutes');
@@ -11,7 +11,7 @@ export class AuthRoutes extends RouteConfig {
      * @POST    api/signup
      * @desc    sign up user 
      */
-		this.app.route('/api/signup').post([], (req: Request, res: Response) => {
+		this.app.route('/api/signup').post([AuthController.signup], (req: Request, res: Response) => {
 			res.status(200).send('signup');
 		});
 
@@ -19,7 +19,7 @@ export class AuthRoutes extends RouteConfig {
      * @POST    api/login
      * @desc    login user
      */
-		this.app.route('/api/login').get([], (req: Request, res: Response) => {
+		this.app.route('/api/login').get([AuthController.login], (req: Request, res: Response) => {
 			res.status(200).send('login');
 		});
 

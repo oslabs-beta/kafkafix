@@ -21,8 +21,8 @@ scrape_configs:
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
     static_configs:
-      - targets: ['kafka:9999']
       # - targets: ['kafka:9092']
+      - targets: ['kafka:7071']
       # - job_name: 'zookeeper'
       #   static_configs:
       #     -targets:

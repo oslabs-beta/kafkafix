@@ -37,8 +37,8 @@ export class KafkaController {
 		if (error) return next(error);
 		req.app.locals.admin = admin;
 
-		producer(kafka);
-		consumer(kafka, ws);
+		// producer(kafka);
+		// consumer(kafka, ws);
 
 		return next();
 	};

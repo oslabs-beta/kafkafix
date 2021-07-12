@@ -62,6 +62,7 @@ const useRowStyles = makeStyles({
 interface Options {
   method: string;
   body: string;
+  headers: any;
 }
 
 const TopicsDisplay = () => {
@@ -92,7 +93,8 @@ const TopicsDisplay = () => {
     if (topicName && topicName.value) {
       const options: Options = {
         method: "POST",
-        body: JSON.stringify({ topicName: topicName.value }),
+        body: JSON.stringify({ topic: topicName.value }),
+        headers: { "Content-Type": "application/json" },
       };
 
       fetch("/api/topic", options)
@@ -110,7 +112,8 @@ const TopicsDisplay = () => {
   const deleteTopicHandler = (topicName: String) => {
     const options: Options = {
       method: "DELETE",
-      body: JSON.stringify({ topicName: topicName }),
+      body: JSON.stringify({ topic: topicName }),
+      headers: { "Content-Type": "application/json" },
     };
 
     fetch("/api/topic", options)
@@ -136,7 +139,8 @@ const TopicsDisplay = () => {
             </TableCell>
           </TableRow>
         </TableHead>
-        {/* <Button variant="contained" color="primary" onClick={openModal}>
+
+        <Button variant="contained" color="primary" onClick={openModal}>
           Create Topic
         </Button>
         <Modal
@@ -156,7 +160,7 @@ const TopicsDisplay = () => {
               Create
             </Button>
           </>
-        </Modal> */}
+        </Modal>
 
         {/* Table Body*/}
         {isConnected && (
