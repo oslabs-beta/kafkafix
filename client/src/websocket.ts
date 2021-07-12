@@ -1,11 +1,11 @@
 // import WebSocket from "ws";
 
 const ws = () => {
-	const newWs = new WebSocket('ws://localhost:3000');
-  console.log('start', newWs);
-	newWs.onopen = () => console.log('connected to websocket');
+  const newWs = new WebSocket("ws://localhost:3000");
+  // console.log('start', newWs);
+  newWs.onopen = () => console.log("connected to websocket");
 
-	return newWs;
+  return newWs;
 };
 
 export default ws;

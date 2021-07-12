@@ -1,13 +1,10 @@
 import { RequestHandler } from 'express';
 import { Admin, Kafka, logLevel } from 'kafkajs';
 import * as WebSocket from 'ws';
-import dotenv from 'dotenv';
 
 import { consumer } from './consumer.controller';
 import { producer } from './producer.controller';
 import { handleAsync, logCreator } from '../../common';
-
-dotenv.config();
 
 // ADD - commander -  User must run zookeeper and server on their own
 // ADD a command to start docker compose file
@@ -20,18 +17,11 @@ export class KafkaController {
 	 */
 	static kafka: RequestHandler = async (req, res, next) => {
 		const PORT: number = req.body.PORT;
-		const { KAFKA_USERNAME: username, KAFKA_PW: password } = process.env;
-		const sasl =
-			username && password ? { username, password, mechanism: 'plain' } : null;
-		const ssl = !!sasl;
-
 		const kafka = new Kafka({
 			clientId: 'kafkafix',
 			brokers: [`localhost:${PORT}`],
-			logLevel: logLevel.ERROR,
-			logCreator,
-			// ssl,
-			// sasl, // CHECK types
+			// logLevel: logLevel.ERROR,
+			// logCreator,
 		});
 
 		req.app.locals.kafka = kafka;

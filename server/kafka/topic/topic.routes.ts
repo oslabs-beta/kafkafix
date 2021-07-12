@@ -1,7 +1,7 @@
 import { Application, Request, Response } from 'express';
 
 import { RouteConfig } from '../../common/route.config';
-import { KafkaController } from '../kafka/kafka.controller';
+// import { TopicController } from './topic.controller';
 import { TopicController } from './topic.controller';
 
 export class TopicRoutes extends RouteConfig {
@@ -27,6 +27,11 @@ export class TopicRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/topic')
+<<<<<<< HEAD:server/kafka/topic/topic.routes.ts
+			.post([TopicController.createTopics], (req: Request, res: Response) => {
+				return res.sendStatus(200);
+			});
+=======
 			.post(
 				[
 					TopicController.createTopics,
@@ -38,6 +43,7 @@ export class TopicRoutes extends RouteConfig {
 					return res.status(200).json({ cluster, metadata });
 				}
 			);
+>>>>>>> 94f474ceb001f5e94444843d43c6177911190be2:server/Kafka/topic/topic.routes.ts
 
 		/**
 		 * @PUT     api/topic
@@ -58,6 +64,11 @@ export class TopicRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/topic')
+<<<<<<< HEAD:server/kafka/topic/topic.routes.ts
+			.delete([TopicController.deleteTopic], (req: Request, res: Response) => {
+				return res.sendStatus(200);
+			});
+=======
 			.delete(
 				[
 					TopicController.deleteTopic,
@@ -69,6 +80,7 @@ export class TopicRoutes extends RouteConfig {
 					return res.status(200).json({ cluster, metadata });
 				}
 			);
+>>>>>>> 94f474ceb001f5e94444843d43c6177911190be2:server/Kafka/topic/topic.routes.ts
 
 		/**
 		 * @POST    api/partition
@@ -77,14 +89,14 @@ export class TopicRoutes extends RouteConfig {
 		this.app
 			.route('/api/partition')
 			.post(
-				[
-					TopicController.createPartition,
-					KafkaController.describeCluster,
-					TopicController.getAllTopicMetadata,
-				],
+				[TopicController.createPartition],
 				(req: Request, res: Response) => {
+<<<<<<< HEAD:server/kafka/topic/topic.routes.ts
+					return res.sendStatus(200);
+=======
 					const { cluster, metadata } = res.locals;
 					return res.status(200).json({ cluster, metadata });
+>>>>>>> 94f474ceb001f5e94444843d43c6177911190be2:server/Kafka/topic/topic.routes.ts
 				}
 			);
 
