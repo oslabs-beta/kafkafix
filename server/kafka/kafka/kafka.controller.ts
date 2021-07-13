@@ -6,7 +6,6 @@ import { consumer } from './consumer.controller';
 import { producer } from './producer.controller';
 import { handleAsync, logCreator } from '../../common';
 
-// ADD a command to start docker compose file
 // ADD handle online clusters
 // ADD handle multiple mutliple brokers - broker discovery is done by kafka
 
