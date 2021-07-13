@@ -5,8 +5,7 @@ import { MBeans } from './MBeans';
 
 const url = process.env.PROMETHEUS;
 
-//* Host-level broker metrics
-export class JVMMetricsController {
+export class ProducerMetricsController {
 	/**
 	 * @JMXAttribute CollectionCount
 	 * @MBean java.lang:type=GarbageCollector,name=G1 (Young|Old) Generation

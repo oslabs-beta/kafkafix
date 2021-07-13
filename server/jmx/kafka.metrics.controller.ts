@@ -15,7 +15,7 @@ export class KafkaMetricsController {
 	 * @name UnderReplicatedPartitions
 	 * @MBean name kafka.server: type = ReplicaManager, name = UnderReplicatedPartitions
 	 * @desc Number of unreplicated partitions
-	 * @metricType Resource: Availability
+	 * @metricType Gauge
 	 */
 	static underReplicatedPartitions: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.underReplicatedPartitions;
@@ -33,7 +33,7 @@ export class KafkaMetricsController {
 	 * @MBean kafka.server:type=ReplicaManager,name=IsrShrinksPerSec
 	 * @MBean kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
 	 * @desc Rate at which the pool of in-sync replicas (ISRs) shrinks/expands
-	 * @metricTypeResource: Availability
+	 * @metricType Counter
 	 */
 	// CHECK only shows total: find shrink/expand
 	static isrShrinksPerSec: RequestHandler = async (req, res, next) => {
@@ -51,7 +51,7 @@ export class KafkaMetricsController {
 	 * @name ActiveControllerCount
 	 * @MBean kafka.controller:type=KafkaController,name=ActiveControllerCount
 	 * @desc Number of active controllers in cluster
-	 * @metricType Resource: Error
+	 * @metricType Gauge
 	 */
 	static activeControllerCount: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.activeControllerCount;
@@ -68,7 +68,7 @@ export class KafkaMetricsController {
 	 * @name OfflinePartitionsCount
 	 * @MBean kafka.controller:type=KafkaController,name=OfflinePartitionsCount
 	 * @desc Number of offline partitions
-	 * @metricType Resource: Availability
+	 * @metricType Gauge
 	 */
 	static offlinePartitionsCount: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.offlinePartitionsCount;
@@ -85,7 +85,7 @@ export class KafkaMetricsController {
 	 * @name LeaderElectionRateAndTimeMs
 	 * @MBean kafka.controller:type=ControllerStats,name=LeaderElectionRateAndTimeMs
 	 * @desc Leader election rate and latency
-	 * @metricType Other
+	 * @metricType Gauge
 	 */
 	static leaderElectionRateAndTimeMs: RequestHandler = async (
 		req,
@@ -106,7 +106,7 @@ export class KafkaMetricsController {
 	 * @name UncleanLeaderElectionsPerSec
 	 * @MBean kafka.controller:type=ControllerStats,name=UncleanLeaderElectionsPerSec
 	 * @desc Number of “unclean” elections per second
-	 * @metricType Resource: Error
+	 * @metricType Gauge
 	 */
 	static uncleanLeaderElectionsPerSec: RequestHandler = async (
 		req,
@@ -127,7 +127,7 @@ export class KafkaMetricsController {
 	 * @name TotalTimeMs
 	 * @MBean kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}
 	 * @desc Total time (in ms) to serve the specified request (Produce/Fetch)
-	 * @metricType Work: Performance
+	 * @metricType Gauge
 	 */
 	// CHECK quantile
 	static totalTimeMs: RequestHandler = async (req, res, next) => {
@@ -159,7 +159,7 @@ export class KafkaMetricsController {
 	 * @name PurgatorySize
 	 * @MBean kafka.server:type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation={Produce|Fetch}
 	 * @desc Number of requests waiting in producer purgatory/Number of requests waiting in fetch purgatory
-	 * @metricType Other
+	 * @metricType Gauge
 	 */
 	static purgatorySize: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.purgatorySize;
@@ -184,7 +184,7 @@ export class KafkaMetricsController {
 	 * @name BytesInPerSec/BytesOutPerSec
 	 * @MBean kafka.server:type=BrokerTopicMetrics,name={BytesInPerSec|BytesOutPerSec}
 	 * @desc Aggregate incoming/outgoing byte rate
-	 * @metricType Work: Throughput
+	 * @metricType Counter
 	 */
 	static bytesPerSec: RequestHandler = async (req, res, next) => {
 		const MBeanIn = MBeans.bytesInTotal;
@@ -208,7 +208,7 @@ export class KafkaMetricsController {
 	 * @name RequestsPerSecond
 	 * @MBean kafka.network:type=RequestMetrics,name=RequestsPerSec,request={Produce|FetchConsumer|FetchFollower},version={0|1|2|3|…}
 	 * @desc Number of (producer|consumer|follower) requests per second
-	 * @metricType Work: Throughput
+	 * @metricType Counter
 	 */
 	// CHECK - need to test result with endpoint
 	static requestsPerSecond: RequestHandler = async (req, res, next) => {
@@ -237,6 +237,23 @@ export class KafkaMetricsController {
 		// console.log(res.locals.fetchConsumer);
 		// console.log(res.locals.fetchFollower);
 		// console.log(res.locals.produce);
+
+		return next();
+	};
+
+	/**
+	 * @name MessagesPerSecond
+	 * @MBean kafka.server,type=BrokerTopicMetrics,name=MessageInPerSec
+	 * @desc Number of message requests per second
+	 * @metricType Counter
+	 */
+	static messagesPerSecond: RequestHandler = async (req, res, next) => {
+		const MBean = MBeans.messagesPerSecond;
+		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
+		const data = await response.json();
+
+		if (error) return next(error);
+		res.locals.requestsPerSecond = data.data.result;
 
 		return next();
 	};
