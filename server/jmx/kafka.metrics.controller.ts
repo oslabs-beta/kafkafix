@@ -1,9 +1,13 @@
 import fetch from 'node-fetch';
 import { RequestHandler } from 'express';
+import dotenv from 'dotenv';
+
 import { handleAsync } from '../common';
 import { MBeans } from './MBeans';
 
-const url = 'http://localhost:9090/api/v1/query?query=';
+dotenv.config();
+
+const url = process.env.PROMETHEUS;
 
 //* Kafka-emitted metrics
 export class KafkaMetricsController {
@@ -25,13 +29,13 @@ export class KafkaMetricsController {
 	};
 
 	/**
-	 * IsrShrinksPerSec/IsrExpandsPerSec
-	 * kafka.server:type=ReplicaManager,name=IsrShrinksPerSec
-	 * kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
-	 * Rate at which the pool of in-sync replicas (ISRs) shrinks/expands
-	 * Resource: Availability
+	 * @name IsrShrinksPerSec/IsrExpandsPerSec
+	 * @MBean kafka.server:type=ReplicaManager,name=IsrShrinksPerSec
+	 * @MBean kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
+	 * @desc Rate at which the pool of in-sync replicas (ISRs) shrinks/expands
+	 * @metricTypeResource: Availability
 	 */
-	// CHECK only shows 1 item
+	// CHECK only shows total: find shrink/expand
 	static isrShrinksPerSec: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.isrShrinksPerSec;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
@@ -83,7 +87,6 @@ export class KafkaMetricsController {
 	 * @desc Leader election rate and latency
 	 * @metricType Other
 	 */
-
 	static leaderElectionRateAndTimeMs: RequestHandler = async (
 		req,
 		res,
@@ -121,19 +124,35 @@ export class KafkaMetricsController {
 	};
 
 	/**
-	 * TotalTimeMs
-	 * kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}
-	 * Total time (in ms) to serve the specified request (Produce/Fetch)
-	 * Work: Performance
+	 * @name TotalTimeMs
+	 * @MBean kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}
+	 * @desc Total time (in ms) to serve the specified request (Produce/Fetch)
+	 * @metricType Work: Performance
 	 */
-	// ADD Takeout Produce | FetchConsumer | FetchFollower from response
+	// CHECK quantile
 	static totalTimeMs: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.totalTimeMs;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
 		const data = await response.json();
 
 		if (error) return next(error);
-		console.log(data.data.result);
+		const fetchConsumer: any[] = [];
+		const fetchFollower: any[] = [];
+		const produce: any[] = [];
+
+		data.data.result.forEach((data: any) => {
+			data.metric.request === 'FetchConsumer' ? fetchConsumer.push(data) : null;
+			data.metric.request === 'FetchFollower' ? fetchFollower.push(data) : null;
+			data.metric.request === 'Produce' ? produce.push(data) : null;
+		});
+
+		res.locals.fetchConsumer = fetchConsumer;
+		res.locals.fetchFollower = fetchFollower;
+		res.locals.produce = produce;
+
+		console.log(fetchConsumer);
+		console.log(fetchFollower);
+		console.log(produce);
 
 		return next();
 	};
@@ -164,37 +183,66 @@ export class KafkaMetricsController {
 		return next();
 	};
 
-	/** // CHECK
-	 * BytesInPerSec/BytesOutPerSec
-	 * kafka.server:type=BrokerTopicMetrics,name={BytesInPerSec|BytesOutPerSec}
-	 * Aggregate incoming/outgoing byte rate
-	 * Work: Throughput
+	/**
+	 * @name BytesInPerSec/BytesOutPerSec
+	 * @MBean kafka.server:type=BrokerTopicMetrics,name={BytesInPerSec|BytesOutPerSec}
+	 * @desc Aggregate incoming/outgoing byte rate
+	 * @metricType Work: Throughput
 	 */
 	static bytesPerSec: RequestHandler = async (req, res, next) => {
-		const MBean1 = MBeans.bytesInTotal;
-		const MBean2 = MBeans.bytesOutTotal;
-		const [response, error] = await handleAsync(fetch(`${url}${MBean1}`));
-		const data = await response.json();
+		const MBeanIn = MBeans.bytesInTotal;
+		const MBeanOut = MBeans.bytesOutTotal;
 
-		if (error) return next(error);
-		res.locals.bytesPerSec = data.data.result;
+		const [bytesIn, inError] = await handleAsync(fetch(`${url}${MBeanIn}`));
+		const [bytesOut, outError] = await handleAsync(fetch(`${url}${MBeanOut}`));
+
+		const bytesInTotal = await bytesIn.json();
+		const bytesOutTotal = await bytesOut.json();
+
+		if (inError) return next(inError);
+		if (outError) return next(outError);
+
+		res.locals.bytesInTotal = bytesInTotal.data.result;
+		res.locals.bytesOutTotal = bytesOutTotal.data.result;
 
 		return next();
 	};
 
 	/**
-	 * RequestsPerSecond
-	 * kafka.network:type=RequestMetrics,name=RequestsPerSec,request={Produce|FetchConsumer|FetchFollower},version={0|1|2|3|…}
-	 * Number of (producer|consumer|follower) requests per second
-	 * Work: Throughput
+	 * @name RequestsPerSecond
+	 * @MBean kafka.network:type=RequestMetrics,name=RequestsPerSec,request={Produce|FetchConsumer|FetchFollower},version={0|1|2|3|…}
+	 * @desc Number of (producer|consumer|follower) requests per second
+	 * @metricType Work: Throughput
 	 */
+	// CHECK - need to test result with endpoint
 	static requestsPerSecond: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.requestsPerSecond;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
 		const data = await response.json();
 
 		if (error) return next(error);
-		res.locals.requestsPerSecond = data.data.result;
+
+		const fetchConsumer: any[] = [];
+		const fetchFollower: any[] = [];
+		const produce: any[] = [];
+
+		data.data.result.forEach((data: any) => {
+			data.metric.delayedOperation === 'FetchConsumer'
+				? fetchConsumer.push(data)
+				: null;
+			data.metric.delayedOperation === 'FetchFollower'
+				? fetchFollower.push(data)
+				: null;
+			data.metric.delayedOperation === 'Produce' ? produce.push(data) : null;
+		});
+
+		res.locals.fetchConsumer = fetchConsumer;
+		res.locals.FetchFollower = fetchFollower;
+		res.locals.produce = produce;
+
+		// console.log(res.locals.fetchConsumer);
+		// console.log(res.locals.fetchFollower);
+		// console.log(res.locals.produce);
 
 		return next();
 	};

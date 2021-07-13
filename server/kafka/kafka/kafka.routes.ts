@@ -18,7 +18,7 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app.route('/api/connect').post([
 			// Docker.docker,
-			KafkaMetricsController.purgatorySize,
+			KafkaMetricsController.isrShrinksPerSec,
 			KafkaController.kafka,
 			KafkaController.admin,
 			KafkaController.describeCluster,
