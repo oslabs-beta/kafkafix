@@ -146,9 +146,7 @@ export class KafkaMetricsController {
 			data.metric.request === 'Produce' ? produce.push(data) : null;
 		});
 
-		res.locals.fetchConsumer = fetchConsumer;
-		res.locals.fetchFollower = fetchFollower;
-		res.locals.produce = produce;
+		res.locals.totalTimeMs = { fetchConsumer, fetchFollower, produce };
 
 		console.log(fetchConsumer);
 		console.log(fetchFollower);
@@ -170,15 +168,14 @@ export class KafkaMetricsController {
 
 		if (error) return next(error);
 		const Fetch: any[] = [];
-		const Produce: any[] = [];
+		const produce: any[] = [];
 
 		data.data.result.forEach((data: any) => {
 			data.metric.delayedOperation === 'Fetch' ? Fetch.push(data) : null;
-			data.metric.delayedOperation === 'Produce' ? Produce.push(data) : null;
+			data.metric.delayedOperation === 'Produce' ? produce.push(data) : null;
 		});
 
-		res.locals.fetch = Fetch;
-		res.locals.produce = Produce;
+		res.locals.purgatorySize = { fetch: Fetch, produce };
 
 		return next();
 	};
@@ -202,8 +199,7 @@ export class KafkaMetricsController {
 		if (inError) return next(inError);
 		if (outError) return next(outError);
 
-		res.locals.bytesInTotal = bytesInTotal.data.result;
-		res.locals.bytesOutTotal = bytesOutTotal.data.result;
+		res.locals.bytesPerTotal = { bytesInTotal, bytesOutTotal };
 
 		return next();
 	};
@@ -236,9 +232,7 @@ export class KafkaMetricsController {
 			data.metric.delayedOperation === 'Produce' ? produce.push(data) : null;
 		});
 
-		res.locals.fetchConsumer = fetchConsumer;
-		res.locals.FetchFollower = fetchFollower;
-		res.locals.produce = produce;
+		res.locals.requestsPerSecond = { fetchConsumer, fetchFollower, produce };
 
 		// console.log(res.locals.fetchConsumer);
 		// console.log(res.locals.fetchFollower);
