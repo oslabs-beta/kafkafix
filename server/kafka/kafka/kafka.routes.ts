@@ -5,6 +5,8 @@ import { KafkaController } from './kafka.controller';
 import { TopicController } from '../topic/topic.controller';
 // import { Docker } from './docker.controller';
 import { KafkaMetricsController } from '../../jmx/kafka.metrics.controller';
+import { JVMMetricsController } from '../../jmx/jvm.metrics.controller';
+JVMMetricsController;
 
 export class KafkaRoutes extends RouteConfig {
 	constructor(app: Application) {
@@ -18,7 +20,8 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app.route('/api/connect').post([
 			// Docker.docker,
-			KafkaMetricsController.isrShrinksPerSec,
+			// KafkaMetricsController.isrShrinksPerSec,
+			JVMMetricsController.garbageCollectionTime,
 			KafkaController.kafka,
 			KafkaController.admin,
 			KafkaController.describeCluster,

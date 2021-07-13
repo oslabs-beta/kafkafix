@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import { RequestHandler } from 'express';
 
 export class Docker {
+	// ADD command to cd into directory
 	static docker: RequestHandler = async (req, res, next) => {
 		exec('docker compose up', (error, stdout, stderr) => {
 			if (error) return console.error('error: ', error);

@@ -3,7 +3,7 @@ import { RequestHandler } from 'express';
 import { handleAsync } from '../common';
 import { MBeans } from './MBeans';
 
-const url = 'http://localhost:9090/api/v1/query?query=';
+const url = process.env.PROMETHEUS;
 
 //* Host-level broker metrics
 export class HostMetricsControllerr {
