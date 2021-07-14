@@ -1,4 +1,3 @@
-# FROM wurstmeister/kafka
 FROM confluentinc/cp-kafka:5.2.1
 
 ADD prom-jmx-agent-config.yml /usr/app/prom-jmx-agent-config.yml

@@ -12,6 +12,7 @@ services:
     ports:
       - '2181:2181'
     volumes:
+      # configure directory
       - ./zk-kafka/zookeeper/data:/data
       - ./zk-kafka/zookeeper/datalog:/datalog
 
@@ -49,7 +50,7 @@ services:
       KAFKA_LOG4J_LOGGERS: kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO
       KAFKA_OPTS: -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/usr/app/prom-jmx-agent-config.yml
 
-      # configure JMX // CHECK
+      # configure JMX 
       JMX_PORT: 9999
       KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
       KAFKA_JMX_OPTS: "-Djava.rmi.server.hostname=127.0.0.1
@@ -62,6 +63,7 @@ services:
       "
 
     volumes:
+      # configure directory
       - ./zk-kafka/kafka/data:/var/lib/kafka/data
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
