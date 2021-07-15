@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 // importing items for menu from Material-UI
 import {
@@ -34,6 +35,8 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { any } from 'prop-types';
+
+import {NotifItems} from './NotifItems';
 
 // import login function
 
@@ -88,7 +91,17 @@ const useStyles = makeStyles({
   },
 });
 
-const NavBar = () => {
+interface Error {
+  level: string;
+  namespace: string;
+  message: string;
+  error: string;
+  clientId: string;
+  broker: string;
+  timestamp: string;
+}
+
+const NavBar: FC = () => {
   // state to determine if menu is open or close
   const [state, setState] = useState({ open: false });
 
@@ -97,6 +110,8 @@ const NavBar = () => {
 
   // creating a classes variable to customize styles
   const classes = useStyles();
+
+  const dispatch = useDispatch();
 
   // function that returns menu items
   const menuItems = () => {
@@ -130,7 +145,7 @@ const NavBar = () => {
               />
             </ListItem>
           </Link>
-          
+
           {/* list item 2 */}
           <Link
             to='failureReports'
@@ -143,7 +158,7 @@ const NavBar = () => {
                 className={classes.listItemText}
               />
             </ListItem>
-          </Link> 
+          </Link>
           <Divider />
         </List>
 
@@ -177,23 +192,6 @@ const NavBar = () => {
             </ButtonGroup>
           </ListItem>
         </List>
-      </div>
-    );
-  };
-
-  const notifItems = () => {
-    // fetch request for new notifs
-    fetch('/api/notification')
-      .then((data: any) => JSON.parse(data))
-      .then()
-      .catch((e) => console.log('error in fetching data from notifs', e));
-
-    // init a websocket connection
-
-    return (
-      <div role='presentation' onClick={() => setNotif({ open: false })}>
-        {/* use cards for the errors */}
-        <Paper>{/* map from state */}</Paper>
       </div>
     );
   };
@@ -249,7 +247,7 @@ const NavBar = () => {
             open={notifState.open}
             onClose={() => setNotif({ open: false })}
           >
-            {notifState.open ? notifItems() : null}
+            {notifState.open ? <NotifItems setNotif={setNotif}/> : null}
           </Drawer>
         </AppBar>
       </React.Fragment>

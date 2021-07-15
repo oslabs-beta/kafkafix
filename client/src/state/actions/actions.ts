@@ -45,3 +45,10 @@ export const populateNotifActionCreator = (input: any) => {
     payload: input,
   };
 };
+
+export const appendNotifActionCreator = (input: any) => {
+  return {
+    type: Type.APPEND_NOTIF,
+    payload: input,
+  };
+};

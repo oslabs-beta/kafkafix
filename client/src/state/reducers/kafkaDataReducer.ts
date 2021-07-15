@@ -58,6 +58,11 @@ export const kafkaDataReducer = (
     case Type.POPULATE_NOTIF:
       return {
         ...state,
+        notif: action.payload,
+      };
+    case Type.APPEND_NOTIF:
+      return {
+        ...state,
         notif: [...state.notif, action.payload],
       };
     default:

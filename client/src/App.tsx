@@ -25,6 +25,16 @@ const App: React.FC = () => {
   );
   console.log(messages);
 
+  const ws = new WebSocket('ws://localhost:3000');
+  ws.onopen = () => {
+    console.log('connected to websocket for app');
+    ws.send('App');
+  };
+  ws.onmessage = (data) => {
+    console.log(data);
+    // dispatch(appendNotifActionCreator(data));
+  };
+
   return (
     <>
       <Router>
