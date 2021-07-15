@@ -5,6 +5,8 @@ import { overallState } from '../../../state/reducers';
 import {
   connectedActionCreator,
   populateDataActionCreator,
+  populateNotifActionCreator,
+  appendNotifActionCreator,
 } from '../../../state/actions/actions';
 import { populateData } from '../../../helperFunctions/populateData';
 import WebSocket from 'ws';
@@ -64,8 +66,6 @@ const Connect: FC = (props) => {
 
   const dispatch = useDispatch();
 
-  // console.log("from connect component =>", isConnected);
-
   // creating a classes variable to customize styles
   const classes = useStyles();
 
@@ -103,7 +103,26 @@ const Connect: FC = (props) => {
     fetch('/api/connect', options)
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
+        fetch('/api/notification')
+          .then((data: any) => data.json())
+          .then((data: Error[]) => {
+            dispatch(populateNotifActionCreator(data));
+
+            // open a websocket connection
+            const ws = new WebSocket('ws://localhost:3000');
+            ws.onopen = () => {
+              console.log('connected to websocket for error');
+              ws.send('Errors');
+            };
+            ws.onmessage = (data) => {
+              console.log(data);
+              // dispatch(appendNotifActionCreator(data));
+            };
+          })
+          .catch((e: any) =>
+            console.log('error in fetching data from notifs', e)
+          );
+        // console.log(data);
         // const { metadata: { topics: array } } = data;
         // const array = data.metadata.topics;
         // const rows = array.map( (el:any) => createData(el.name, el.partitions.length, el.partitions));
