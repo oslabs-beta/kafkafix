@@ -9,6 +9,7 @@ export class LogController {
 	 * @desc    get all previous errors from error.log
 	 * @returns {Array{}}
 	 */
+  // CHECK after packaging, does the file save to right place?
 	static getErrors: RequestHandler = (req, res, next) => {
 		const path = './error.log';
 

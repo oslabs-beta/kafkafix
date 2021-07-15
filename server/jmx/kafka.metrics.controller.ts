@@ -7,7 +7,7 @@ import { MBeans } from './MBeans';
 
 dotenv.config();
 
-const url = process.env.PROMETHEUS;
+const url = 'http://localhost:9090/api/v1/query?query=';
 
 //* Kafka-emitted metrics
 export class KafkaMetricsController {
