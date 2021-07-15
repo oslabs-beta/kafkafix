@@ -1,10 +1,14 @@
 import { RequestHandler } from 'express';
-import { Admin, Kafka, logLevel } from 'kafkajs';
+import { Admin, Kafka, logLevel, SASLMechanism } from 'kafkajs';
 import * as WebSocket from 'ws';
+import dotenv from 'dotenv';
 
 import { consumer } from './consumer.controller';
 import { producer } from './producer.controller';
 import { handleAsync, logCreator } from '../../common';
+import { SaveAltSharp } from '@material-ui/icons';
+
+dotenv.config();
 
 // ADD handle online clusters
 // ADD handle multiple mutliple brokers - broker discovery is done by kafka
@@ -15,11 +19,19 @@ export class KafkaController {
 	 */
 	static kafka: RequestHandler = async (req, res, next) => {
 		const PORT: number = req.body.PORT;
+		const sasl = {
+			mechanism: 'plain',
+			username: process.env.KAFKA_USERNAME,
+			password: process.env.KAFAK_PASSWORD,
+		};
+		const ssl = !!sasl;
 		const kafka = new Kafka({
 			clientId: 'kafkafix',
 			brokers: [`localhost:${PORT}`],
 			logLevel: logLevel.ERROR,
 			logCreator,
+			// ssl,
+			// sasl,
 		});
 
 		req.app.locals.kafka = kafka;

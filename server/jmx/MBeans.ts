@@ -14,4 +14,7 @@ export enum MBeans {
 
 	garbageCollectionCount = 'jvm_gc_collection_seconds_count',
 	garbageCollectionTime = 'jvm_gc_collection_seconds_sum',
+
+	zkRequestLatencyMs = 'kafka_server_zookeeperclientmetrics_zookeeperrequestlatencyms',
+	zkRequestLatencyMsCount = 'kafka_server_zookeeperclientmetrics_zookeeperrequestlatencyms_count',
 }

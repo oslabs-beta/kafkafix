@@ -20,7 +20,6 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app.route('/api/connect').post([
 			// Docker.docker,
-			LogController.getErrors,
 			KafkaController.kafka,
 			KafkaController.admin,
 			KafkaController.describeCluster,

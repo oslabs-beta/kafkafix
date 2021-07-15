@@ -12,6 +12,7 @@ interface IProps {
 const { createLogger, transports } = winston;
 const { combine, json, metadata, timestamp } = format;
 
+// CHECK types
 const toWinstonLogLevel = (level: any) => {
 	switch (level) {
 		case logLevel.ERROR:
@@ -26,6 +27,7 @@ const toWinstonLogLevel = (level: any) => {
 	}
 };
 
+// CHECK types
 export const logCreator = (logLevel: any) => {
 	const logger = createLogger({
 		level: toWinstonLogLevel(logLevel),
