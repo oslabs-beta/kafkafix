@@ -101,3 +101,251 @@ rules:
     type: GAUGE
     labels:
       quantile: '0.$4'
+
+  - pattern: '"kafka.consumer"<type="(.+)", name="ReplicaFetcherThread-(\d+)-\d+-(\w+)"><>(Count)'
+    name: kafka_consumer_$1_$3_$4
+    labels:
+      thread: $2
+  - pattern: '"kafka.consumer"<type="(.+)", name="ReplicaFetcherThread-(\d+)-\d+-host_(.+?)-port_(\d+)-(\w+)"><>(Count|Value)'
+    name: kafka_consumer_$1_$5_$6
+    labels:
+      hostport: $3:$4
+      thread: $2
+  - name: kafka_consumer_$1_$7_$8
+    pattern: '"kafka.consumer"<type="(.+)", name="ReplicaFetcherThread-(\d+)-\d+-host_(.+?)-port_(\d+)-(.+)-(\d+)-(\w+)"><>(Count|Value)'
+    labels:
+      hostport: $3:$4
+      partition: $6
+      thread: $2
+      topic: $5
+  - pattern: '"kafka.server"<type="(FetcherStats)", name="ReplicaFetcherThread-(\d+)-\d+-host_(.+?)-port_(\d+)-(\w+)PerSec"><>Count'
+    name: kafka_server_$1_$5_total
+    labels:
+      hostport: $3:$4
+      thread: $2
+  - pattern: '"kafka.server"<type="(FetcherLag.+)", name="ReplicaFetcherThread-(\d+)-\d+-host_(.+?)-port_(\d+)-(.+)-(\d+)-(\w+)"><>(Count|Value)'
+    name: kafka_server_$1_$7_$8
+    labels:
+      hostport: $3:$4
+      partition: $6
+      thread: $2
+      topic: $5
+  - name: kafka_cluster_$1_$4
+    pattern: '"kafka.cluster"<type="(.+)", name="(.+)-(\d+)-(\w+)"><>Value'
+    labels:
+      partition: $3
+      topic: $2
+  - pattern: '"kafka.log"<type="Log", name="(.+)-(\d+)-(\w+)"><>Value'
+    name: kafka_log_$3
+    labels:
+      partition: $2
+      topic: $1
+  - pattern: '"kafka.server"<type="(.+)", name="(.+)-(\w+)PerSec"><>Count'
+    name: kafka_server_$1_$3_total
+    labels:
+      topic: $2
+    type: COUNTER
+  - pattern: '"kafka.server"<type="(.+)", name="(.+)-(\w+)"><>(Count|Value)'
+    name: kafka_server_$1_$3_$4
+    labels:
+      topic: $2
+  - pattern: '"kafka.network"<type="(.+)", name="Processor-(\d+)-(.+)"><>Value'
+    name: kafka_network_$1_$3
+    labels:
+      processor: $2
+  - pattern: '"kafka.(\w+)"<type="(.+)", name="(.+)PerSec"><>Count'
+    name: kafka_$1_$2_$3_total
+    type: COUNTER
+  - pattern: '"kafka.(\w+)"<type="(.+)", name="(.+)"><>(Count|Value)'
+    name: kafka_$1_$2_$3_$4
+
+  #kafka.connect:type=app-info,client-id="{clientid}"
+  #kafka.consumer:type=app-info,client-id="{clientid}"
+  #kafka.producer:type=app-info,client-id="{clientid}"
+  - pattern: 'kafka.(.+)<type=app-info, client-id=(.+)><>start-time-ms'
+    name: kafka_$1_start_time_seconds
+    labels:
+      clientId: '$2'
+    help: 'Kafka $1 JMX metric start time seconds'
+    type: GAUGE
+    valueFactor: 0.001
+  - pattern: 'kafka.(.+)<type=app-info, client-id=(.+)><>(commit-id|version): (.+)'
+    name: kafka_$1_$3_info
+    value: 1
+    labels:
+      clientId: '$2'
+      $3: '$4'
+    help: 'Kafka $1 JMX metric info version and commit-id'
+    type: GAUGE
+
+  #kafka.producer:type=producer-topic-metrics,client-id="{clientid}",topic="{topic}"", partition="{partition}"
+  #kafka.consumer:type=consumer-fetch-manager-metrics,client-id="{clientid}",topic="{topic}"", partition="{partition}"
+  - pattern: kafka.(.+)<type=(.+)-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+-total|compression-rate|.+-avg|.+-replica|.+-lag|.+-lead)
+    name: kafka_$2_$6
+    labels:
+      clientId: '$3'
+      topic: '$4'
+      partition: '$5'
+    help: 'Kafka $1 JMX metric type $2'
+    type: GAUGE
+
+  #kafka.producer:type=producer-topic-metrics,client-id="{clientid}",topic="{topic}"
+  #kafka.consumer:type=consumer-fetch-manager-metrics,client-id="{clientid}",topic="{topic}"", partition="{partition}"
+  - pattern: kafka.(.+)<type=(.+)-metrics, client-id=(.+), topic=(.+)><>(.+-total|compression-rate|.+-avg)
+    name: kafka_$2_$5
+    labels:
+      clientId: '$3'
+      topic: '$4'
+    help: 'Kafka $1 JMX metric type $2'
+    type: GAUGE
+
+  # #kafka.connect:type=connect-node-metrics,client-id="{clientid}",node-id="{nodeid}"
+  # #kafka.consumer:type=consumer-node-metrics,client-id=consumer-1,node-id="{nodeid}"
+  # - pattern: kafka.(.+)<type=(.+)-metrics, client-id=(.+), node-id=(.+)><>(.+-total|.+-avg)
+  #   name: kafka_$2_$5
+  #   labels:
+  #     clientId: '$3'
+  #     nodeId: '$4'
+  #   help: 'Kafka $1 JMX metric type $2'
+  #   type: UNTYPED
+
+  #kafka.connect:type=kafka-metrics-count,client-id="{clientid}"
+  #kafka.consumer:type=consumer-fetch-manager-metrics,client-id="{clientid}"
+  #kafka.consumer:type=consumer-coordinator-metrics,client-id="{clientid}"
+  #kafka.consumer:type=consumer-metrics,client-id="{clientid}"
+  - pattern: kafka.(.+)<type=(.+)-metrics, client-id=(.*)><>(.+-total|.+-avg|.+-bytes|.+-count|.+-ratio|.+-age|.+-flight|.+-threads|.+-connectors|.+-tasks|.+-ago)
+    name: kafka_$2_$4
+    labels:
+      clientId: '$3'
+    help: 'Kafka $1 JMX metric type $2'
+    type: GAUGE
+
+  #kafka.connect:type=connector-task-metrics,connector="{connector}",task="{task}<> status"
+  - pattern: 'kafka.connect<type=connector-task-metrics, connector=(.+), task=(.+)><>status: ([a-z-]+)'
+    name: kafka_connect_connector_status
+    value: 1
+    labels:
+      connector: '$1'
+      task: '$2'
+      status: '$3'
+    help: 'Kafka Connect JMX Connector status'
+    type: GAUGE
+
+  #kafka.connect:type=task-error-metrics,connector="{connector}",task="{task}"
+  #kafka.connect:type=source-task-metrics,connector="{connector}",task="{task}"
+  #kafka.connect:type=sink-task-metrics,connector="{connector}",task="{task}"
+  #kafka.connect:type=connector-task-metrics,connector="{connector}",task="{task}"
+  - pattern: kafka.connect<type=(.+)-metrics, connector=(.+), task=(.+)><>(.+-total|.+-count|.+-ms|.+-ratio|.+-avg|.+-failures|.+-requests|.+-timestamp|.+-logged|.+-errors|.+-retries|.+-skipped)
+    name: kafka_connect_$1_$4
+    labels:
+      connector: '$2'
+      task: '$3'
+    help: 'Kafka Connect JMX metric type $1'
+    type: GAUGE
+
+  #kafka.connect:type=connector-metrics,connector="{connector}"
+  #kafka.connect:type=connect-worker-metrics,connector="{connector}"
+  - pattern: kafka.connect<type=connect-worker-metrics, connector=(.+)><>([a-z-]+)
+    name: kafka_connect_worker_$2
+    labels:
+      connector: '$1'
+    help: 'Kafka Connect JMX metric $1'
+    type: GAUGE
+
+  #kafka.connect:type=connect-worker-metrics
+  - pattern: kafka.connect<type=connect-worker-metrics><>([a-z-]+)
+    name: kafka_connect_worker_$1
+    help: 'Kafka Connect JMX metric worker'
+    type: GAUGE
+
+  #kafka.connect:type=connect-worker-rebalance-metrics
+  - pattern: kafka.connect<type=connect-worker-rebalance-metrics><>([a-z-]+)
+    name: kafka_connect_worker_rebalance_$1
+    help: 'Kafka Connect JMX metric rebalance information'
+    type: GAUGE
+  - pattern: kafka.cluster<type=(.+), name=(.+), topic=(.+), partition=(.+)><>Value
+    name: kafka_cluster_$1_$2
+    labels:
+      topic: '$3'
+      partition: '$4'
+  - pattern: kafka.log<type=Log, name=(.+), topic=(.+), partition=(.+)><>Value
+    name: kafka_log_$1
+    labels:
+      topic: '$2'
+      partition: '$3'
+  - pattern: kafka.controller<type=(.+), name=(.+)><>(Count|Value)
+    name: kafka_controller_$1_$2
+  - pattern: kafka.network<type=(.+), name=(.+)><>Value
+    name: kafka_network_$1_$2
+  - pattern: kafka.network<type=(.+), name=(.+)PerSec, request=(.+)><>Count
+    name: kafka_network_$1_$2_total
+    labels:
+      request: '$3'
+  - pattern: kafka.network<type=(.+), name=(\w+), networkProcessor=(.+)><>Count
+    name: kafka_network_$1_$2
+    labels:
+      request: '$3'
+    type: COUNTER
+  - pattern: kafka.network<type=(.+), name=(\w+), request=(\w+)><>Count
+    name: kafka_network_$1_$2
+    labels:
+      request: '$3'
+  - pattern: kafka.network<type=(.+), name=(\w+)><>Count
+    name: kafka_network_$1_$2
+  - pattern: kafka.server<type=(.+), name=(.+)PerSec\w*, topic=(.+)><>Count
+    name: kafka_server_$1_$2_total
+    labels:
+      topic: '$3'
+  - pattern: kafka.server<type=(.+), name=(.+)PerSec\w*><>Count
+    name: kafka_server_$1_$2_total
+    type: COUNTER
+
+  - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>(Count|Value)
+    name: kafka_server_$1_$2
+    labels:
+      clientId: '$3'
+      topic: '$4'
+      partition: '$5'
+  - pattern: kafka.server<type=(.+), name=(.+), topic=(.+), partition=(.*)><>(Count|Value)
+    name: kafka_server_$1_$2
+    labels:
+      topic: '$3'
+      partition: '$4'
+  - pattern: kafka.server<type=(.+), name=(.+), topic=(.+)><>(Count|Value)
+    name: kafka_server_$1_$2
+    labels:
+      topic: '$3'
+    type: COUNTER
+
+  - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), brokerHost=(.+), brokerPort=(.+)><>(Count|Value)
+    name: kafka_server_$1_$2
+    labels:
+      clientId: '$3'
+      broker: '$4:$5'
+  - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+)><>(Count|Value)
+    name: kafka_server_$1_$2
+    labels:
+      clientId: '$3'
+  - pattern: kafka.server<type=(.+), name=(.+)><>(Count|Value)
+    name: kafka_server_$1_$2
+
+  - pattern: kafka.(\w+)<type=(.+), name=(.+)PerSec\w*><>Count
+    name: kafka_$1_$2_$3_total
+  - pattern: kafka.(\w+)<type=(.+), name=(.+)PerSec\w*, topic=(.+)><>Count
+    name: kafka_$1_$2_$3_total
+    labels:
+      topic: '$4'
+    type: COUNTER
+  - pattern: kafka.(\w+)<type=(.+), name=(.+)PerSec\w*, topic=(.+), partition=(.+)><>Count
+    name: kafka_$1_$2_$3_total
+    labels:
+      topic: '$4'
+      partition: '$5'
+    type: COUNTER
+  - pattern: kafka.(\w+)<type=(.+), name=(.+)><>(Count|Value)
+    name: kafka_$1_$2_$3_$4
+    type: COUNTER
+  - pattern: kafka.(\w+)<type=(.+), name=(.+), (\w+)=(.+)><>(Count|Value)
+    name: kafka_$1_$2_$3_$6
+    labels:
+      '$4': '$5'

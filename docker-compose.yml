@@ -12,6 +12,7 @@ services:
     ports:
       - '2181:2181'
     volumes:
+      # configure directory
       - ./zk-kafka/zookeeper/data:/data
       - ./zk-kafka/zookeeper/datalog:/datalog
 
@@ -23,41 +24,30 @@ services:
       - '9999:9999'
     environment:
       KAFKA_BROKER_ID: 1
-
-      # a comma-separated list of listeners, and the host/ip and port to which Kafka binds to on which to listen.
-      # For more complex networking this might be an IP address associated with a given network
-      KAFKA_LISTENERS: INSIDE://:29092,OUTSIDE://:9092
-
-      # Kafka brokers communicate between themselves, usually on the internal network (e.g. Docker network, AWS VPC, etc).
-      # The host/IP used must be accessible form the broker machine to others
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:19092,OUTSIDE://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      # KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:19092,OUTSIDE://localhost:9092
+      KAFKA_LISTENERS: INSIDE://:19092,OUTSIDE://:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
-
-      # comma-separated list of listeners with their the host/ip and port.
-      # This is the metadata that’s passed back to clients.
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:29092,OUTSIDE://${DOCKER_HOST_IP:-127.0.0.1}:9092
-      # KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:29092,OUTSIDE://localhost:9092
-
-      # defines key/value pairs for the security protocol to use, per listener name.
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-
-      # specifies the zookeeper connection string in the from hostname:port
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_LOG4J_LOGGERS: kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO
       KAFKA_OPTS: -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/usr/app/prom-jmx-agent-config.yml
 
-      # configure JMX // CHECK
+      # configure JMX 
       JMX_PORT: 9999
       KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
-      KAFKA_JMX_OPTS: "-Djava.rmi.server.hostname=kafka
-      -Dcom.sun.management.jmxremote.local.only=false
-      -Dcom.sun.management.jmxremote.rmi.port=9999
-      -Dcom.sun.management.jmxremote.port=9999
-      -Dcom.sun.management.jmxremote.authenticate=false
-      -Dcom.sun.management.jmxremote.ssl=false"
+      KAFKA_JMX_OPTS: 
+        -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote=true 
+        -Dcom.sun.management.jmxremote.local.only=false
+        -Dcom.sun.management.jmxremote.rmi.port=9999
+        -Dcom.sun.management.jmxremote.port=9999
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
 
     volumes:
+      # configure directory
       - ./zk-kafka/kafka/data:/var/lib/kafka/data
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:

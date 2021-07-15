@@ -1,13 +1,45 @@
 import { RequestHandler } from 'express';
+import fs from 'fs';
+import WebSocket from 'ws';
+
 import { handleAsync } from '../common';
 import { Log } from '../db/log.model';
 
 export class LogController {
 	/**
-	 * @desc    get all previous errors
+	 * @desc    get all previous errors from error.log
+	 * @returns {Array{}}
+	 */
+	// CHECK after packaging, does the file save to right place?
+	static getErrors: RequestHandler = (req, res, next) => {
+		const path = './error.log';
+		const ws: WebSocket = req.app.locals.ws;
+
+		try {
+			if (fs.existsSync(path)) {
+				const data = fs.readFileSync('./error.log').toString().split('\r\n');
+				const errors: any[] = [];
+
+				data.forEach(error => {
+					if (error.length > 1) errors.push(JSON.parse(error));
+				});
+
+				res.locals.errors = errors;
+				ws.send(errors);
+			}
+
+			return next();
+		} catch (e) {
+			console.error(e);
+			return next(e);
+		}
+	};
+
+	/**
+	 * @desc    get all previous errors from db
 	 * @returns
 	 */
-	static getErrors: RequestHandler = async (req, res, next) => {
+	static fetchErrors: RequestHandler = async (req, res, next) => {
 		const [errors, error] = await handleAsync(Log.find({}));
 
 		if (error) return next(error);

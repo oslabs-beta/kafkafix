@@ -76,7 +76,6 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': 'http://localhost:3000',
-      '/partition': 'http://localhost:3000',
     },
     contentBase: path.join(__dirname, 'dist'),
     compress: true,

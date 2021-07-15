@@ -12,11 +12,11 @@ export class LogRoutes extends RouteConfig {
 		 * @GET     api/errors
 		 * @desc    get all previous errors
 		 */
-    // CHECK format for errors
+		// CHECK format for errors
 		this.app
-			.route('/api/errors')
+			.route('/api/notification')
 			.get([LogController.getErrors], (req: Request, res: Response) => {
-        return res.status(200).json({ errors: res.locals.errors });
+				return res.status(200).json(res.locals.errors);
 			});
 
 		/**

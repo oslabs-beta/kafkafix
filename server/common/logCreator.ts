@@ -1,6 +1,5 @@
 import { logLevel } from 'kafkajs';
 import { format } from 'winston';
-// import winston from 'winston'; // WHY types
 const winston = require('winston');
 require('winston-mongodb').MongoDB; //! check
 
@@ -11,8 +10,9 @@ interface IProps {
 }
 
 const { createLogger, transports } = winston;
-const { combine, json, metadata } = format;
+const { combine, json, metadata, timestamp } = format;
 
+// CHECK types
 const toWinstonLogLevel = (level: any) => {
 	switch (level) {
 		case logLevel.ERROR:
@@ -27,12 +27,18 @@ const toWinstonLogLevel = (level: any) => {
 	}
 };
 
+// CHECK types
 export const logCreator = (logLevel: any) => {
 	const logger = createLogger({
 		level: toWinstonLogLevel(logLevel),
+		format: combine(
+			timestamp({ format: 'YYY-MM-DD hh:mm:ss' }),
+			json(),
+			metadata()
+		),
 		transports: [
 			new transports.Console(),
-			// new transports.File({ filename: 'error.log' }),
+			new transports.File({ filename: 'error.log' }),
 			new transports.MongoDB({
 				level: 'error',
 				db: process.env.MONGO_URI,
@@ -43,6 +49,7 @@ export const logCreator = (logLevel: any) => {
 		],
 	});
 
+// ADD configure websocket for realtime
 	return ({ namespace, level, log }: IProps) => {
 		const { message, broker, clientId, error, groupId } = log;
 		logger.log({

@@ -1,7 +1,11 @@
 import fetch from 'node-fetch';
 import { RequestHandler } from 'express';
+import dotenv from 'dotenv';
+
 import { handleAsync } from '../common';
 import { MBeans } from './MBeans';
+
+dotenv.config();
 
 const url = 'http://localhost:9090/api/v1/query?query=';
 
@@ -11,7 +15,7 @@ export class KafkaMetricsController {
 	 * @name UnderReplicatedPartitions
 	 * @MBean name kafka.server: type = ReplicaManager, name = UnderReplicatedPartitions
 	 * @desc Number of unreplicated partitions
-	 * @metricType Resource: Availability
+	 * @metricType Gauge
 	 */
 	static underReplicatedPartitions: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.underReplicatedPartitions;
@@ -25,13 +29,13 @@ export class KafkaMetricsController {
 	};
 
 	/**
-	 * IsrShrinksPerSec/IsrExpandsPerSec
-	 * kafka.server:type=ReplicaManager,name=IsrShrinksPerSec
-	 * kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
-	 * Rate at which the pool of in-sync replicas (ISRs) shrinks/expands
-	 * Resource: Availability
+	 * @name IsrShrinksPerSec/IsrExpandsPerSec
+	 * @MBean kafka.server:type=ReplicaManager,name=IsrShrinksPerSec
+	 * @MBean kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
+	 * @desc Rate at which the pool of in-sync replicas (ISRs) shrinks/expands
+	 * @metricType Counter
 	 */
-	// CHECK only shows 1 item
+	// CHECK only shows total: find shrink/expand
 	static isrShrinksPerSec: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.isrShrinksPerSec;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
@@ -47,7 +51,7 @@ export class KafkaMetricsController {
 	 * @name ActiveControllerCount
 	 * @MBean kafka.controller:type=KafkaController,name=ActiveControllerCount
 	 * @desc Number of active controllers in cluster
-	 * @metricType Resource: Error
+	 * @metricType Gauge
 	 */
 	static activeControllerCount: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.activeControllerCount;
@@ -64,7 +68,7 @@ export class KafkaMetricsController {
 	 * @name OfflinePartitionsCount
 	 * @MBean kafka.controller:type=KafkaController,name=OfflinePartitionsCount
 	 * @desc Number of offline partitions
-	 * @metricType Resource: Availability
+	 * @metricType Gauge
 	 */
 	static offlinePartitionsCount: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.offlinePartitionsCount;
@@ -81,9 +85,8 @@ export class KafkaMetricsController {
 	 * @name LeaderElectionRateAndTimeMs
 	 * @MBean kafka.controller:type=ControllerStats,name=LeaderElectionRateAndTimeMs
 	 * @desc Leader election rate and latency
-	 * @metricType Other
+	 * @metricType Gauge
 	 */
-
 	static leaderElectionRateAndTimeMs: RequestHandler = async (
 		req,
 		res,
@@ -103,7 +106,7 @@ export class KafkaMetricsController {
 	 * @name UncleanLeaderElectionsPerSec
 	 * @MBean kafka.controller:type=ControllerStats,name=UncleanLeaderElectionsPerSec
 	 * @desc Number of “unclean” elections per second
-	 * @metricType Resource: Error
+	 * @metricType Gauge
 	 */
 	static uncleanLeaderElectionsPerSec: RequestHandler = async (
 		req,
@@ -121,19 +124,33 @@ export class KafkaMetricsController {
 	};
 
 	/**
-	 * TotalTimeMs
-	 * kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}
-	 * Total time (in ms) to serve the specified request (Produce/Fetch)
-	 * Work: Performance
+	 * @name TotalTimeMs
+	 * @MBean kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}
+	 * @desc Total time (in ms) to serve the specified request (Produce/Fetch)
+	 * @metricType Gauge
 	 */
-	// ADD Takeout Produce | FetchConsumer | FetchFollower from response
+	// CHECK quantile
 	static totalTimeMs: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.totalTimeMs;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
 		const data = await response.json();
 
 		if (error) return next(error);
-		console.log(data.data.result);
+		const fetchConsumer: any[] = [];
+		const fetchFollower: any[] = [];
+		const produce: any[] = [];
+
+		data.data.result.forEach((data: any) => {
+			data.metric.request === 'FetchConsumer' ? fetchConsumer.push(data) : null;
+			data.metric.request === 'FetchFollower' ? fetchFollower.push(data) : null;
+			data.metric.request === 'Produce' ? produce.push(data) : null;
+		});
+
+		res.locals.totalTimeMs = { fetchConsumer, fetchFollower, produce };
+
+		console.log(fetchConsumer);
+		console.log(fetchFollower);
+		console.log(produce);
 
 		return next();
 	};
@@ -142,7 +159,7 @@ export class KafkaMetricsController {
 	 * @name PurgatorySize
 	 * @MBean kafka.server:type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation={Produce|Fetch}
 	 * @desc Number of requests waiting in producer purgatory/Number of requests waiting in fetch purgatory
-	 * @metricType Other
+	 * @metricType Gauge
 	 */
 	static purgatorySize: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.purgatorySize;
@@ -151,45 +168,87 @@ export class KafkaMetricsController {
 
 		if (error) return next(error);
 		const Fetch: any[] = [];
-		const Produce: any[] = [];
+		const produce: any[] = [];
 
 		data.data.result.forEach((data: any) => {
 			data.metric.delayedOperation === 'Fetch' ? Fetch.push(data) : null;
-			data.metric.delayedOperation === 'Produce' ? Produce.push(data) : null;
+			data.metric.delayedOperation === 'Produce' ? produce.push(data) : null;
 		});
 
-		res.locals.fetch = Fetch;
-		res.locals.produce = Produce;
-
-		return next();
-	};
-
-	/** // CHECK
-	 * BytesInPerSec/BytesOutPerSec
-	 * kafka.server:type=BrokerTopicMetrics,name={BytesInPerSec|BytesOutPerSec}
-	 * Aggregate incoming/outgoing byte rate
-	 * Work: Throughput
-	 */
-	static bytesPerSec: RequestHandler = async (req, res, next) => {
-		const MBean1 = MBeans.bytesInTotal;
-		const MBean2 = MBeans.bytesOutTotal;
-		const [response, error] = await handleAsync(fetch(`${url}${MBean1}`));
-		const data = await response.json();
-
-		if (error) return next(error);
-		res.locals.bytesPerSec = data.data.result;
+		res.locals.purgatorySize = { fetch: Fetch, produce };
 
 		return next();
 	};
 
 	/**
-	 * RequestsPerSecond
-	 * kafka.network:type=RequestMetrics,name=RequestsPerSec,request={Produce|FetchConsumer|FetchFollower},version={0|1|2|3|…}
-	 * Number of (producer|consumer|follower) requests per second
-	 * Work: Throughput
+	 * @name BytesInPerSec/BytesOutPerSec
+	 * @MBean kafka.server:type=BrokerTopicMetrics,name={BytesInPerSec|BytesOutPerSec}
+	 * @desc Aggregate incoming/outgoing byte rate
+	 * @metricType Counter
 	 */
+	static bytesPerSec: RequestHandler = async (req, res, next) => {
+		const MBeanIn = MBeans.bytesInTotal;
+		const MBeanOut = MBeans.bytesOutTotal;
+
+		const [bytesIn, inError] = await handleAsync(fetch(`${url}${MBeanIn}`));
+		const [bytesOut, outError] = await handleAsync(fetch(`${url}${MBeanOut}`));
+
+		const bytesInTotal = await bytesIn.json();
+		const bytesOutTotal = await bytesOut.json();
+
+		if (inError) return next(inError);
+		if (outError) return next(outError);
+
+		res.locals.bytesPerTotal = { bytesInTotal, bytesOutTotal };
+
+		return next();
+	};
+
+	/**
+	 * @name RequestsPerSecond
+	 * @MBean kafka.network:type=RequestMetrics,name=RequestsPerSec,request={Produce|FetchConsumer|FetchFollower},version={0|1|2|3|…}
+	 * @desc Number of (producer|consumer|follower) requests per second
+	 * @metricType Counter
+	 */
+	// CHECK - need to test result with endpoint
 	static requestsPerSecond: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.requestsPerSecond;
+		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
+		const data = await response.json();
+
+		if (error) return next(error);
+
+		const fetchConsumer: any[] = [];
+		const fetchFollower: any[] = [];
+		const produce: any[] = [];
+
+		data.data.result.forEach((data: any) => {
+			data.metric.delayedOperation === 'FetchConsumer'
+				? fetchConsumer.push(data)
+				: null;
+			data.metric.delayedOperation === 'FetchFollower'
+				? fetchFollower.push(data)
+				: null;
+			data.metric.delayedOperation === 'Produce' ? produce.push(data) : null;
+		});
+
+		res.locals.requestsPerSecond = { fetchConsumer, fetchFollower, produce };
+
+		// console.log(res.locals.fetchConsumer);
+		// console.log(res.locals.fetchFollower);
+		// console.log(res.locals.produce);
+
+		return next();
+	};
+
+	/**
+	 * @name MessagesPerSecond
+	 * @MBean kafka.server,type=BrokerTopicMetrics,name=MessageInPerSec
+	 * @desc Number of message requests per second
+	 * @metricType Counter
+	 */
+	static messagesPerSecond: RequestHandler = async (req, res, next) => {
+		const MBean = MBeans.messagesPerSecond;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
 		const data = await response.json();
 

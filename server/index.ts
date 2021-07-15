@@ -41,46 +41,46 @@ routes.push(new TopicRoutes(app));
 
 // server index html
 app.get('/partition', (req, res) => {
-  return res
-    .status(200)
-    .sendFile(path.resolve(__dirname, '../client/src/index.html'));
+	return res
+		.status(200)
+		.sendFile(path.resolve(__dirname, '../client/src/index.html'));
 });
 
 app.post('/api/dockerfile', (req, res) => {
-  console.log('this is the request body =>', req.body);
+	console.log('this is the request body =>', req.body);
 
-  return res.status(200).json('recieved the dockerfile');
+	return res.status(200).json('recieved the dockerfile');
 });
 
 // 404
 app.use('*', (req: Request, res: Response) => {
-  return res.status(404).send('Invalid Route');
+	return res.status(404).send('Invalid Route');
 });
 
 // global error handler
 app.use(((err, req, res, next) => {
-  const defaultErr = {
-    status: 500,
-    message: 'Error: Middleware error at global error handler',
-  };
-  const errorObj = Object.assign({}, defaultErr, err);
-  return res.status(errorObj.status).json(errorObj.message);
+	const defaultErr = {
+		status: 500,
+		message: 'Error: Middleware error at global error handler',
+	};
+	const errorObj = Object.assign({}, defaultErr, err);
+	return res.status(errorObj.status).json(errorObj.message);
 }) as ErrorRequestHandler);
 
 // server
 server.listen(PORT, () => {
-  console.log(`Server on port ${PORT}`);
+	console.log(`Server on port ${PORT}`);
 
-  routes.forEach((route: RouteConfig) => {
-    console.log(`Route configured: ${route.routeName()}`);
-  });
+	routes.forEach((route: RouteConfig) => {
+		console.log(`Route configured: ${route.routeName()}`);
+	});
 });
 
 // websocket server
 // CHECK if wss.on vs wss.once
 wss.once('connection', (ws: WebSocket) => {
-  app.locals.ws = ws;
-  console.log('ws connected');
+	app.locals.ws = ws;
+	console.log('ws connected');
 
-  ws.on('close', () => console.log('ws disconnected'));
+	ws.on('close', () => console.log('ws disconnected'));
 });
