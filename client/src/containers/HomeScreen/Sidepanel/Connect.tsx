@@ -5,6 +5,7 @@ import { overallState } from '../../../state/reducers';
 import {
   connectedActionCreator,
   populateDataActionCreator,
+  populateNotifActionCreator
 } from '../../../state/actions/actions';
 import { populateData } from '../../../helperFunctions/populateData';
 import WebSocket from 'ws';
@@ -103,6 +104,12 @@ const Connect: FC = (props) => {
     fetch('/api/connect', options)
       .then((data) => data.json())
       .then((data) => {
+        fetch('/api/notification')
+          .then((data: any) => data.json())
+          .then((data: Error[]) => {
+            populateNotif(data, dispatch);
+          })
+          .catch((e: any) => console.log('error in fetching data from notifs', e));
         console.log(data);
         // const { metadata: { topics: array } } = data;
         // const array = data.metadata.topics;
