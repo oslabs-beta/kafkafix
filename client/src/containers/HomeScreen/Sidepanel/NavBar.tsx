@@ -36,9 +36,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { any } from 'prop-types';
 
-//importing populate notif func
-import { populateNotif } from '../../../helperFunctions/populateNotif';
-import NotifItems from './NotifItems';
+import {NotifItems} from './NotifItems';
 
 // import login function
 

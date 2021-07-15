@@ -20,15 +20,7 @@ export const PartitionScreen: FC<PartitionScreenProps> = ({
   const messages = useSelector<overallState, KafkaState["messages"]>(
     (state) => state.kafka.messages
   );
-  // const messages = [
-  //   {
-  //     fullname: "Kurt Miller",
-  //     address: { street: "6997 Mills Heights", city: "Ba" },
-  //     BitcoinAddress: "1GYv9z3o2o9HVam3wtPSxxWwnpy1knr8SD",
-  //     ProductName: "Tasty Steel Chair",
-  //     Price: "$382.79",
-  //   },
-  // ];
+
   // console.log(messages);
   // const [messages, setMessages] = useState<{}[]>([]);
 

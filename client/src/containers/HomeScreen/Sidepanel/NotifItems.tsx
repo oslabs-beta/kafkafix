@@ -26,7 +26,7 @@ interface notifItemsProps {
   setNotif: any;
 }
 
-const notifItems: FC<notifItemsProps> = ({ setNotif }) => {
+export const NotifItems: FC<notifItemsProps> = ({ setNotif }) => {
   // fetch request for new notifs
 
   // fetch('/api/notification')
