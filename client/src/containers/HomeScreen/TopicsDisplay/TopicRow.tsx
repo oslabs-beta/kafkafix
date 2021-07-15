@@ -92,7 +92,7 @@ export const TopicRow = (props: { row: any }) => {
       body: JSON.stringify({ name: input?.value }),
     };
     //finish the then after getting reposne
-    fetch("api/partition", options)
+    fetch("/api/partition", options)
       .then((data: any) => data.json())
       .catch((e) => console.log(e));
   };

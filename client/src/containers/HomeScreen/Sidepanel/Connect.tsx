@@ -106,6 +106,7 @@ const Connect: FC = (props) => {
         fetch('/api/notification')
           .then((data: any) => data.json())
           .then((data: Error[]) => {
+            console.log(data);
             dispatch(populateNotifActionCreator(data));
 
             // open a websocket connection

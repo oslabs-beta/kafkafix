@@ -49,6 +49,7 @@ export const logCreator = (logLevel: any) => {
 		],
 	});
 
+// ADD configure websocket for realtime
 	return ({ namespace, level, log }: IProps) => {
 		const { message, broker, clientId, error, groupId } = log;
 		logger.log({
