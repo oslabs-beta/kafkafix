@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // importing HomeScreen and router components
 import HomeScreen from "./containers/HomeScreen";
-import FailureReports from "./containers/HomeScreen/FailureReports";
-import Metrics from "./containers/HomeScreen/Metrics";
+import { FailureReportsScreen } from './containers/FailureReports/FailureReportsScreen';
+import { MetricsScreen } from "./containers/Metrics/MetricsScreen";
 import Partitions from "./containers/HomeScreen/TopicsDisplay/Partitions";
 import ws from "./websocket";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,8 +40,8 @@ const App: React.FC = () => {
       <Router>
         <Switch>
           <Route path="/" exact component={HomeScreen} />
-          <Route path="/metrics" component={Metrics} />
-          <Route path="/failureReports" component={FailureReports} />
+          <Route path="/metrics" component={MetricsScreen} />
+          <Route path="/failureReports" component={FailureReportsScreen} />
           <Route
             path="/partition/:topic/:partitionID"
             render={(props) => (
