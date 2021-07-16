@@ -67,6 +67,9 @@ export class TopicController {
 	static createPartition: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
 		const { topic, count } = req.body;
+		console.log('body', req.body);
+
+		console.log('create partition', topic, count);
 		const [, error] = await handleAsync(
 			admin.createPartitions({ topicPartitions: [{ topic, count }] })
 		);

@@ -11,18 +11,18 @@ import { Log } from '../db/log.model';
 import http from 'http';
 
 interface IErrors {
-  level: string;
-  namespace: string;
-  message: string;
-  error: string;
-  cliendId: string;
-  broker: string;
-  timestamp: string;
+	level: string;
+	namespace: string;
+	message: string;
+	error: string;
+	cliendId: string;
+	broker: string;
+	timestamp: string;
 }
 
 interface IProps {
-  namespace: string;
-  log: any; // CHECK type
+	namespace: string;
+	log: any; // CHECK type
 }
 
 const { createLogger, transports } = winston;
@@ -54,28 +54,28 @@ export class LogController {
 			],
 		});
 
-		server.on('upgrade', (request, socket, head) => {
-			const pathname = url.parse(request.url).pathname;
+		// server.on('upgrade', (request, socket, head) => {
+		// 	const pathname = url.parse(request.url).pathname;
 
-			// called
-			console.log('LOGGER: upgrade');
-			console.log('path', pathname);
+		// 	// called
+		// 	console.log('LOGGER: upgrade');
+		// 	console.log('path', pathname);
 
-			if (pathname === '/errors') {
-				wss.handleUpgrade(request, socket, head, ws => {
-					wss.emit('connection', ws, request);
+		// 	if (pathname === '/errors') {
+		// 		wss.handleUpgrade(request, socket, head, ws => {
+		// 			wss.emit('connection', ws, request);
 
-					logger.on('data', (transports: any) => {
-						const { level, message, metadata } = transports;
+		// 			logger.on('data', (transports: any) => {
+		// 				const { level, message, metadata } = transports;
 
-						ws.send({ level, message, metadata });
-						console.log('LOGGER: AFTER SEND');
-					});
-				});
-			} else {
-				socket.destroy();
-			}
-		});
+		// 				ws.send({ level, message, metadata });
+		// 				console.log('LOGGER: AFTER SEND');
+		// 			});
+		// 		});
+		// 	} else {
+		// 		socket.destroy();
+		// 	}
+		// });
 
 		return ({ namespace, log }: IProps) => {
 			const { message, broker, clientId, error, groupId } = log;
