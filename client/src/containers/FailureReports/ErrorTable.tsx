@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
 import { overallState } from '../../state/reducers/index';
+import { TableFilter } from './TableFilter';
 
 // importing components
 import {
@@ -52,6 +53,7 @@ export const ErrorTable: FC = () => {
   const errors = useSelector<overallState, KafkaState['notif']>(
     (state) => state.kafka.notif
   ); // 30
+  console.log('errors from the redux state ', errors);
 
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(
@@ -93,6 +95,7 @@ export const ErrorTable: FC = () => {
 
   return (
     <>
+      <TableFilter errorMessage={errors} />
       <TableContainer component={Paper} className={classes.tableWrapper}>
         <Table aria-label='custom pagination table'>
           <TableHead>
