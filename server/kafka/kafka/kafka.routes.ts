@@ -7,6 +7,7 @@ import { Docker } from './docker.controller';
 import { KafkaMetricsController } from '../../jmx/kafka.metrics.controller';
 import { JVMMetricsController } from '../../jmx/jvm.metrics.controller';
 import { LogController } from '../../log/log.controller';
+import { producer } from './producer.controller';
 
 export class KafkaRoutes extends RouteConfig {
 	constructor(app: Application) {
@@ -14,9 +15,33 @@ export class KafkaRoutes extends RouteConfig {
 	}
 
 	routes() {
+		/**
+		 * @POST     Initialize containers
+		 * @desc     Initialize Docker containers from docker-compose file
+		 */
 		this.app
 			.route('/api/dockerfile')
 			.post([Docker.docker], (req: Request, res: Response) => {
+				return res.status(200);
+			});
+
+		/**
+		 * @POST     Initialize producer
+		 * @desc     Initialize an instance of producer
+		 */
+		this.app
+			.route('/api/producer')
+			.post([], (req: Request, res: Response) => {
+				return res.status(200);
+			});
+
+		/**
+		 * @POST     Initialize consumer
+		 * @desc     Initialize an instance of consumer
+		 */
+		this.app
+			.route('/api/consumer')
+			.post([], (req: Request, res: Response) => {
 				return res.status(200);
 			});
 
