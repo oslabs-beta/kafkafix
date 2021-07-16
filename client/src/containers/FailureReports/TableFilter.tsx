@@ -46,11 +46,10 @@ export const TableFilter: FC<TableFilterProps> = ({ errorMessage }) => {
     console.log(e.target.classList); // []
     const key = e.target.id;
     setButtonState({ ...buttonState, [key]: !buttonState[key] });
-
   };
   return (
     <>
-        <div>{buttonState}</div>
+      <div>{buttonState}</div>
       {/* to show selected filters */}
       <Paper>
         {errorMessage[0] &&
@@ -64,23 +63,6 @@ export const TableFilter: FC<TableFilterProps> = ({ errorMessage }) => {
               {key}
             </Button>
           ))}
-
-        <Button
-          className={classes.buttonNotSelected}
-          variant='contained'
-        ></Button>
-        <Button
-          className={classes.buttonNotSelected}
-          variant='contained'
-        ></Button>
-        <Button
-          className={classes.buttonNotSelected}
-          variant='contained'
-        ></Button>
-        <Button
-          className={classes.buttonNotSelected}
-          variant='contained'
-        ></Button>
       </Paper>
     </>
   );
