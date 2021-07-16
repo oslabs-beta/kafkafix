@@ -14,12 +14,17 @@ export class KafkaRoutes extends RouteConfig {
 	}
 
 	routes() {
+		this.app
+			.route('/api/dockerfile')
+			.post([Docker.docker], (req: Request, res: Response) => {
+				return res.status(200);
+			});
+
 		/**
 		 * @POST     Initialize kafka
 		 * @desc    sends cluster info and all metadata
 		 */
 		this.app.route('/api/connect').post([
-			// Docker.docker,
 			KafkaController.kafka,
 			KafkaController.admin,
 			KafkaController.describeCluster,

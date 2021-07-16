@@ -7,7 +7,8 @@ import WebSocket, { Server } from 'ws';
 const url = require('url');
 import { handleAsync } from '../common';
 import { Log } from '../db/log.model';
-import { server } from '../index';
+// import { server } from '../index';
+import http from 'http';
 
 interface IErrors {
   level: string;
