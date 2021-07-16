@@ -18,7 +18,6 @@ export const signIn = async (email: any, password: any, dispatch: (arg0: { type:
     dispatch({ type: USER_LOGIN_REQUEST });
     try {
       const {data} = await Axios.post('/oauth-callback', { email: copyEmail, password });
-      console.log('query result',data);
       const { email} = data.doc;
       dispatch({ type: USER_LOGIN_SUCCESS, payload: {email: copyEmail} });  
     } catch (error) {
