@@ -8,6 +8,7 @@ import cors from 'cors';
 import { DB } from './db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
+import { OAuthRoutes } from './oauth/oauth.routes';
 import { GroupRoutes } from './kafka/group/group.routes';
 import { JMXRoutes } from './jmx/jmx.routes';
 import { KafkaRoutes } from './kafka/kafka/kafka.routes';
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 // routes
 const routes: Array<RouteConfig> = [];
 routes.push(new AuthRoutes(app));
+routes.push(new OAuthRoutes(app));
 routes.push(new GroupRoutes(app));
 routes.push(new JMXRoutes(app));
 routes.push(new KafkaRoutes(app));
