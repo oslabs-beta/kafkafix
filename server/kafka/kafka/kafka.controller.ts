@@ -39,13 +39,6 @@ export class KafkaController {
     return next();
   };
 
-<<<<<<< HEAD
-  static admin: RequestHandler = async (req, res, next) => {
-    const ws: WebSocket = req.app.locals.ws;
-    const kafka: Kafka = req.app.locals.kafka;
-    const admin = kafka.admin();
-    const [, error] = await handleAsync(admin.connect());
-=======
 	/**
 	 * @desc  starts an instance of admin
 	 */
@@ -54,18 +47,12 @@ export class KafkaController {
 		const kafka: Kafka = req.app.locals.kafka;
 		const admin = kafka.admin();
 		const [, error] = await handleAsync(admin.connect());
->>>>>>> bfd786aa830ad378775eb5a0a17c83d7428aa444
 
     if (error) return next(error);
     req.app.locals.admin = admin;
 
-<<<<<<< HEAD
-    // producer(kafka);
-    // consumer(kafka, ws);
-=======
 		producer(kafka);
 		consumer(kafka, ws);
->>>>>>> bfd786aa830ad378775eb5a0a17c83d7428aa444
 
     return next();
   };
