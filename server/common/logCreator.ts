@@ -1,36 +1,18 @@
-import { logLevel } from 'kafkajs';
 import { format } from 'winston';
 const winston = require('winston');
-require('winston-mongodb').MongoDB; //! check
+require('winston-mongodb').MongoDB;
 
 interface IProps {
 	namespace: string;
-	level: any; //! why not string
 	log: any; // CHECK type
 }
 
 const { createLogger, transports } = winston;
 const { combine, json, metadata, timestamp } = format;
 
-// CHECK types
-const toWinstonLogLevel = (level: any) => {
-	switch (level) {
-		case logLevel.ERROR:
-		case logLevel.NOTHING:
-			return 'error';
-		case logLevel.WARN:
-			return 'warn';
-		case logLevel.INFO:
-			return 'info';
-		case logLevel.DEBUG:
-			return 'debug';
-	}
-};
-
-// CHECK types
-export const logCreator = (logLevel: any) => {
+export const logCreator = () => {
 	const logger = createLogger({
-		level: toWinstonLogLevel(logLevel),
+		level: 'error',
 		format: combine(
 			timestamp({ format: 'YYY-MM-DD hh:mm:ss' }),
 			json(),
@@ -49,11 +31,18 @@ export const logCreator = (logLevel: any) => {
 		],
 	});
 
-// ADD configure websocket for realtime
-	return ({ namespace, level, log }: IProps) => {
-		const { message, broker, clientId, error, groupId } = log;
+	logger.on('data', (transports: any) => {
+		const { level, message, metadata } = transports;
+
+		// ws.send({ level, message, metadata });
+	});
+
+	return ({
+		namespace,
+		log: { message, broker, clientId, error, groupId },
+	}: IProps) => {
 		logger.log({
-			level: toWinstonLogLevel(level),
+			level: 'error',
 			namespace,
 			message,
 			error,

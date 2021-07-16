@@ -1,54 +1,71 @@
 import { RequestHandler } from 'express';
-import { Admin, Kafka, logLevel, SASLMechanism } from 'kafkajs';
+import { Admin, Kafka, logLevel, SASLOptions } from 'kafkajs';
 import * as WebSocket from 'ws';
 import dotenv from 'dotenv';
 
 import { consumer } from './consumer.controller';
 import { producer } from './producer.controller';
 import { handleAsync, logCreator } from '../../common';
-import { SaveAltSharp } from '@material-ui/icons';
+import { LogController } from '../../log/log.controller';
 
 dotenv.config();
 
-// ADD handle online clusters
-// ADD handle multiple mutliple brokers - broker discovery is done by kafka
-
 export class KafkaController {
-  /**
-   * @desc  starts an instance of kafka
-   */
-  static kafka: RequestHandler = async (req, res, next) => {
-    const PORT: number = req.body.PORT;
-    const sasl = {
-      mechanism: 'plain',
-      username: process.env.KAFKA_USERNAME,
-      password: process.env.KAFAK_PASSWORD,
-    };
-    const ssl = !!sasl;
-    const kafka = new Kafka({
-      clientId: 'kafkafix',
-      brokers: [`localhost:${PORT}`],
-      logLevel: logLevel.ERROR,
-      logCreator,
-      // ssl,
-      // sasl,
-    });
+	/**
+	 * @desc  starts an instance of kafka
+	 */
+	static kafka: RequestHandler = async (req, res, next) => {
+		const PORT: number = req.body.PORT;
+		const {
+			KAFKA_USERNAME: username,
+			KAFKA_PW: password,
+			KAFKA_Server,
+		} = process.env;
+		const sasl =
+			username && password ? { username, password, mechanism: 'plain' } : null;
+		const ssl = !!sasl;
+		const broker = PORT ? `localhost:${PORT}` : KAFKA_Server!;
+
+		const kafka = new Kafka({
+			clientId: 'kafkafix',
+			brokers: [broker],
+			logLevel: logLevel.ERROR,
+			logCreator: LogController.logCreator,
+			// ssl,
+			// sasl,
+		});
 
     req.app.locals.kafka = kafka;
     return next();
   };
 
+<<<<<<< HEAD
   static admin: RequestHandler = async (req, res, next) => {
     const ws: WebSocket = req.app.locals.ws;
     const kafka: Kafka = req.app.locals.kafka;
     const admin = kafka.admin();
     const [, error] = await handleAsync(admin.connect());
+=======
+	/**
+	 * @desc  starts an instance of admin
+	 */
+	static admin: RequestHandler = async (req, res, next) => {
+		const ws: WebSocket = req.app.locals.ws;
+		const kafka: Kafka = req.app.locals.kafka;
+		const admin = kafka.admin();
+		const [, error] = await handleAsync(admin.connect());
+>>>>>>> bfd786aa830ad378775eb5a0a17c83d7428aa444
 
     if (error) return next(error);
     req.app.locals.admin = admin;
 
+<<<<<<< HEAD
     // producer(kafka);
     // consumer(kafka, ws);
+=======
+		producer(kafka);
+		consumer(kafka, ws);
+>>>>>>> bfd786aa830ad378775eb5a0a17c83d7428aa444
 
     return next();
   };

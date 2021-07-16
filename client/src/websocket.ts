@@ -1,5 +1,3 @@
-// import WebSocket from "ws";
-
 const ws = () => {
   const newWs = new WebSocket("ws://localhost:3000");
   // console.log('start', newWs);
@@ -9,6 +7,3 @@ const ws = () => {
 };
 
 export default ws;
-//ws.on('message', function incoming(data) {
-//   display info
-// });
