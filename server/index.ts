@@ -23,7 +23,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // start DB
-new DB();
+// new DB();
 
 // middlewares
 app.use(cors());

@@ -21,7 +21,7 @@ import {
   Modal,
 } from '@material-ui/core';
 
-import MTPaginationOptions from '../PartitionScreen/MTPaginationOptions';
+import { MTPaginationOptions } from '../PartitionScreen/MTPaginationOptions';
 
 // importing styles
 const useRowStyles = makeStyles({
@@ -73,6 +73,24 @@ export const ErrorTable: FC = () => {
     );
   }
 
+  const handleChangePage = (
+    e: React.MouseEvent<HTMLButtonElement> | null,
+    pageIndex: number
+  ) => {
+    setPageIndex(pageIndex);
+  };
+
+  const handleChangePageSize = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const newPageIndex = Math.floor(start / parseInt(e.target.value));
+    if (newPageIndex === Math.floor(errors.length / pageSize))
+      setTogglePause(false);
+    else setTogglePause(true);
+    setPageSize(parseInt(e.target.value));
+    setPageIndex(newPageIndex);
+  };
+
   return (
     <>
       <TableContainer component={Paper} className={classes.tableWrapper}>
@@ -117,7 +135,7 @@ export const ErrorTable: FC = () => {
                     setTogglePause={setTogglePause}
                     pageIndex={pageIndex}
                     pageSize={pageSize}
-                    totalErrors={errors.length}
+                    totalMessages={errors.length}
                   />
                 )}
               />
