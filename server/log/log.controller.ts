@@ -7,7 +7,8 @@ import WebSocket, { Server } from 'ws';
 const url = require('url');
 import { handleAsync } from '../common';
 import { Log } from '../db/log.model';
-import { server } from '../index';
+// import { server } from '../index';
+import http from 'http';
 
 interface IErrors {
 	level: string;
@@ -29,8 +30,9 @@ const { combine, json, metadata, timestamp } = format;
 
 export class LogController {
 	static logCreator = () => {
+		const server = http.createServer();
 		const wss = new Server({ server });
-		wss.on('connection', () => console.log('ws: logger'));
+		wss.once('connection', () => console.log('ws: logger'));
 
 		const logger = createLogger({
 			level: 'error',
@@ -52,26 +54,28 @@ export class LogController {
 			],
 		});
 
-		// server.on('upgrade', (request, socket, head) => {
-		// 	const pathname = url.parse(request.url).pathname;
+		server.on('upgrade', (request, socket, head) => {
+			const pathname = url.parse(request.url).pathname;
 
-		// 	console.log('LOGGER: upgrade');
+			// called
+			console.log('LOGGER: upgrade');
+			console.log('path', pathname);
 
-		// 	if (pathname === '/api/notification') {
-		// 		wss.handleUpgrade(request, socket, head, ws => {
-		// 			wss.emit('connection', ws, request);
+			if (pathname === '/errors') {
+				wss.handleUpgrade(request, socket, head, ws => {
+					wss.emit('connection', ws, request);
 
-		// 			logger.on('data', (transports: any) => {
-		// 				const { level, message, metadata } = transports;
+					logger.on('data', (transports: any) => {
+						const { level, message, metadata } = transports;
 
-		// 				ws.send({ level, message, metadata });
-		// 				console.log('LOGGER: AFTER SEND');
-		// 			});
-		// 		});
-		// 	} else {
-		// 		socket.destroy();
-		// 	}
-		// });
+						ws.send({ level, message, metadata });
+						console.log('LOGGER: AFTER SEND');
+					});
+				});
+			} else {
+				socket.destroy();
+			}
+		});
 
 		return ({ namespace, log }: IProps) => {
 			const { message, broker, clientId, error, groupId } = log;
