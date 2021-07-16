@@ -1,9 +1,9 @@
-import React, { FC, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { overallState } from "../../state/reducers";
-import { KafkaState } from "../../state/reducers/kafkaDataReducer";
-import { TopicRow } from "./TopicsDisplay/TopicRow";
-import { populateData } from "../../helperFunctions/populateData";
+import React, { FC, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { overallState } from '../../state/reducers';
+import { KafkaState } from '../../state/reducers/kafkaDataReducer';
+import { TopicRow } from './TopicsDisplay/TopicRow';
+import { populateData } from '../../helperFunctions/populateData';
 
 /*
 ------------------------------Update------------------------
@@ -14,7 +14,7 @@ Topics Row is now part of topics display becasue of the collapsable table
 // const { ipcRenderer } = window.require("electron");
 
 // importing prop types
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 // importing componenets from Material UI
 import {
   Button,
@@ -33,29 +33,29 @@ import {
   Input,
   makeStyles,
   Modal,
-} from "@material-ui/core";
-import { ErrorRounded } from "@material-ui/icons";
+} from '@material-ui/core';
+import { ErrorRounded } from '@material-ui/icons';
 
 // importing icons from material-UI
-import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
+import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 
 // fucntion to make styles for rows
 const useRowStyles = makeStyles({
   root: {
-    "& > *": {
-      borderBottom: "unset",
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
   tableWrapper: {
     margin: 30,
-    boxShadow: "10px 5px 5px lightgrey;",
+    boxShadow: '10px 5px 5px lightgrey;',
   },
   tableHeaderRow: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
   },
   tableHeaderText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
@@ -67,11 +67,11 @@ interface Options {
 
 const TopicsDisplay = () => {
   const classes = useRowStyles();
-  const isConnected = useSelector<overallState, KafkaState["isConnected"]>(
+  const isConnected = useSelector<overallState, KafkaState['isConnected']>(
     (state) => state.kafka.isConnected
   );
 
-  const rows = useSelector<overallState, KafkaState["data"]>(
+  const rows = useSelector<overallState, KafkaState['data']>(
     (state) => state.kafka.data
   ); // [{topicName, partitions, ... }, {}]
 
@@ -89,20 +89,20 @@ const TopicsDisplay = () => {
 
   const handleCreateTopic = () => {
     const topicName: HTMLInputElement | null =
-      document.querySelector("#inputTopic");
+      document.querySelector('#inputTopic');
     if (topicName && topicName.value) {
       const options: Options = {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({ topic: topicName.value }),
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       };
 
-      fetch("/api/topic", options)
+      fetch('/api/topic', options)
         .then((data) => data.json())
         .then((data) => {
           populateData(data, dispatch);
           closeModal();
-          alert("got a response");
+          alert('got a response');
         })
         .catch((e) => console.log(e));
     }
@@ -111,22 +111,40 @@ const TopicsDisplay = () => {
   // onclick handler for deleting a topic
   const deleteTopicHandler = (topicName: String) => {
     const options: Options = {
-      method: "DELETE",
+      method: 'DELETE',
       body: JSON.stringify({ topic: topicName }),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     };
 
-    fetch("/api/topic", options)
+    fetch('/api/topic', options)
       .then((data) => data.json())
       .then((data) => {
         populateData(data, dispatch);
       })
-      .catch((e) => console.log("error in deleting topic, ", e));
+      .catch((e) => console.log('error in deleting topic, ', e));
+  };
+
+  const handleStartProducer = () => {
+    fetch('/api/producer', { method: 'GET' })
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const handleStartConsumer = () => {
+    fetch('/api/consumer', { method: 'GET' })
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
     <TableContainer component={Paper} className={classes.tableWrapper}>
-      <Table aria-label="collapsible table">
+      <Table aria-label='collapsible table'>
         {/* Table Head */}
         <TableHead>
           <TableRow className={classes.tableHeaderRow}>
@@ -140,23 +158,19 @@ const TopicsDisplay = () => {
           </TableRow>
         </TableHead>
 
-        <Button variant="contained" color="primary" onClick={openModal}>
+        <Button variant='text' color='primary' onClick={openModal}>
           Create Topic
         </Button>
         <Modal
           open={isModalOpen}
           onClose={closeModal}
-          aria-labelledby="create-partition"
-          aria-describedby="create-partition"
+          aria-labelledby='create-partition'
+          aria-describedby='create-partition'
         >
           <>
-            <Typography variant="h6">Enter Topic Name</Typography>
-            <Input id="inputTopic" type="text" placeholder="Topic Name" />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCreateTopic}
-            >
+            <Typography variant='h6'>Enter Topic Name</Typography>
+            <Input id='inputTopic' type='text' placeholder='Topic Name' />
+            <Button variant='text' color='primary' onClick={handleCreateTopic}>
               Create
             </Button>
           </>
@@ -169,7 +183,11 @@ const TopicsDisplay = () => {
               <React.Fragment>
                 <TopicRow key={row.topicName} row={row} />
                 {/* // delete a topic */}
-                <Button onClick={() => deleteTopicHandler(row.topicName)}>
+                <Button
+                  variant='text'
+                  color='primary'
+                  onClick={() => deleteTopicHandler(row.topicName)}
+                >
                   Delete
                 </Button>
               </React.Fragment>
@@ -178,6 +196,12 @@ const TopicsDisplay = () => {
           // create a topic
         )}
       </Table>
+      <Button variant='text' color='primary' onClick={handleStartProducer}>
+        Start Producer
+      </Button>
+      <Button variant='text' color='primary' onClick={handleStartConsumer}>
+        Start Consumer
+      </Button>
     </TableContainer>
   );
 };
