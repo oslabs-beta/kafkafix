@@ -3,9 +3,9 @@ import { Admin, Kafka, logLevel, SASLOptions } from 'kafkajs';
 import * as WebSocket from 'ws';
 import dotenv from 'dotenv';
 
-import { consumer } from './consumer.controller';
+// import { consumer } from './consumer.controller';
 import { LogController } from '../../log/log.controller';
-import { producer } from './producer.controller';
+// import { producer } from './producer.controller';
 import { handleAsync } from '../../common';
 
 dotenv.config();
@@ -36,6 +36,9 @@ export class KafkaController {
 		});
 
 		req.app.locals.kafka = kafka;
+		req.app.locals.consumer = {};
+		req.app.locals.producer = {};
+
 		return next();
 	};
 
@@ -51,8 +54,8 @@ export class KafkaController {
 		if (error) return next(error);
 		req.app.locals.admin = admin;
 
-		producer(kafka);
-		consumer(kafka, ws);
+		// producer(kafka);
+		// consumer(kafka, ws);
 
 		return next();
 	};
