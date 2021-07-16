@@ -11,18 +11,18 @@ import { Log } from '../db/log.model';
 import http from 'http';
 
 interface IErrors {
-	level: string;
-	namespace: string;
-	message: string;
-	error: string;
-	cliendId: string;
-	broker: string;
-	timestamp: string;
+  level: string;
+  namespace: string;
+  message: string;
+  error: string;
+  cliendId: string;
+  broker: string;
+  timestamp: string;
 }
 
 interface IProps {
-	namespace: string;
-	log: any; // CHECK type
+  namespace: string;
+  log: any; // CHECK type
 }
 
 const { createLogger, transports } = winston;

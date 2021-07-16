@@ -48,7 +48,7 @@ module.exports = {
       },
     ],
   },
-  target: 'node', 
+  target: 'node',
   externals: {
     fs: 'commonjs fs',
     path: 'commonjs path',
@@ -79,6 +79,6 @@ module.exports = {
     },
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 9000,
+    port: 8080,
   },
 };
