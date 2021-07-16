@@ -103,7 +103,7 @@ export class LogController {
 
         data.forEach((error) => {
           if (error.length > 1) {
-            console.log('empty=>', error);
+            console.log('type of empty=>', typeof error);
             errors.push(JSON.parse(error));
           }
         });
