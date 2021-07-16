@@ -1,7 +1,7 @@
 import express, { Request, Response, ErrorRequestHandler } from 'express';
 const path = require('path');
 import * as http from 'http';
-import * as WebSocket from 'ws';
+import WebSocket, { Server } from 'ws';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -19,8 +19,8 @@ dotenv.config();
 // initialize configuration
 const app = express();
 const PORT = process.env.PORT || 3000;
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+export const server = http.createServer(app);
+const wss = new Server({ server });
 
 // start DB
 new DB();
@@ -70,6 +70,7 @@ app.use(((err, req, res, next) => {
 // server
 server.listen(PORT, () => {
 	console.log(`Server on port ${PORT}`);
+	app.locals.server = server; //!
 
 	routes.forEach((route: RouteConfig) => {
 		console.log(`Route configured: ${route.routeName()}`);

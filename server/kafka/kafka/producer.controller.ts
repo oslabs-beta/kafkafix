@@ -21,6 +21,6 @@ export const producer = async (kafka: Kafka) => {
 				},
 			],
 		});
-		console.log('message produced');
+		// console.log('message produced');
 	}, 1000);
 };
