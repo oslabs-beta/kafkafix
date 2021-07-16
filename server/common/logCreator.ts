@@ -1,6 +1,5 @@
 import { format } from 'winston';
 const winston = require('winston');
-import Transport from 'winston-transport';
 require('winston-mongodb').MongoDB;
 
 interface IProps {
@@ -21,11 +20,6 @@ export const logCreator = () => {
 		),
 		transports: [
 			new transports.Console(),
-			// new transports.Http({
-			// 	host: 'localhost',
-			// 	port: 3000,
-			// 	path: '/notification',
-			// }),
 			new transports.File({ filename: 'error.log' }),
 			new transports.MongoDB({
 				level: 'error',
@@ -35,6 +29,12 @@ export const logCreator = () => {
 				format: combine(json(), metadata()),
 			}),
 		],
+	});
+
+	logger.on('data', (transports: any) => {
+		const { level, message, metadata } = transports;
+
+		// ws.send({ level, message, metadata });
 	});
 
 	return ({
@@ -52,17 +52,3 @@ export const logCreator = () => {
 		});
 	};
 };
-
-// server.once('upgrade', (req: any, socket: any, head: any) => {
-// 	const path = url.parse(req.url).pathname;
-
-// 	console.log('path', path);
-
-// 	if (path === '/errors') {
-// 		wss1.handleUpgrade(req, socket, head, ws => {
-// 			console.log('ws: /errors');
-// 			wss1.emit('connection', ws, req);
-// 			ws.send(errorFormat);
-// 		});
-// 	} else socket.destory();
-// });
