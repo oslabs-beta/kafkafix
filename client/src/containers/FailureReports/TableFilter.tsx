@@ -49,7 +49,7 @@ export const TableFilter: FC<TableFilterProps> = ({ errorMessage }) => {
   };
   return (
     <>
-      <div>{buttonState}</div>
+      {/* <div>{buttonState}</div> */}
       {/* to show selected filters */}
       <Paper>
         {errorMessage[0] &&

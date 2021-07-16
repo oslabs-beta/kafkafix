@@ -5,7 +5,7 @@ import WebSocket, { Server } from 'ws';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import { DB } from './db';
+// import { DB } from './db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
 import { GroupRoutes } from './kafka/group/group.routes';
@@ -44,12 +44,6 @@ app.get('/partition', (req, res) => {
 	return res
 		.status(200)
 		.sendFile(path.resolve(__dirname, '../client/src/index.html'));
-});
-
-app.post('/api/dockerfile', (req, res) => {
-	console.log('this is the request body =>', req.body);
-
-	return res.status(200).json('recieved the dockerfile');
 });
 
 // 404
