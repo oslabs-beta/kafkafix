@@ -89,7 +89,8 @@ export const TopicRow = (props: { row: any }) => {
     // fetch request
     const options: RequestInit | Options = {
       method: 'POST',
-      body: JSON.stringify({ name: input?.value }),
+      // body: JSON.stringify({ name: input?.value }),
+      body: JSON.stringify({ topic: 'kafkafix', count: 3 }),
     };
     //finish the then after getting reposne
     fetch('/api/partition', options)
@@ -217,7 +218,7 @@ export const TopicRow = (props: { row: any }) => {
                       <Input
                         id='inputPartition'
                         type='text'
-                        placeholder='Name Your Partition'
+                        placeholder='Number of partitons'
                       />
                       <Button
                         variant='contained'

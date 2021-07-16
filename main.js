@@ -27,7 +27,7 @@ function createWindow() {
   });
 
   const startURL = isDev
-    ? 'http://localhost:9000'
+    ? 'http://localhost:8080'
     : `file://${path.join(__dirname, './client/src/index.html')}`;
 
   // loading the html file
@@ -56,7 +56,7 @@ function createPartitionWindow() {
     height: 500,
   });
 
-  win.loadURL('http://localhost:9000/partition');
+  win.loadURL('http://localhost:8080/partition');
 }
 
 ipcMain.on('open-partition', () => {
@@ -90,18 +90,19 @@ function uploadFile() {
           const filePath = file.filePaths[0].toString();
           console.log(filePath);
 
-                axios
-                  .post('http://localhost:3000/api/dockerfile', {
-                    filepath: filePath,
-                  })
-                  .catch((e) =>
-                    console.log('error in sending fetch request for file', e)
-                  );
-              } else {
-                console.log('Error in reading file', err);
-              }
-            }).catch((e) => console.log('error in upload => ', e));
-          }
+          axios
+            .post('http://localhost:3000/api/dockerfile', {
+              filepath: filePath,
+            })
+            .catch((e) =>
+              console.log('error in sending fetch request for file', e)
+            );
+        } else {
+          console.log('Error in reading file', err);
+        }
+      })
+      .catch((e) => console.log('error in upload => ', e));
+  }
   // if using MacOS
   else {
     dialog
@@ -123,20 +124,21 @@ function uploadFile() {
         if (!file.canceled) {
           const filePath = file.filePaths[0].toString();
           console.log(filePath);
-          
-                axios
-                  .post('http://localhost:3000/api/dockerfile', {
-                    filepath: filePath,
-                  })
-                  .catch((e) =>
-                    console.log('error in sending fetch request for file', e)
-                  );
-              } else {
-                console.log('Error in reading file', err);
-              }
-            }).catch((e) => console.log('error in uplaoding file', e));
-          }
+
+          axios
+            .post('http://localhost:3000/api/dockerfile', {
+              filepath: filePath,
+            })
+            .catch((e) =>
+              console.log('error in sending fetch request for file', e)
+            );
+        } else {
+          console.log('Error in reading file', err);
         }
+      })
+      .catch((e) => console.log('error in uplaoding file', e));
+  }
+}
 
 // function to recive the message on click from the react app
 ipcMain.on('upload-file', () => {
