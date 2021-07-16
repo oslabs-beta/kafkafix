@@ -103,7 +103,7 @@ const Connect: FC = props => {
 		fetch('/api/connect', options)
 			.then(data => data.json())
 			.then(data => {
-				fetch('/api/notification')
+				fetch('/api/notification', {method: 'GET', headers: { 'content-type': 'application/json' }})
 					.then((data: any) => data.json())
 					.then((data: Error[]) => {
 						console.log(data);

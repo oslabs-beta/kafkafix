@@ -29,8 +29,8 @@ const { combine, json, metadata, timestamp } = format;
 
 export class LogController {
   static logCreator = () => {
-    const wss = new Server({ server });
-    wss.on('connection', () => console.log('ws: logger'));
+    // const wss = new Server({ server });
+    // wss.on('connection', () => console.log('ws: logger'));
 
     const logger = createLogger({
       level: 'error',
@@ -102,7 +102,10 @@ export class LogController {
         const errors: IErrors[] = [];
 
         data.forEach((error) => {
-          if (error.length > 1) errors.push(JSON.parse(error));
+          if (error.length > 1) {
+            console.log('empty=>', error);
+            errors.push(JSON.parse(error));
+          }
         });
 
         res.locals.errors = errors; //!
