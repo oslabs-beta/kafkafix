@@ -70,6 +70,7 @@ app.use(((err, req, res, next) => {
 // server
 server.listen(PORT, () => {
 	console.log(`Server on port ${PORT}`);
+	app.locals.server = server; //!
 
 	routes.forEach((route: RouteConfig) => {
 		console.log(`Route configured: ${route.routeName()}`);

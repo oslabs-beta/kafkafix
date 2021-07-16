@@ -1,36 +1,19 @@
-import { logLevel } from 'kafkajs';
 import { format } from 'winston';
 const winston = require('winston');
-require('winston-mongodb').MongoDB; //! check
+import Transport from 'winston-transport';
+require('winston-mongodb').MongoDB;
 
 interface IProps {
 	namespace: string;
-	level: any; //! why not string
 	log: any; // CHECK type
 }
 
 const { createLogger, transports } = winston;
 const { combine, json, metadata, timestamp } = format;
 
-// CHECK types
-const toWinstonLogLevel = (level: any) => {
-	switch (level) {
-		case logLevel.ERROR:
-		case logLevel.NOTHING:
-			return 'error';
-		case logLevel.WARN:
-			return 'warn';
-		case logLevel.INFO:
-			return 'info';
-		case logLevel.DEBUG:
-			return 'debug';
-	}
-};
-
-// CHECK types
-export const logCreator = (logLevel: any) => {
+export const logCreator = () => {
 	const logger = createLogger({
-		level: toWinstonLogLevel(logLevel),
+		level: 'error',
 		format: combine(
 			timestamp({ format: 'YYY-MM-DD hh:mm:ss' }),
 			json(),
@@ -38,6 +21,11 @@ export const logCreator = (logLevel: any) => {
 		),
 		transports: [
 			new transports.Console(),
+			// new transports.Http({
+			// 	host: 'localhost',
+			// 	port: 3000,
+			// 	path: '/notification',
+			// }),
 			new transports.File({ filename: 'error.log' }),
 			new transports.MongoDB({
 				level: 'error',
@@ -49,11 +37,12 @@ export const logCreator = (logLevel: any) => {
 		],
 	});
 
-// ADD configure websocket for realtime
-	return ({ namespace, level, log }: IProps) => {
-		const { message, broker, clientId, error, groupId } = log;
+	return ({
+		namespace,
+		log: { message, broker, clientId, error, groupId },
+	}: IProps) => {
 		logger.log({
-			level: toWinstonLogLevel(level),
+			level: 'error',
 			namespace,
 			message,
 			error,
@@ -63,3 +52,17 @@ export const logCreator = (logLevel: any) => {
 		});
 	};
 };
+
+// server.once('upgrade', (req: any, socket: any, head: any) => {
+// 	const path = url.parse(req.url).pathname;
+
+// 	console.log('path', path);
+
+// 	if (path === '/errors') {
+// 		wss1.handleUpgrade(req, socket, head, ws => {
+// 			console.log('ws: /errors');
+// 			wss1.emit('connection', ws, req);
+// 			ws.send(errorFormat);
+// 		});
+// 	} else socket.destory();
+// });

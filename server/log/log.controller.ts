@@ -1,9 +1,19 @@
 import { RequestHandler } from 'express';
 import fs from 'fs';
-import WebSocket from 'ws';
+import * as WebSocket from 'ws';
 
 import { handleAsync } from '../common';
 import { Log } from '../db/log.model';
+
+interface IErrors {
+	level: string;
+	namespace: string;
+	message: string;
+	error: string;
+	cliendId: string;
+	broker: string;
+	timestamp: string;
+}
 
 export class LogController {
 	/**
@@ -13,19 +23,23 @@ export class LogController {
 	// CHECK after packaging, does the file save to right place?
 	static getErrors: RequestHandler = (req, res, next) => {
 		const path = './error.log';
-		const ws: WebSocket = req.app.locals.ws;
+		// const server = req.app.locals.server;
+		const wss = new WebSocket.Server({ noServer: true });
+
+		wss.on('connection', ws => {
+			console.log('ws: getErrors');
+		});
 
 		try {
 			if (fs.existsSync(path)) {
 				const data = fs.readFileSync('./error.log').toString().split('\r\n');
-				const errors: any[] = [];
+				const errors: IErrors[] = [];
 
 				data.forEach(error => {
 					if (error.length > 1) errors.push(JSON.parse(error));
 				});
 
 				res.locals.errors = errors;
-				ws.send(errors);
 			}
 
 			return next();

@@ -1,12 +1,11 @@
 import { RequestHandler } from 'express';
-import { Admin, Kafka, logLevel, SASLMechanism } from 'kafkajs';
+import { Admin, Kafka, logLevel } from 'kafkajs';
 import * as WebSocket from 'ws';
 import dotenv from 'dotenv';
 
 import { consumer } from './consumer.controller';
 import { producer } from './producer.controller';
 import { handleAsync, logCreator } from '../../common';
-import { SaveAltSharp } from '@material-ui/icons';
 
 dotenv.config();
 
@@ -47,8 +46,8 @@ export class KafkaController {
 		if (error) return next(error);
 		req.app.locals.admin = admin;
 
-		// producer(kafka);
-		// consumer(kafka, ws);
+		producer(kafka);
+		consumer(kafka, ws);
 
 		return next();
 	};
