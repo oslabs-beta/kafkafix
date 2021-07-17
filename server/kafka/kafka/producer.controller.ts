@@ -3,6 +3,7 @@ import { Producer } from 'kafkajs';
 
 import { handleAsync, mockData } from '../../common';
 
+// show list of producers / consumers
 class ProducerController {
 	static producer: RequestHandler = async (req, res, next) => {
 		console.log('PRODUCER');
