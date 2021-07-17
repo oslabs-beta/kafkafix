@@ -18,9 +18,6 @@ import { PartitionScreen } from './containers/PartitionScreen/PartitionScreen';
 
 const wss = ws();
 
-import { MBeans } from '../../server/jmx/MBeans';
-import { useFetch } from './hooks/useFetch';
-
 const App = async () => {
 	const dispatch = useDispatch();
 	const messages = useSelector<overallState, KafkaState['messages']>(

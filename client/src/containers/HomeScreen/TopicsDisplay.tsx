@@ -39,8 +39,6 @@ import { ErrorRounded } from '@material-ui/icons';
 
 // importing icons from material-UI
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
-import { useFetch } from '../../hooks/useFetch';
-import { MBeans } from '../../../../server/jmx/MBeans';
 
 // fucntion to make styles for rows
 const useRowStyles = makeStyles({
@@ -85,10 +83,6 @@ const TopicsDisplay = async () => {
 	const classes = useRowStyles();
 	const isConnected = useSelector<overallState, KafkaState['isConnected']>(
 		state => state.kafka.isConnected
-	);
-
-	const data = await useFetch(
-		`http://localhost:9090/api/v1/query?query=${MBeans.isrShrinksPerSec}`
 	);
 
 	const rows = useSelector<overallState, KafkaState['data']>(
