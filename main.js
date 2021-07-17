@@ -64,78 +64,80 @@ ipcMain.on('open-partition', () => {
 });
 
 function uploadFile() {
-	// first we need to get the filePath, then send it to backend
+  // first we need to get the filePath, then send it to backend
 
-	// if using Windows or Linux
-	if (process.platform !== 'darwin') {
-		// Resolves to a Promise<Object>
-		dialog
-			.showOpenDialog({
-				title: 'Select your docker-compose file',
-				defaultPath: path.join(__dirname, '../assets/'),
-				buttonLabel: 'Select',
-				// Restricting the user to only YML Files.
-				filters: [
-					{
-						name: 'YML file',
-						extensions: ['yml'],
-					},
-				],
-				// Specifying the File Selector Property
-				properties: ['openFile'],
-			})
-			.then(file => {
-				// if file wasn't canceled
-				if (!file.canceled) {
-					const filePath = file.filePaths[0].toString();
+  // if using Windows or Linux
+  if (process.platform !== 'darwin') {
+    // Resolves to a Promise<Object>
+    dialog
+      .showOpenDialog({
+        title: 'Select your docker-compose file',
+        defaultPath: path.join(__dirname, '../assets/'),
+        buttonLabel: 'Upload',
+        // Restricting the user to only YML Files.
+        // filters: [
+        //   {
+        //     name: 'YML file',
+        //     extensions: ['yml', 'yaml'],
+        //   },
+        // ],
+        // Specifying the File Selector Property
+        properties: ['openFile'],
+      })
+      .then((file) => {
+        // if file wasn't canceled
+        if (!file.canceled) {
+          const filePath = file.filePaths[0].toString();
+          console.log(filePath);
 
-					axios
-						.post('http://localhost:3000/api/dockerfile', {
-							filePath,
-						})
-						.catch(e =>
-							console.log('error in sending fetch request for file', e)
-						);
-				} else {
-					console.log('Error in reading file', err);
-				}
-			})
-			.catch(e => console.log('error in upload => ', e));
-	}
-	// if using MacOS
-	else {
-		dialog
-			.showOpenDialog({
-				title: 'Select your docker-compose file',
-				defaultPath: path.join(__dirname, '../assets/'),
-				buttonLabel: 'Select',
-				// Restricting the user to only YML Files.
-				filters: [
-					{
-						name: 'YML file',
-						extensions: ['yml'],
-					},
-				],
-				// Specifying the File Selector and Directory selector Property In macOS
-				properties: ['openFile', 'openDirectory'],
-			})
-			.then(file => {
-				if (!file.canceled) {
-					const filePath = file.filePaths[0].toString();
+          axios
+            .post('http://localhost:3000/api/dockerfile', {
+              filepath: filePath,
+            })
+            .catch((e) =>
+              console.log('error in sending fetch request for file', e)
+            );
+        } else {
+          console.log('Error in reading file', err);
+        }
+      })
+      .catch((e) => console.log('error in upload => ', e));
+  }
+  // if using MacOS
+  else {
+    dialog
+      .showOpenDialog({
+        title: 'Select your docker-compose file',
+        defaultPath: path.join(__dirname, '../assets/'),
+        buttonLabel: 'Upload',
+        // Restricting the user to only YML Files.
+        // filters: [
+        //   {
+        //     name: 'YML file',
+        //     extensions: ['yml', 'yaml'],
+        //   },
+        // ],
+        // Specifying the File Selector and Directory selector Property In macOS
+        properties: ['openFile', 'openDirectory'],
+      })
+      .then((file) => {
+        if (!file.canceled) {
+          const filePath = file.filePaths[0].toString();
+          console.log(filePath);
 
-					axios
-						.post('http://localhost:3000/api/dockerfile', {
-							filePath,
-						})
-						.catch(e =>
-							console.log('error in sending fetch request for file', e)
-						);
-				} else {
-					console.log('Error in reading file', err);
-				}
-			})
-			.catch(e => console.log('error in uplaoding file', e));
-	}
+          axios
+            .post('http://localhost:3000/api/dockerfile', {
+              filepath: filePath,
+            })
+            .catch((e) =>
+              console.log('error in sending fetch request for file', e)
+            );
+        } else {
+          console.log('Error in reading file', err);
+        }
+      })
+      .catch((e) => console.log('error in uplaoding file', e));
+  }
 }
 
 // function to recive the message on click from the react app
