@@ -18,12 +18,12 @@ export class KafkaController {
 			logCreator: LogController.logCreator,
 		});
 
-    req.app.locals.kafka = kafka;
-    req.app.locals.consumer = {};
-    req.app.locals.producer = {};
+		req.app.locals.kafka = kafka;
+		req.app.locals.consumer = {};
+		req.app.locals.producer = {};
 
-    return next();
-  };
+		return next();
+	};
 
 	/**
 	 * @desc  starts an instance of admin
@@ -33,8 +33,8 @@ export class KafkaController {
 		const admin = kafka.admin();
 		const [, error] = await handleAsync(admin.connect());
 
-    if (error) return next(error);
-    req.app.locals.admin = admin;
+		if (error) return next(error);
+		req.app.locals.admin = admin;
 
 		return next();
 	};
@@ -47,7 +47,10 @@ export class KafkaController {
 		const { filePath } = req.body;
 		const folderPath = filePath.slice(0, filePath.lastIndexOf('\\'));
 
+		console.log('folder path', folderPath);
+
 		exec(`docker compose up ${folderPath}`);
+		console.log('hi');
 		return next();
 	};
 
@@ -56,24 +59,24 @@ export class KafkaController {
 	 */
 	// I need path that was stored to docker compose down
 	static composeDown: RequestHandler = async (req, res, next) => {
-		const { filePath } = req.body;
-		const folderPath = filePath.slice(0, filePath.lastIndexOf('\\'));
+		const { folderPath } = req.body;
+		// const folderPath = filePath.slice(0, filePath.lastIndexOf('\\'));
 
 		exec(`docker compose down ${folderPath}`);
 		return next();
 	};
 
-  /**
-   * @desc      get information about the broker cluster
-   * @returns   {{}}
-   */
-  static describeCluster: RequestHandler = async (req, res, next) => {
-    const admin: Admin = req.app.locals.admin;
-    const [cluster, error] = await handleAsync(admin.describeCluster());
+	/**
+	 * @desc      get information about the broker cluster
+	 * @returns   {{}}
+	 */
+	static describeCluster: RequestHandler = async (req, res, next) => {
+		const admin: Admin = req.app.locals.admin;
+		const [cluster, error] = await handleAsync(admin.describeCluster());
 
-    if (error) return next(error);
-    res.locals.cluster = cluster;
+		if (error) return next(error);
+		res.locals.cluster = cluster;
 
-    return next();
-  };
+		return next();
+	};
 }
