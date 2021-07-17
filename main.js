@@ -78,7 +78,7 @@ function uploadFile() {
         filters: [
           {
             name: 'YML file',
-            extensions: ['yml'],
+            extensions: ['yml', 'yaml'],
           },
         ],
         // Specifying the File Selector Property
@@ -114,7 +114,7 @@ function uploadFile() {
         filters: [
           {
             name: 'YML file',
-            extensions: ['yml'],
+            extensions: ['yml', 'yaml'],
           },
         ],
         // Specifying the File Selector and Directory selector Property In macOS
