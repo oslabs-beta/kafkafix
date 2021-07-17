@@ -4,7 +4,7 @@ import { Admin } from 'kafkajs';
 import { handleAsync } from '../../common';
 
 export class TopicController {
-	/**
+	/** //*
 	 * @desc      list the names of all existing topics
 	 * @returns   {string[]}
 	 */
@@ -18,7 +18,8 @@ export class TopicController {
 		return next();
 	};
 
-	/** // ADD handle multiple topics
+	/** //*
+   * ADD handle multiple topics
 	 * @desc    create topics
 	 * @param   {string[]{}}  topics
 	 * @param   {string}      topic
@@ -40,7 +41,7 @@ export class TopicController {
 		return next();
 	};
 
-	/** // CHECK timeout prop optional? timeout: <Number>
+	/** //*
 	 * @desc    delete a topic
 	 * @param   {string[]}  topics
 	 * @param   { string }  topic
@@ -57,7 +58,7 @@ export class TopicController {
 		return next();
 	};
 
-	/**
+	/** //*
 	 * @desc    create partitions for a topic.
 	 * @secs    It will resolve in case of success. In case of errors, method will throw exceptions
 	 * @param   {[]{}}    topicPartitions
@@ -67,9 +68,6 @@ export class TopicController {
 	static createPartition: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
 		const { topic, count } = req.body;
-		console.log('body', req.body);
-
-		console.log('create partition', topic, count);
 		const [, error] = await handleAsync(
 			admin.createPartitions({ topicPartitions: [{ topic, count }] })
 		);
@@ -98,7 +96,7 @@ export class TopicController {
 		return next();
 	};
 
-	/**
+	/** //*
 	 * @desc     get metadata for all topics
 	 * @returns  // CHECK
 	 */

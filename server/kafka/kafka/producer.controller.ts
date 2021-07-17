@@ -1,54 +1,41 @@
 import { RequestHandler } from 'express';
-import { Kafka, Producer } from 'kafkajs';
+import { Producer } from 'kafkajs';
 
 import { handleAsync, mockData } from '../../common';
 
-export const producer = async (kafka: Kafka) => {
-  const topic = 'kafkafix';
-  const producer = kafka.producer();
-  const [, error] = await handleAsync(producer.connect());
+class ProducerController {
+	/**
+	 * @desc     starts producer for all topics in the list
+	 */
+	static producer: RequestHandler = (req, res, next) => {
+		const topics = res.locals.topics;
 
-  if (error) return error;
+		topics.forEach(async (topic: string) => {
+			const producer: Producer = req.app.locals.kafka.producer();
+			const store = req.app.locals.producer;
 
-  let i = 0;
-  setInterval(async () => {
-    await producer.send({
-      topic,
-      messages: [
-        {
-          key: i.toString(),
-          value: JSON.stringify(mockData[i++]),
-        },
-      ],
-    });
-    // console.log('message produced');
-  }, 1000);
-};
+			store[topic] ? store[topic].push(producer) : (store[topic] = [producer]);
 
-export class ProducerController {
-  static producer: RequestHandler = async (req, res, next) => {
-    const { topic } = req.body;
-    const producer: Producer = req.app.locals.kafka.producer();
-    req.app.locals.producer[topic] = producer;
+			const [, error] = await handleAsync(producer.connect());
+			if (error) return error;
 
-    const [, error] = await handleAsync(producer.connect());
-    if (error) return error;
+			let i = 0;
+			setInterval(async () => {
+				await producer.send({
+					topic,
+					messages: [
+						{
+							key: i.toString(),
+							value: JSON.stringify(mockData[i++]),
+						},
+					],
+				});
+				console.log(`message produced to topic: ${topic}`);
+			}, 1000);
+		});
 
-    let i = 0;
-    setInterval(async () => {
-      await producer.send({
-        topic,
-        messages: [
-          {
-            key: i.toString(),
-            value: JSON.stringify(mockData[i++]),
-          },
-        ],
-      });
-      console.log('message produced');
-    }, 1000);
-
-    console.log('Producer: next');
-    return next();
-  };
+		return next();
+	};
 }
+
+export default ProducerController;

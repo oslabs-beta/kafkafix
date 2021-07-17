@@ -16,51 +16,51 @@ const axios = require('axios').default;
 
 // function for creating a window
 function createWindow() {
-  const win = new BrowserWindow({
-    width: 1000,
-    height: 800,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
+	const win = new BrowserWindow({
+		width: 1000,
+		height: 800,
+		webPreferences: {
+			preload: path.join(__dirname, 'preload.js'),
+			nodeIntegration: true,
+			contextIsolation: false,
+		},
+	});
 
-  const startURL = isDev
-    ? 'http://localhost:8080'
-    : `file://${path.join(__dirname, './client/src/index.html')}`;
+	const startURL = isDev
+		? 'http://localhost:8080'
+		: `file://${path.join(__dirname, './client/src/index.html')}`;
 
-  // loading the html file
-  win.loadURL(startURL);
+	// loading the html file
+	win.loadURL(startURL);
 }
 
 app.whenReady().then(() => {
-  // calling the function above
-  createWindow();
+	// calling the function above
+	createWindow();
 
-  // activating the app when no windows are available opens a new one
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
+	// activating the app when no windows are available opens a new one
+	app.on('activate', () => {
+		if (BrowserWindow.getAllWindows().length === 0) createWindow();
+	});
 
-  // closes app when all windows are closed - for windows/linux
-  app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit();
-  });
+	// closes app when all windows are closed - for windows/linux
+	app.on('window-all-closed', function () {
+		if (process.platform !== 'darwin') app.quit();
+	});
 });
 
 // fucntion for creating partition window
 function createPartitionWindow() {
-  const win = new BrowserWindow({
-    width: 500,
-    height: 500,
-  });
+	const win = new BrowserWindow({
+		width: 500,
+		height: 500,
+	});
 
-  win.loadURL('http://localhost:8080/partition');
+	win.loadURL('http://localhost:8080/partition');
 }
 
 ipcMain.on('open-partition', () => {
-  createPartitionWindow();
+	createPartitionWindow();
 });
 
 function uploadFile() {
@@ -142,5 +142,5 @@ function uploadFile() {
 
 // function to recive the message on click from the react app
 ipcMain.on('upload-file', () => {
-  uploadFile();
+	uploadFile();
 });
