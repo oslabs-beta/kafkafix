@@ -33,6 +33,7 @@ import {
   Input,
   makeStyles,
   Modal,
+  Checkbox,
 } from '@material-ui/core';
 import { ErrorRounded } from '@material-ui/icons';
 
@@ -58,12 +59,18 @@ const useRowStyles = makeStyles({
     fontWeight: 'bold',
   },
   modal: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#75BEDA',
-	}
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#75BEDA',
+  },
+  buttonNotSelected: {
+    backgroundColor: 'white',
+  },
+  buttonSelected: {
+    backgroundColor: 'blue',
+  },
 });
 
 interface Options {
@@ -89,13 +96,13 @@ const TopicsDisplay = () => {
 
   const toggleCreateTopicModal = () => {
     setModalForCreateTopic(!modalForCreateTopic);
-  }
+  };
 
-  const [modalForConsumer, setModalForConsumer] = useState(false)
+  const [modalForConsumer, setModalForConsumer] = useState(false);
 
   const toggleConsumerModal = () => {
-    setModalForConsumer(!modalForConsumer)
-  }
+    setModalForConsumer(!modalForConsumer);
+  };
 
   const handleCreateTopic = () => {
     const topicName: HTMLInputElement | null =
@@ -150,6 +157,54 @@ const TopicsDisplay = () => {
         console.log(data);
       })
       .catch((e) => console.log(e));
+  };
+
+  // let defaultObj: any = {};
+  // rows.forEach((obj) => (defaultObj[obj.topicName] = false));
+  // // {topic1: false, topic2: false ... }
+  // const [buttonState, setButtonState] = useState(defaultObj);
+  // console.log(buttonState);
+
+  // interface Colors {
+  //   buttonSelected: string;
+  //   buttonNotSelected: string;
+  // }
+
+  // const colorSwitch: any = {
+  //   buttonSelected: 'buttonNotSelected',
+  //   buttonNotSelected: 'buttonSelected',
+  // };
+
+  const handleSelectTopicClick = () => {
+    const input1 = document.querySelector('#selectTopic');
+    const input2 = document.querySelector('#createGroupID');
+
+    const topic = input1?.value;
+    const groupId = input2?.value;
+    console.log('topic: ', topic, 'groupId ', groupId);
+
+    const option = {
+      method: 'POST',
+      body: JSON.stringify({ topic, groupId }),
+      headers: { 'content-type': 'application/json' },
+    };
+
+    fetch('/api/consumer', option)
+      .then((data) => data.json())
+      .then((data) => toggleConsumerModal())
+      .catch((e) => console.log(e.target));
+    // console.log('after split ', e.target.id.split('button'));
+    // const [, key] = e.target.id.split('button');
+    // console.log('topic is ', key);
+    // setButtonState({ ...buttonState, [key]: !buttonState[key] });
+    // console.log('event target class', e.target.className);
+    // e.target.className = colorSwitch[e.target.className];
+    // console.log('event target class after switch ', e.target.className);
+    // console.log(e.target.className === 'buttonSelected');
+    // if (e.target.className === 'buttonSelected')
+    //   e.target.style = classes.buttonSelected;
+    // else if (e.target.className === 'buttonNotSelected')
+    //   e.target.style = classes.buttonNotSelected;
   };
 
   return (
@@ -226,18 +281,21 @@ const TopicsDisplay = () => {
       >
         <>
           <Typography variant='h6'>Select Topics To Read</Typography>
-          {/* options for topics to read from below */}
-          {/* options for topics to read from below */}
+
+          <Input id='selectTopic' type='text' placeholder='Kafkafix' />
+
           <Typography variant='h6'>Create A Group ID</Typography>
+
           <Input
             id='createGroupID'
             type='text'
             placeholder='Create a Group ID'
           />
+
           <Button
             variant='contained'
             color='primary'
-            // onClick={handleCreatePartition}
+            onClick={handleSelectTopicClick}
           >
             Start Consumer
           </Button>

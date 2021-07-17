@@ -75,12 +75,12 @@ function uploadFile() {
         defaultPath: path.join(__dirname, '../assets/'),
         buttonLabel: 'Upload',
         // Restricting the user to only YML Files.
-        filters: [
-          {
-            name: 'YML file',
-            extensions: ['yml', 'yaml'],
-          },
-        ],
+        // filters: [
+        //   {
+        //     name: 'YML file',
+        //     extensions: ['yml', 'yaml'],
+        //   },
+        // ],
         // Specifying the File Selector Property
         properties: ['openFile'],
       })
@@ -111,12 +111,12 @@ function uploadFile() {
         defaultPath: path.join(__dirname, '../assets/'),
         buttonLabel: 'Upload',
         // Restricting the user to only YML Files.
-        filters: [
-          {
-            name: 'YML file',
-            extensions: ['yml', 'yaml'],
-          },
-        ],
+        // filters: [
+        //   {
+        //     name: 'YML file',
+        //     extensions: ['yml', 'yaml'],
+        //   },
+        // ],
         // Specifying the File Selector and Directory selector Property In macOS
         properties: ['openFile', 'openDirectory'],
       })

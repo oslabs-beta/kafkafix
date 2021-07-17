@@ -17,7 +17,7 @@ import { Interface } from 'readline';
 //   Interface
 // importing styles
 const colorState: any = {
-  buttonSelected: 'white',
+  buttonSelected: 'blue',
   buttonNotSelected: 'white',
 };
 
