@@ -57,6 +57,13 @@ const useRowStyles = makeStyles({
     color: 'white',
     fontWeight: 'bold',
   },
+  modal: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#75BEDA',
+	}
 });
 
 interface Options {
@@ -75,17 +82,20 @@ const TopicsDisplay = () => {
     (state) => state.kafka.data
   ); // [{topicName, partitions, ... }, {}]
 
-  const [isModalOpen, setOpenModal] = useState(false);
-
   const dispatch = useDispatch();
 
-  const openModal = () => {
-    setOpenModal(true);
-  };
+  // local state to create a topic
+  const [modalForCreateTopic, setModalForCreateTopic] = useState(false);
 
-  const closeModal = () => {
-    setOpenModal(false);
-  };
+  const toggleCreateTopicModal = () => {
+    setModalForCreateTopic(!modalForCreateTopic);
+  }
+
+  const [modalForConsumer, setModalForConsumer] = useState(false)
+
+  const toggleConsumerModal = () => {
+    setModalForConsumer(!modalForConsumer)
+  }
 
   const handleCreateTopic = () => {
     const topicName: HTMLInputElement | null =
@@ -101,7 +111,7 @@ const TopicsDisplay = () => {
         .then((data) => data.json())
         .then((data) => {
           populateData(data, dispatch);
-          closeModal();
+          toggleCreateTopicModal();
           alert('got a response');
         })
         .catch((e) => console.log(e));
@@ -158,14 +168,15 @@ const TopicsDisplay = () => {
           </TableRow>
         </TableHead>
 
-        <Button variant='text' color='primary' onClick={openModal}>
+        <Button variant='text' color='primary' onClick={toggleCreateTopicModal}>
           Create Topic
         </Button>
         <Modal
-          open={isModalOpen}
-          onClose={closeModal}
+          open={modalForCreateTopic}
+          onClose={toggleCreateTopicModal}
           aria-labelledby='create-partition'
           aria-describedby='create-partition'
+          className={classes.modal}
         >
           <>
             <Typography variant='h6'>Enter Topic Name</Typography>
@@ -199,9 +210,39 @@ const TopicsDisplay = () => {
       <Button variant='text' color='primary' onClick={handleStartProducer}>
         Start Producer
       </Button>
-      <Button variant='text' color='primary' onClick={handleStartConsumer}>
+      <Button
+        onClick={toggleConsumerModal}
+        variant='contained'
+        color='secondary'
+      >
         Start Consumer
       </Button>
+      <Modal
+        open={modalForConsumer}
+        onClose={toggleConsumerModal}
+        aria-labelledby='create-partition'
+        aria-describedby='create-partition'
+        className={classes.modal}
+      >
+        <>
+          <Typography variant='h6'>Select Topics To Read</Typography>
+          {/* options for topics to read from below */}
+          {/* options for topics to read from below */}
+          <Typography variant='h6'>Create A Group ID</Typography>
+          <Input
+            id='createGroupID'
+            type='text'
+            placeholder='Create a Group ID'
+          />
+          <Button
+            variant='contained'
+            color='primary'
+            // onClick={handleCreatePartition}
+          >
+            Start Consumer
+          </Button>
+        </>
+      </Modal>
     </TableContainer>
   );
 };
