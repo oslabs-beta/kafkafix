@@ -117,7 +117,7 @@ function uploadFile() {
 					},
 				],
 				// Specifying the File Selector and Directory selector Property In macOS
-				properties: ['openFile', 'openDirectory'],
+				properties: ['openFile'],
 			})
 			.then(file => {
 				if (!file.canceled) {

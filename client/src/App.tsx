@@ -21,34 +21,34 @@ const wss = ws();
 import { MBeans } from '../../server/jmx/MBeans';
 import { useFetch } from './hooks/useFetch';
 
-const App: FC = () => {
-  const dispatch = useDispatch();
-  const messages = useSelector<overallState, KafkaState['messages']>(
-    (state) => state.kafka.messages
-  );
+const App = async () => {
+	const dispatch = useDispatch();
+	const messages = useSelector<overallState, KafkaState['messages']>(
+		state => state.kafka.messages
+	);
 
-  return (
-    <>
-      <Router>
-        <Switch>
-          <Route path='/' exact component={HomeScreen} />
-          <Route path='/metrics' component={MetricsScreen} />
-          <Route path='/failureReports' component={FailureReportScreen} />
-          <Route
-            path='/partition/:topic/:partitionID'
-            render={(props) => (
-              <PartitionScreen
-                topic={props.match.params.topic}
-                partitionID={props.match.params.partitionID}
-                ws={wss}
-              />
-            )}
-          />
-          {/* <Route path="/partition" component={PartitionScreen} /> */}
-        </Switch>
-      </Router>
-    </>
-  );
+	return (
+		<>
+			<Router>
+				<Switch>
+					<Route path='/' exact component={HomeScreen} />
+					<Route path='/metrics' component={MetricsScreen} />
+					<Route path='/failureReports' component={FailureReportScreen} />
+					<Route
+						path='/partition/:topic/:partitionID'
+						render={props => (
+							<PartitionScreen
+								topic={props.match.params.topic}
+								partitionID={props.match.params.partitionID}
+								ws={wss}
+							/>
+						)}
+					/>
+					{/* <Route path="/partition" component={PartitionScreen} /> */}
+				</Switch>
+			</Router>
+		</>
+	);
 };
 
 export default App;
