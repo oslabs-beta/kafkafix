@@ -102,14 +102,18 @@ export class LogController {
 
 		try {
 			if (fs.existsSync(path)) {
-				const data = fs.readFileSync('./error.log').toString().split('\r\n');
+				const darwin = process.platform === 'darwin';
+				let data: string | string[] = fs.readFileSync('./error.log').toString();
 				const errors: IErrors[] = [];
+
+				if (darwin) data = data.split('\n');
+				else data = data.split('\r\n');
 
 				data.forEach(error => {
 					if (error.length > 1) errors.push(JSON.parse(error));
 				});
 
-				res.locals.errors = errors; //!
+				res.locals.errors = errors;
 			}
 
 			return next();

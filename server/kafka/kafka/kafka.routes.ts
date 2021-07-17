@@ -4,10 +4,7 @@ import { RouteConfig } from '../../common/route.config';
 import { KafkaController } from './kafka.controller';
 import { TopicController } from '../topic/topic.controller';
 import { Docker } from './docker.controller';
-import { KafkaMetricsController } from '../../jmx/kafka.metrics.controller';
-import { JVMMetricsController } from '../../jmx/jvm.metrics.controller';
-import { LogController } from '../../log/log.controller';
-import { ProducerController } from './producer.controller';
+import ProducerController from './producer.controller';
 import { ConsumerController } from './consumer.controller';
 
 export class KafkaRoutes extends RouteConfig {
@@ -30,17 +27,21 @@ export class KafkaRoutes extends RouteConfig {
 		 * @POST     Initialize producer
 		 * @desc     Initialize an instance of producer
 		 */
-		this.app.route('/api/producer').get([ProducerController.producer], (req: Request, res: Response) => {
-			return res.status(200);
-		});
+		this.app
+			.route('/api/producer')
+			.get([ProducerController.producer], (req: Request, res: Response) => {
+				return res.status(200);
+			});
 
 		/**
 		 * @POST     Initialize consumer
 		 * @desc     Initialize an instance of consumer
 		 */
-		this.app.route('/api/consumer').get([ConsumerController.consumer], (req: Request, res: Response) => {
-			return res.status(200);
-		});
+		this.app
+			.route('/api/consumer')
+			.get([ConsumerController.consumer], (req: Request, res: Response) => {
+				return res.status(200);
+			});
 
 		/**
 		 * @POST     Initialize kafka
