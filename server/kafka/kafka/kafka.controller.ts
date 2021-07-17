@@ -1,14 +1,14 @@
 import { RequestHandler } from 'express';
-import { Admin, Kafka, logLevel } from 'kafkajs';
+import { Admin, Kafka, logLevel, SASLOptions } from 'kafkajs';
 import * as WebSocket from 'ws';
+import dotenv from 'dotenv';
 
-import { consumer } from './consumer.controller';
-import { producer } from './producer.controller';
-import { handleAsync, logCreator } from '../../common';
+// import { consumer } from './consumer.controller';
+import { LogController } from '../../log/log.controller';
+// import { producer } from './producer.controller';
+import { handleAsync } from '../../common';
 
-// ADD a command to start docker compose file
-// ADD handle online clusters
-// ADD handle multiple mutliple brokers - broker discovery is done by kafka
+dotenv.config();
 
 export class KafkaController {
 	/**
@@ -16,17 +16,35 @@ export class KafkaController {
 	 */
 	static kafka: RequestHandler = async (req, res, next) => {
 		const PORT: number = req.body.PORT;
+		const {
+			KAFKA_USERNAME: username,
+			KAFKA_PW: password,
+			KAFKA_Server,
+		} = process.env;
+		const sasl =
+			username && password ? { username, password, mechanism: 'plain' } : null;
+		const ssl = !!sasl;
+		const broker = PORT ? `localhost:${PORT}` : KAFKA_Server!;
+
 		const kafka = new Kafka({
 			clientId: 'kafkafix',
-			brokers: [`localhost:${PORT}`],
+			brokers: [broker],
 			logLevel: logLevel.ERROR,
-			logCreator,
+			logCreator: LogController.logCreator,
+			// ssl,
+			// sasl,
 		});
 
 		req.app.locals.kafka = kafka;
+		req.app.locals.consumer = {};
+		req.app.locals.producer = {};
+
 		return next();
 	};
 
+	/**
+	 * @desc  starts an instance of admin
+	 */
 	static admin: RequestHandler = async (req, res, next) => {
 		const ws: WebSocket = req.app.locals.ws;
 		const kafka: Kafka = req.app.locals.kafka;
@@ -36,8 +54,8 @@ export class KafkaController {
 		if (error) return next(error);
 		req.app.locals.admin = admin;
 
-		producer(kafka);
-		consumer(kafka, ws);
+		// producer(kafka);
+		// consumer(kafka, ws);
 
 		return next();
 	};

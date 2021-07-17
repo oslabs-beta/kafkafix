@@ -27,7 +27,7 @@ function createWindow() {
   });
 
   const startURL = isDev
-    ? 'http://localhost:9000'
+    ? 'http://localhost:8080'
     : `file://${path.join(__dirname, './client/src/index.html')}`;
 
   // loading the html file
@@ -56,7 +56,7 @@ function createPartitionWindow() {
     height: 500,
   });
 
-  win.loadURL('http://localhost:9000/partition');
+  win.loadURL('http://localhost:8080/partition');
 }
 
 ipcMain.on('open-partition', () => {
@@ -64,15 +64,7 @@ ipcMain.on('open-partition', () => {
 });
 
 function uploadFile() {
-  //   // first we need to get the filePath, then read the file using the filePath then send it to backend
-
-  console.log('made it inside handleUpload function in Connect.tsx');
-
-  //   // Importing dialog module using remote
-  // const dialog = electron.remote.dialog;
-
-  //   // Initializing a file path Variable to store user-selected file
-  // let filePath = undefined;
+  // first we need to get the filePath, then send it to backend
 
   // if using Windows or Linux
   if (process.platform !== 'darwin') {
@@ -98,27 +90,15 @@ function uploadFile() {
           const filePath = file.filePaths[0].toString();
           console.log(filePath);
 
-          // sending the file info to back end
-
-          if (filePath && !file.canceled) {
-            fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
-              if (!err) {
-                // formData.append('file', data);
-                let formData = '';
-                formData += data;
-
-                axios
-                  .post('http://localhost:3000/api/dockerfile', {
-                    data: formData,
-                  })
-                  .catch((e) =>
-                    console.log('error in sending fetch request for file', e)
-                  );
-              } else {
-                console.log('Error in reading file', err);
-              }
-            });
-          }
+          axios
+            .post('http://localhost:3000/api/dockerfile', {
+              filepath: filePath,
+            })
+            .catch((e) =>
+              console.log('error in sending fetch request for file', e)
+            );
+        } else {
+          console.log('Error in reading file', err);
         }
       })
       .catch((e) => console.log('error in upload => ', e));
@@ -145,27 +125,15 @@ function uploadFile() {
           const filePath = file.filePaths[0].toString();
           console.log(filePath);
 
-          // sending the file info to back end
-
-          if (filePath && !file.canceled) {
-            fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
-              if (!err) {
-                // formData.append('file', data);
-                let formData = '';
-                formData += data;
-
-                axios
-                  .post('http://localhost:3000/api/dockerfile', {
-                    data: formData,
-                  })
-                  .catch((e) =>
-                    console.log('error in sending fetch request for file', e)
-                  );
-              } else {
-                console.log('Error in reading file', err);
-              }
-            });
-          }
+          axios
+            .post('http://localhost:3000/api/dockerfile', {
+              filepath: filePath,
+            })
+            .catch((e) =>
+              console.log('error in sending fetch request for file', e)
+            );
+        } else {
+          console.log('Error in reading file', err);
         }
       })
       .catch((e) => console.log('error in uplaoding file', e));

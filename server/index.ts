@@ -1,11 +1,11 @@
 import express, { Request, Response, ErrorRequestHandler } from 'express';
 const path = require('path');
 import * as http from 'http';
-import * as WebSocket from 'ws';
+import WebSocket, { Server } from 'ws';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import { DB } from './db';
+// import { DB } from './db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
 import { OAuthRoutes } from './oauth/oauth.routes';
@@ -20,11 +20,11 @@ dotenv.config();
 // initialize configuration
 const app = express();
 const PORT = process.env.PORT || 3000;
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+export const server = http.createServer(app);
+const wss = new Server({ server });
 
 // start DB
-new DB();
+// new DB();
 
 // middlewares
 app.use(cors());
@@ -43,46 +43,41 @@ routes.push(new TopicRoutes(app));
 
 // server index html
 app.get('/partition', (req, res) => {
-  return res
-    .status(200)
-    .sendFile(path.resolve(__dirname, '../client/src/index.html'));
-});
-
-app.post('/api/dockerfile', (req, res) => {
-  console.log('this is the request body =>', req.body);
-
-  return res.status(200).json('recieved the dockerfile');
+	return res
+		.status(200)
+		.sendFile(path.resolve(__dirname, '../client/src/index.html'));
 });
 
 // 404
 app.use('*', (req: Request, res: Response) => {
-  return res.status(404).send('Invalid Route');
+	return res.status(404).send('Invalid Route');
 });
 
 // global error handler
 app.use(((err, req, res, next) => {
-  const defaultErr = {
-    status: 500,
-    message: 'Error: Middleware error at global error handler',
-  };
-  const errorObj = Object.assign({}, defaultErr, err);
-  return res.status(errorObj.status).json(errorObj.message);
+	const defaultErr = {
+		status: 500,
+		message: 'Error: Middleware error at global error handler',
+	};
+	const errorObj = Object.assign({}, defaultErr, err);
+	return res.status(errorObj.status).json(errorObj.message);
 }) as ErrorRequestHandler);
 
 // server
 server.listen(PORT, () => {
-  console.log(`Server on port ${PORT}`);
+	console.log(`Server on port ${PORT}`);
+	app.locals.server = server; //!
 
-  routes.forEach((route: RouteConfig) => {
-    console.log(`Route configured: ${route.routeName()}`);
-  });
+	routes.forEach((route: RouteConfig) => {
+		console.log(`Route configured: ${route.routeName()}`);
+	});
 });
 
 // websocket server
 // CHECK if wss.on vs wss.once
 wss.once('connection', (ws: WebSocket) => {
-  app.locals.ws = ws;
-  console.log('ws connected');
+	app.locals.ws = ws;
+	console.log('ws connected');
 
-  ws.on('close', () => console.log('ws disconnected'));
+	ws.on('close', () => console.log('ws disconnected'));
 });

@@ -1,38 +1,26 @@
-import { logLevel } from 'kafkajs';
 import { format } from 'winston';
-// import winston from 'winston'; // WHY types
 const winston = require('winston');
-require('winston-mongodb').MongoDB; //! check
+require('winston-mongodb').MongoDB;
 
 interface IProps {
 	namespace: string;
-	level: any; //! why not string
 	log: any; // CHECK type
 }
 
 const { createLogger, transports } = winston;
-const { combine, json, metadata } = format;
+const { combine, json, metadata, timestamp } = format;
 
-const toWinstonLogLevel = (level: any) => {
-	switch (level) {
-		case logLevel.ERROR:
-		case logLevel.NOTHING:
-			return 'error';
-		case logLevel.WARN:
-			return 'warn';
-		case logLevel.INFO:
-			return 'info';
-		case logLevel.DEBUG:
-			return 'debug';
-	}
-};
-
-export const logCreator = (logLevel: any) => {
+export const logCreator = () => {
 	const logger = createLogger({
-		level: toWinstonLogLevel(logLevel),
+		level: 'error',
+		format: combine(
+			timestamp({ format: 'YYY-MM-DD hh:mm:ss' }),
+			json(),
+			metadata()
+		),
 		transports: [
 			new transports.Console(),
-			// new transports.File({ filename: 'error.log' }),
+			new transports.File({ filename: 'error.log' }),
 			new transports.MongoDB({
 				level: 'error',
 				db: process.env.MONGO_URI,
@@ -43,10 +31,18 @@ export const logCreator = (logLevel: any) => {
 		],
 	});
 
-	return ({ namespace, level, log }: IProps) => {
-		const { message, broker, clientId, error, groupId } = log;
+	logger.on('data', (transports: any) => {
+		const { level, message, metadata } = transports;
+
+		// ws.send({ level, message, metadata });
+	});
+
+	return ({
+		namespace,
+		log: { message, broker, clientId, error, groupId },
+	}: IProps) => {
 		logger.log({
-			level: toWinstonLogLevel(level),
+			level: 'error',
 			namespace,
 			message,
 			error,

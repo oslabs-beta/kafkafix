@@ -1,26 +1,29 @@
-import React from "react";
+import React, { FC } from 'react';
 // app renders 1 component -- Home Screen --
 
 // importing browser capabilities
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 // importing HomeScreen and router components
-import HomeScreen from "./containers/HomeScreen";
-import FailureReports from "./containers/HomeScreen/FailureReports";
-import Metrics from "./containers/HomeScreen/Metrics";
-import Partitions from "./containers/HomeScreen/TopicsDisplay/Partitions";
-import ws from "./websocket";
-import { useDispatch, useSelector } from "react-redux";
-import { appendMessageActionCreator } from "./state/actions/actions";
-import { KafkaState } from "./state/reducers/kafkaDataReducer";
-import { overallState } from "./state/reducers/index";
-import { PartitionScreen } from "./containers/PartitionScreen/PartitionScreen";
+import HomeScreen from './containers/HomeScreen';
+import { FailureReportScreen } from './containers/FailureReports/FailureReportScreen';
+import { MetricsScreen } from './containers/Metrics/MetricsScreen';
+import Partitions from './containers/HomeScreen/TopicsDisplay/Partitions';
+import ws from './websocket';
+import { useDispatch, useSelector } from 'react-redux';
+import { appendMessageActionCreator } from './state/actions/actions';
+import { KafkaState } from './state/reducers/kafkaDataReducer';
+import { overallState } from './state/reducers/index';
+import { PartitionScreen } from './containers/PartitionScreen/PartitionScreen';
 
 const wss = ws();
 
-const App: React.FC = () => {
+import { MBeans } from '../../server/jmx/MBeans';
+import { useFetch } from './hooks/useFetch';
+
+const App: FC = () => {
   const dispatch = useDispatch();
-  const messages = useSelector<overallState, KafkaState["messages"]>(
+  const messages = useSelector<overallState, KafkaState['messages']>(
     (state) => state.kafka.messages
   );
   console.log(messages);
@@ -29,11 +32,11 @@ const App: React.FC = () => {
     <>
       <Router>
         <Switch>
-          <Route path="/" exact component={HomeScreen} />
-          <Route path="/metrics" component={Metrics} />
-          <Route path="/failureReports" component={FailureReports} />
+          <Route path='/' exact component={HomeScreen} />
+          <Route path='/metrics' component={MetricsScreen} />
+          <Route path='/failureReports' component={FailureReportScreen} />
           <Route
-            path="/partition/:topic/:partitionID"
+            path='/partition/:topic/:partitionID'
             render={(props) => (
               <PartitionScreen
                 topic={props.match.params.topic}
