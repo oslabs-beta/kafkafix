@@ -1,30 +1,24 @@
 import { RequestHandler } from 'express';
 import fs from 'fs';
-import { format } from 'winston';
-// import winston from 'winston'
 const winston = require('winston');
 require('winston-mongodb').MongoDB;
-import { Server } from 'ws';
-import url from 'url';
-import http from 'http';
 
 import { handleAsync } from '../common';
 import { Log } from '../db/log.model';
-// import { server } from '../index';
 
 interface IErrors {
-  level: string;
-  namespace: string;
-  message: string;
-  error: string;
-  cliendId: string;
-  broker: string;
-  timestamp: string;
+	level: string;
+	namespace: string;
+	message: string;
+	error: string;
+	cliendId: string;
+	broker: string;
+	timestamp: string;
 }
 
 interface IProps {
-  namespace: string;
-  log: any; // CHECK type
+	namespace: string;
+	log: any; // CHECK type
 }
 
 const { createLogger, transports } = winston;
@@ -32,10 +26,6 @@ const { combine, json, metadata, timestamp } = winston.format;
 
 export class LogController {
 	static logCreator = () => {
-		// const server = http.createServer();
-		// const wss = new Server({ server });
-		// wss.once('connection', () => console.log('ws: logger'));
-
 		const logger = createLogger({
 			level: 'info',
 			format: combine(
@@ -55,29 +45,6 @@ export class LogController {
 				// }),
 			],
 		});
-
-		// server.on('upgrade', (request, socket, head) => {
-		// 	const pathname = url.parse(request.url).pathname;
-
-		// 	// called
-		// 	console.log('LOGGER: upgrade');
-		// 	console.log('path', pathname);
-
-		// 	if (pathname === '/errors') {
-		// 		wss.handleUpgrade(request, socket, head, ws => {
-		// 			wss.emit('connection', ws, request);
-
-		// 			logger.on('data', (transports: any) => {
-		// 				const { level, message, metadata } = transports;
-
-		// 				ws.send({ level, message, metadata });
-		// 				console.log('LOGGER: AFTER SEND');
-		// 			});
-		// 		});
-		// 	} else {
-		// 		socket.destroy();
-		// 	}
-		// });
 
 		return ({ namespace, log }: IProps) => {
 			const { message, broker, clientId, error, groupId } = log;

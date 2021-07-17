@@ -60,7 +60,7 @@ export class GroupController {
 		return next();
 	};
 
-	/** // DO // ADD handle multiple partitions
+	/** // ADD handle multiple partitions
 	 * @desc resets the consumer group offset to the earliest or lastest offset (latest by default)
 	 */
 

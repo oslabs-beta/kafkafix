@@ -26,7 +26,6 @@ const App: FC = () => {
   const messages = useSelector<overallState, KafkaState['messages']>(
     (state) => state.kafka.messages
   );
-  console.log(messages);
 
   return (
     <>
