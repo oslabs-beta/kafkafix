@@ -3,12 +3,9 @@ import { Application, Request, Response } from 'express';
 import { RouteConfig } from '../../common/route.config';
 import { KafkaController } from './kafka.controller';
 import { TopicController } from '../topic/topic.controller';
-import { Docker } from './docker.controller';
-import { KafkaMetricsController } from '../../jmx/kafka.metrics.controller';
-import { JVMMetricsController } from '../../jmx/jvm.metrics.controller';
-import { LogController } from '../../log/log.controller';
-import { ProducerController } from './producer.controller';
+import ProducerController from './producer.controller';
 import { ConsumerController } from './consumer.controller';
+import { GroupController } from '../group/group.controller';
 
 export class KafkaRoutes extends RouteConfig {
 	constructor(app: Application) {
@@ -22,25 +19,35 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/dockerfile')
-			.post([Docker.docker], (req: Request, res: Response) => {
+			.post([KafkaController.composeUp], (req: Request, res: Response) => {
 				return res.status(200);
 			});
 
 		/**
 		 * @POST     Initialize producer
-		 * @desc     Initialize an instance of producer
+		 * @desc     Initialize an instance of producer for all topics
 		 */
-		this.app.route('/api/producer').get([ProducerController.producer], (req: Request, res: Response) => {
-			return res.status(200);
-		});
+		this.app
+			.route('/api/producer')
+			.get(
+				[TopicController.listTopics, ProducerController.producer],
+				(req: Request, res: Response) => {
+					return res.status(200);
+				}
+			);
 
 		/**
 		 * @POST     Initialize consumer
-		 * @desc     Initialize an instance of consumer
+		 * @desc     Initialize an instance of consumer and send list of consumer groups
 		 */
-		this.app.route('/api/consumer').get([ConsumerController.consumer], (req: Request, res: Response) => {
-			return res.status(200);
-		});
+		this.app
+			.route('/api/consumer')
+			.get(
+				[ConsumerController.consumer, GroupController.listGroups],
+				(req: Request, res: Response) => {
+					return res.status(200);
+				}
+			);
 
 		/**
 		 * @POST     Initialize kafka
@@ -51,9 +58,10 @@ export class KafkaRoutes extends RouteConfig {
 			KafkaController.admin,
 			KafkaController.describeCluster,
 			TopicController.getAllTopicMetadata,
+			GroupController.listGroups,
 			(req: Request, res: Response) => {
-				const { cluster, metadata } = res.locals;
-				return res.status(200).json({ cluster, metadata });
+				const { cluster, metadata, groups } = res.locals;
+				return res.status(200).json({ cluster, metadata, groups });
 			},
 		]);
 
