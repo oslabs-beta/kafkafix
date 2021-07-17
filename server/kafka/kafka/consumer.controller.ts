@@ -4,16 +4,21 @@ import * as WebSocket from 'ws';
 
 import { handleAsync } from '../../common';
 
-// saving consumers: app.locals or constructor?
 export class ConsumerController {
+	/**
+	 * @desc     starts a consumer for given topic and groupId
+	 */
 	static consumer: RequestHandler = async (req, res, next) => {
 		// const { topic, groupId } = req.body;
-		const topic = 'kafkafix';
-		const groupId = 'kafkafix';
+		const topic = 'test';
+		const groupId = 'test consumer group 1';
 		const ws: WebSocket = req.app.locals.ws;
 		const consumer: Consumer = req.app.locals.kafka.consumer({ groupId });
+		const store = req.app.locals.consumer;
 
-		req.app.locals.consumer[groupId] = consumer;
+		store[topic][groupId]
+			? store[topic][groupId].push(consumer)
+			: (store[topic][groupId] = []);
 
 		const [, connectErr] = await handleAsync(consumer.connect());
 		const [, subscribeErr] = await handleAsync(

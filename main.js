@@ -73,7 +73,7 @@ function uploadFile() {
 			.showOpenDialog({
 				title: 'Select your docker-compose file',
 				defaultPath: path.join(__dirname, '../assets/'),
-				buttonLabel: 'Upload',
+				buttonLabel: 'Select',
 				// Restricting the user to only YML Files.
 				filters: [
 					{
@@ -108,7 +108,7 @@ function uploadFile() {
 			.showOpenDialog({
 				title: 'Select your docker-compose file',
 				defaultPath: path.join(__dirname, '../assets/'),
-				buttonLabel: 'Upload',
+				buttonLabel: 'Select',
 				// Restricting the user to only YML Files.
 				filters: [
 					{
