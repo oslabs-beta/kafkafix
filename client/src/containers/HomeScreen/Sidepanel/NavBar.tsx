@@ -27,6 +27,8 @@ import {
   Description,
 } from '@material-ui/icons';
 
+import GroupIcon from '@material-ui/icons/Group';
+
 // importing Link from react router dom
 import { Link } from 'react-router-dom';
 
@@ -36,7 +38,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { any } from 'prop-types';
 
-import {NotifItems} from './NotifItems';
+import { NotifItems } from './NotifItems';
 
 // import login function
 
@@ -159,6 +161,17 @@ const NavBar: FC = () => {
               />
             </ListItem>
           </Link>
+
+          {/* New Item - Groups */}
+          <Link to='Groups' style={{ textDecoration: 'none', color: 'black' }}>
+            <ListItem button key='Groups' className={classes.listItem}>
+              <GroupIcon></GroupIcon>
+              <ListItemText
+                primary='Consumer Groups'
+                className={classes.listItemText}
+              />
+            </ListItem>
+          </Link>
           <Divider />
         </List>
 
@@ -247,7 +260,7 @@ const NavBar: FC = () => {
             open={notifState.open}
             onClose={() => setNotif({ open: false })}
           >
-            {notifState.open ? <NotifItems setNotif={setNotif}/> : null}
+            {notifState.open ? <NotifItems setNotif={setNotif} /> : null}
           </Drawer>
         </AppBar>
       </React.Fragment>
