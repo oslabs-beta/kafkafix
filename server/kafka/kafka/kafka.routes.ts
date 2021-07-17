@@ -42,7 +42,7 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/consumer')
-			.get(
+			.post(
 				[ConsumerController.consumer, GroupController.listGroups],
 				(req: Request, res: Response) => {
 					return res.status(200);
