@@ -20,26 +20,26 @@ export class ConsumerController {
 			? store[topic][groupId].push(consumer)
 			: (store[topic][groupId] = []);
 
-		const [, connectErr] = await handleAsync(consumer.connect());
-		const [, subscribeErr] = await handleAsync(
-			consumer.subscribe({ topic, fromBeginning: true })
-		);
+    const [, connectErr] = await handleAsync(consumer.connect());
+    const [, subscribeErr] = await handleAsync(
+      consumer.subscribe({ topic, fromBeginning: true })
+    );
 
-		if (connectErr) return connectErr;
-		if (subscribeErr) return subscribeErr;
+    if (connectErr) return connectErr;
+    if (subscribeErr) return subscribeErr;
 
-		await consumer.run({
-			partitionsConsumedConcurrently: 1,
-			eachMessage: async ({
-				topic,
-				partition,
-				message: { timestamp, value },
-			}) => {
-				const messageFormat = `timestamp: ${timestamp} topic: ${topic} partition: ${partition} message: ${value}`;
-				console.log('message consumed');
-				ws.send(messageFormat);
-			},
-		});
+    await consumer.run({
+      partitionsConsumedConcurrently: 1,
+      eachMessage: async ({
+        topic,
+        partition,
+        message: { timestamp, value },
+      }) => {
+        const messageFormat = `timestamp: ${timestamp} topic: ${topic} partition: ${partition} message: ${value}`;
+        console.log('message consumed');
+        ws.send(messageFormat);
+      },
+    });
 
 		return next();
 	};
