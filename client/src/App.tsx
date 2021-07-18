@@ -15,18 +15,18 @@ import { appendMessageActionCreator } from './state/actions/actions';
 import { KafkaState } from './state/reducers/kafkaDataReducer';
 import { overallState } from './state/reducers/index';
 import { PartitionScreen } from './containers/PartitionScreen/PartitionScreen';
+import { Groups } from './containers/HomeScreen/Sidepanel/Groups';
 
 const wss = ws();
 
-import { MBeans } from '../../server/jmx/MBeans';
-import { useFetch } from './hooks/useFetch';
+// import { MBeans } from '../../server/jmx/MBeans';
+// import { useFetch } from './hooks/useFetch';
 
 const App: FC = () => {
   const dispatch = useDispatch();
   const messages = useSelector<overallState, KafkaState['messages']>(
     (state) => state.kafka.messages
   );
-  console.log(messages);
 
   return (
     <>
@@ -35,6 +35,7 @@ const App: FC = () => {
           <Route path='/' exact component={HomeScreen} />
           <Route path='/metrics' component={MetricsScreen} />
           <Route path='/failureReports' component={FailureReportScreen} />
+          <Route path='/groups' component={Groups} />
           <Route
             path='/partition/:topic/:partitionID'
             render={(props) => (

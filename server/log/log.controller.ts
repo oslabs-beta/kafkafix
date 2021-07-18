@@ -1,14 +1,10 @@
 import { RequestHandler } from 'express';
 import fs from 'fs';
-import { format } from 'winston';
 const winston = require('winston');
 require('winston-mongodb').MongoDB;
-import WebSocket, { Server } from 'ws';
-const url = require('url');
+
 import { handleAsync } from '../common';
 import { Log } from '../db/log.model';
-// import { server } from '../index';
-import http from 'http';
 
 interface IErrors {
 	level: string;
@@ -26,16 +22,12 @@ interface IProps {
 }
 
 const { createLogger, transports } = winston;
-const { combine, json, metadata, timestamp } = format;
+const { combine, json, metadata, timestamp } = winston.format;
 
 export class LogController {
 	static logCreator = () => {
-		const server = http.createServer();
-		const wss = new Server({ server });
-		wss.once('connection', () => console.log('ws: logger'));
-
 		const logger = createLogger({
-			level: 'error',
+			level: 'info',
 			format: combine(
 				timestamp({ format: 'YYY-MM-DD hh:mm:ss' }),
 				json(),
@@ -44,38 +36,15 @@ export class LogController {
 			transports: [
 				new transports.Console(),
 				new transports.File({ filename: 'error.log' }),
-				new transports.MongoDB({
-					level: 'error',
-					db: process.env.MONGO_URI,
-					options: { useUnifiedTopology: true },
-					collection: 'logs',
-					format: combine(json(), metadata()),
-				}),
+				// new transports.MongoDB({
+				// 	level: 'error',
+				// 	db: process.env.MONGO_URI,
+				// 	options: { useUnifiedTopology: true },
+				// 	collection: 'logs',
+				// 	format: combine(json(), metadata()),
+				// }),
 			],
 		});
-
-		// server.on('upgrade', (request, socket, head) => {
-		// 	const pathname = url.parse(request.url).pathname;
-
-		// 	// called
-		// 	console.log('LOGGER: upgrade');
-		// 	console.log('path', pathname);
-
-		// 	if (pathname === '/errors') {
-		// 		wss.handleUpgrade(request, socket, head, ws => {
-		// 			wss.emit('connection', ws, request);
-
-		// 			logger.on('data', (transports: any) => {
-		// 				const { level, message, metadata } = transports;
-
-		// 				ws.send({ level, message, metadata });
-		// 				console.log('LOGGER: AFTER SEND');
-		// 			});
-		// 		});
-		// 	} else {
-		// 		socket.destroy();
-		// 	}
-		// });
 
 		return ({ namespace, log }: IProps) => {
 			const { message, broker, clientId, error, groupId } = log;
@@ -102,14 +71,18 @@ export class LogController {
 
 		try {
 			if (fs.existsSync(path)) {
-				const data = fs.readFileSync('./error.log').toString().split('\r\n');
+				const darwin = process.platform === 'darwin';
+				let data: string | string[] = fs.readFileSync('./error.log').toString();
 				const errors: IErrors[] = [];
+
+				if (darwin) data = data.split('\n');
+				else data = data.split('\r\n');
 
 				data.forEach(error => {
 					if (error.length > 1) errors.push(JSON.parse(error));
 				});
 
-				res.locals.errors = errors; //!
+				res.locals.errors = errors;
 			}
 
 			return next();

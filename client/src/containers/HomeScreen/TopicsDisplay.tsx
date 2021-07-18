@@ -33,11 +33,18 @@ import {
   Input,
   makeStyles,
   Modal,
+  Checkbox,
 } from '@material-ui/core';
 import { ErrorRounded } from '@material-ui/icons';
 
 // importing icons from material-UI
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
+// import { useFetch } from '../../hooks/useFetch';
+// import { MBeans } from '../../../../server/jmx/MBeans';
+
+// const data = await useFetch(
+// 	`http://localhost:9090/api/v1/query?query=${MBeans.isrShrinksPerSec}`
+// );
 
 // fucntion to make styles for rows
 const useRowStyles = makeStyles({
@@ -57,6 +64,19 @@ const useRowStyles = makeStyles({
     color: 'white',
     fontWeight: 'bold',
   },
+  modal: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#75BEDA',
+  },
+  buttonNotSelected: {
+    backgroundColor: 'white',
+  },
+  buttonSelected: {
+    backgroundColor: 'blue',
+  },
 });
 
 interface Options {
@@ -75,16 +95,19 @@ const TopicsDisplay = () => {
     (state) => state.kafka.data
   ); // [{topicName, partitions, ... }, {}]
 
-  const [isModalOpen, setOpenModal] = useState(false);
-
   const dispatch = useDispatch();
 
-  const openModal = () => {
-    setOpenModal(true);
+  // local state to create a topic
+  const [modalForCreateTopic, setModalForCreateTopic] = useState(false);
+
+  const toggleCreateTopicModal = () => {
+    setModalForCreateTopic(!modalForCreateTopic);
   };
 
-  const closeModal = () => {
-    setOpenModal(false);
+  const [modalForConsumer, setModalForConsumer] = useState(false);
+
+  const toggleConsumerModal = () => {
+    setModalForConsumer(!modalForConsumer);
   };
 
   const handleCreateTopic = () => {
@@ -101,7 +124,7 @@ const TopicsDisplay = () => {
         .then((data) => data.json())
         .then((data) => {
           populateData(data, dispatch);
-          closeModal();
+          toggleCreateTopicModal();
           alert('got a response');
         })
         .catch((e) => console.log(e));
@@ -134,12 +157,64 @@ const TopicsDisplay = () => {
   };
 
   const handleStartConsumer = () => {
-    fetch('/api/consumer', { method: 'GET' })
+    fetch('/api/consumer', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
       .then((data) => data.json())
       .then((data) => {
         console.log(data);
       })
       .catch((e) => console.log(e));
+  };
+
+  // let defaultObj: any = {};
+  // rows.forEach((obj) => (defaultObj[obj.topicName] = false));
+  // // {topic1: false, topic2: false ... }
+  // const [buttonState, setButtonState] = useState(defaultObj);
+  // console.log(buttonState);
+
+  // interface Colors {
+  //   buttonSelected: string;
+  //   buttonNotSelected: string;
+  // }
+
+  // const colorSwitch: any = {
+  //   buttonSelected: 'buttonNotSelected',
+  //   buttonNotSelected: 'buttonSelected',
+  // };
+
+  const handleSelectTopicClick = () => {
+    const topic = (document.getElementById('selectTopic') as HTMLInputElement)
+      .value;
+    const groupId = (
+      document.getElementById('createGroupID') as HTMLInputElement
+    ).value;
+
+    console.log('topic: ', topic, 'groupId ', groupId);
+
+    const option = {
+      method: 'POST',
+      body: JSON.stringify({ topic, groupId }),
+      headers: { 'content-type': 'application/json' },
+    };
+
+    fetch('/api/consumer', option)
+      .then((data) => data.json())
+      .then((data) => toggleConsumerModal())
+      .catch((e) => console.log(e.target));
+    // console.log('after split ', e.target.id.split('button'));
+    // const [, key] = e.target.id.split('button');
+    // console.log('topic is ', key);
+    // setButtonState({ ...buttonState, [key]: !buttonState[key] });
+    // console.log('event target class', e.target.className);
+    // e.target.className = colorSwitch[e.target.className];
+    // console.log('event target class after switch ', e.target.className);
+    // console.log(e.target.className === 'buttonSelected');
+    // if (e.target.className === 'buttonSelected')
+    //   e.target.style = classes.buttonSelected;
+    // else if (e.target.className === 'buttonNotSelected')
+    //   e.target.style = classes.buttonNotSelected;
   };
 
   return (
@@ -158,14 +233,15 @@ const TopicsDisplay = () => {
           </TableRow>
         </TableHead>
 
-        <Button variant='text' color='primary' onClick={openModal}>
+        <Button variant='text' color='primary' onClick={toggleCreateTopicModal}>
           Create Topic
         </Button>
         <Modal
-          open={isModalOpen}
-          onClose={closeModal}
+          open={modalForCreateTopic}
+          onClose={toggleCreateTopicModal}
           aria-labelledby='create-partition'
           aria-describedby='create-partition'
+          className={classes.modal}
         >
           <>
             <Typography variant='h6'>Enter Topic Name</Typography>
@@ -199,9 +275,42 @@ const TopicsDisplay = () => {
       <Button variant='text' color='primary' onClick={handleStartProducer}>
         Start Producer
       </Button>
-      <Button variant='text' color='primary' onClick={handleStartConsumer}>
+      <Button
+        onClick={toggleConsumerModal}
+        variant='contained'
+        color='secondary'
+      >
         Start Consumer
       </Button>
+      <Modal
+        open={modalForConsumer}
+        onClose={toggleConsumerModal}
+        aria-labelledby='create-partition'
+        aria-describedby='create-partition'
+        className={classes.modal}
+      >
+        <>
+          <Typography variant='h6'>Select Topics To Read</Typography>
+
+          <Input id='selectTopic' type='text' placeholder='Kafkafix' />
+
+          <Typography variant='h6'>Create A Group ID</Typography>
+
+          <Input
+            id='createGroupID'
+            type='text'
+            placeholder='Create a Group ID'
+          />
+
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={handleSelectTopicClick}
+          >
+            Start Consumer
+          </Button>
+        </>
+      </Modal>
     </TableContainer>
   );
 };
