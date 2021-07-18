@@ -4,7 +4,6 @@ import { overallState } from '../../state/reducers';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
 import { TopicRow } from './TopicsDisplay/TopicRow';
 import { populateData } from '../../helperFunctions/populateData';
-
 /*
 ------------------------------Update------------------------
 Topics Row is now part of topics display becasue of the collapsable table
@@ -39,6 +38,7 @@ import { ErrorRounded } from '@material-ui/icons';
 
 // importing icons from material-UI
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 // import { useFetch } from '../../hooks/useFetch';
 // import { MBeans } from '../../../../server/jmx/MBeans';
 
@@ -55,7 +55,10 @@ const useRowStyles = makeStyles({
   },
   tableWrapper: {
     margin: 30,
-    boxShadow: '10px 5px 5px lightgrey;',
+  },
+  buttonsWrapper: {
+    display: 'flex',
+    justifyContent: 'space-around',
   },
   tableHeaderRow: {
     backgroundColor: 'black',
@@ -64,18 +67,38 @@ const useRowStyles = makeStyles({
     color: 'white',
     fontWeight: 'bold',
   },
-  modal: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#75BEDA',
-  },
   buttonNotSelected: {
     backgroundColor: 'white',
   },
   buttonSelected: {
     backgroundColor: 'blue',
+  },
+  partitionButtons: {
+    backgroundColor: 'white',
+  },
+  primaryButtons: {
+    backgroundColor: 'white',
+    justifySelf: 'center',
+    color: 'black',
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  insideModalDiv: {
+    display: 'flex',
+    width: 300,
+    height: 300,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: '5%',
+  },
+  button: {
+    marginTop: 10,
+    backgroundColor: 'red',
   },
 });
 
@@ -113,10 +136,24 @@ const TopicsDisplay = () => {
   const handleCreateTopic = () => {
     const topicName: HTMLInputElement | null =
       document.querySelector('#inputTopic');
-    if (topicName && topicName.value) {
+
+    const numberOfPartitions: HTMLInputElement | null = document.querySelector(
+      '#inputNumberOfPartitions'
+    );
+
+    // sending topic name and number of partitions when creating partitions
+    if (
+      topicName &&
+      topicName.value &&
+      numberOfPartitions &&
+      numberOfPartitions.value
+    ) {
       const options: Options = {
         method: 'POST',
-        body: JSON.stringify({ topic: topicName.value }),
+        body: JSON.stringify({
+          topic: topicName.value,
+          partitions: numberOfPartitions.value,
+        }),
         headers: { 'Content-Type': 'application/json' },
       };
 
@@ -218,100 +255,129 @@ const TopicsDisplay = () => {
   };
 
   return (
-    <TableContainer component={Paper} className={classes.tableWrapper}>
-      <Table aria-label='collapsible table'>
-        {/* Table Head */}
-        <TableHead>
-          <TableRow className={classes.tableHeaderRow}>
-            <TableCell />
-            <TableCell className={classes.tableHeaderText}>
-              Topic Name
-            </TableCell>
-            <TableCell className={classes.tableHeaderText}>
-              Partitions
-            </TableCell>
-          </TableRow>
-        </TableHead>
+    <React.Fragment>
+      <TableContainer component={Paper} className={classes.tableWrapper}>
+        <Paper className={classes.buttonsWrapper}>
+          <Button
+            size='small'
+            variant='text'
+            className={classes.primaryButtons}
+            onClick={toggleCreateTopicModal}
+          >
+            Create Topic
+          </Button>
+          <Button size='small' variant='text' onClick={handleStartProducer}>
+            Start Producer
+          </Button>
+          <Button
+            size='small'
+            onClick={toggleConsumerModal}
+            variant='text'
+            className={classes.primaryButtons}
+          >
+            Start Consumer
+          </Button>
+        </Paper>
+        <Table aria-label='collapsible table'>
+          {/* Table Head */}
+          <TableHead>
+            <TableRow className={classes.tableHeaderRow}>
+              <TableCell />
+              <TableCell className={classes.tableHeaderText}>
+                Topic Name
+              </TableCell>
+              <TableCell className={classes.tableHeaderText}>
+                Partitions
+              </TableCell>
+            </TableRow>
+          </TableHead>
 
-        <Button variant='text' color='primary' onClick={toggleCreateTopicModal}>
-          Create Topic
-        </Button>
+          {/* <Link to='partition/topic1/part1' style={{ textDecoration: 'none' }}>
+          <Button
+            size='small'
+            variant='outlined'
+            className={classes.partitionButtons}
+          >
+            Stream
+          </Button>
+        </Link> */}
+          <Modal
+            open={modalForCreateTopic}
+            onClose={toggleCreateTopicModal}
+            aria-labelledby='create-partition'
+            aria-describedby='create-partition'
+            className={classes.modal}
+          >
+            <div className={classes.insideModalDiv}>
+              <Typography variant='h6'>Enter Topic Name</Typography>
+              <Input id='inputTopic' type='text' placeholder='KafkaFix' />
+              <Input
+                id='inputNumberOfPartitions'
+                type='number'
+                placeholder='3'
+              />
+              <Button
+                variant='outlined'
+                className={classes.button}
+                onClick={handleCreateTopic}
+              >
+                Create
+              </Button>
+            </div>
+          </Modal>
+
+          {/* Table Body*/}
+          {isConnected && (
+            <TableBody>
+              {rows.map((row) => (
+                <React.Fragment>
+                  <TopicRow key={row.topicName} row={row} />
+                  {/* // delete a topic */}
+                  <Button
+                    variant='text'
+                    size='small'
+                    onClick={() => deleteTopicHandler(row.topicName)}
+                  >
+                    Delete
+                  </Button>
+                </React.Fragment>
+              ))}
+            </TableBody>
+            // create a topic
+          )}
+        </Table>
         <Modal
-          open={modalForCreateTopic}
-          onClose={toggleCreateTopicModal}
+          open={modalForConsumer}
+          onClose={toggleConsumerModal}
           aria-labelledby='create-partition'
           aria-describedby='create-partition'
           className={classes.modal}
         >
-          <>
-            <Typography variant='h6'>Enter Topic Name</Typography>
-            <Input id='inputTopic' type='text' placeholder='Topic Name' />
-            <Button variant='text' color='primary' onClick={handleCreateTopic}>
-              Create
+          <div className={classes.insideModalDiv}>
+            <Typography variant='h6'>Select Topics To Read</Typography>
+
+            <Input id='selectTopic' type='text' placeholder='Kafkafix' />
+
+            <Typography variant='h6'>Create A Group ID</Typography>
+
+            <Input
+              id='createGroupID'
+              type='text'
+              placeholder='Create a Group ID'
+            />
+
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleSelectTopicClick}
+              className={classes.button}
+            >
+              Start
             </Button>
-          </>
+          </div>
         </Modal>
-
-        {/* Table Body*/}
-        {isConnected && (
-          <TableBody>
-            {rows.map((row) => (
-              <React.Fragment>
-                <TopicRow key={row.topicName} row={row} />
-                {/* // delete a topic */}
-                <Button
-                  variant='text'
-                  color='primary'
-                  onClick={() => deleteTopicHandler(row.topicName)}
-                >
-                  Delete
-                </Button>
-              </React.Fragment>
-            ))}
-          </TableBody>
-          // create a topic
-        )}
-      </Table>
-      <Button variant='text' color='primary' onClick={handleStartProducer}>
-        Start Producer
-      </Button>
-      <Button
-        onClick={toggleConsumerModal}
-        variant='contained'
-        color='secondary'
-      >
-        Start Consumer
-      </Button>
-      <Modal
-        open={modalForConsumer}
-        onClose={toggleConsumerModal}
-        aria-labelledby='create-partition'
-        aria-describedby='create-partition'
-        className={classes.modal}
-      >
-        <>
-          <Typography variant='h6'>Select Topics To Read</Typography>
-
-          <Input id='selectTopic' type='text' placeholder='Kafkafix' />
-
-          <Typography variant='h6'>Create A Group ID</Typography>
-
-          <Input
-            id='createGroupID'
-            type='text'
-            placeholder='Create a Group ID'
-          />
-
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleSelectTopicClick}
-          >
-            Start Consumer
-          </Button>
-        </>
-      </Modal>
-    </TableContainer>
+      </TableContainer>
+    </React.Fragment>
   );
 };
 

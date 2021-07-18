@@ -28,7 +28,7 @@ import {
 } from '@material-ui/icons';
 
 import GroupIcon from '@material-ui/icons/Group';
-
+import TableChartIcon from '@material-ui/icons/TableChart';
 // importing Link from react router dom
 import { Link } from 'react-router-dom';
 
@@ -159,6 +159,25 @@ const NavBar: FC = () => {
                 primary='Failure Reports'
                 className={classes.listItemText}
               />
+            </ListItem>
+          </Link>
+
+          <Link
+            to='partition/topic1/part1'
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
+            <ListItem
+              button
+              key='Visualize Streams'
+              className={classes.listItem}
+            >
+              <TableChartIcon />
+              <ListItemText
+                primary='Visualize Streams'
+                className={classes.listItemText}
+              >
+                Message Streams
+              </ListItemText>
             </ListItem>
           </Link>
 
