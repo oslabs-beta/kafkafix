@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"npm run electron\" \"nodemon ./server/index.ts\"",
     "convert": "tsc -p ./",
-    "electron": "concurrently \" npm run dev\" \"wait-on http://localhost:9000 && electron .\"",
+    "electron": "concurrently \" npm run dev\" \"wait-on http://localhost:8080 && electron .\"",
     "dev": "webpack serve",
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
