@@ -16,23 +16,23 @@ Topics Row is now part of topics display becasue of the collapsable table
 import PropTypes from 'prop-types';
 // importing componenets from Material UI
 import {
-  Button,
-  Box,
-  Collapse,
-  Divider,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography,
-  Input,
-  makeStyles,
-  Modal,
-  Checkbox,
+	Button,
+	Box,
+	Collapse,
+	Divider,
+	IconButton,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+	Typography,
+	Input,
+	makeStyles,
+	Modal,
+	Checkbox,
 } from '@material-ui/core';
 import { ErrorRounded } from '@material-ui/icons';
 
@@ -48,64 +48,64 @@ import { Link } from 'react-router-dom';
 
 // fucntion to make styles for rows
 const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-  tableWrapper: {
-    margin: 30,
-  },
-  buttonsWrapper: {
-    display: 'flex',
-    justifyContent: 'space-around',
-  },
-  tableHeaderRow: {
-    backgroundColor: 'black',
-  },
-  tableHeaderText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  buttonNotSelected: {
-    backgroundColor: 'white',
-  },
-  buttonSelected: {
-    backgroundColor: 'blue',
-  },
-  partitionButtons: {
-    backgroundColor: 'white',
-  },
-  primaryButtons: {
-    backgroundColor: 'white',
-    justifySelf: 'center',
-    color: 'black',
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  insideModalDiv: {
-    display: 'flex',
-    width: 300,
-    height: 300,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: '5%',
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: 'red',
-  },
+	root: {
+		'& > *': {
+			borderBottom: 'unset',
+		},
+	},
+	tableWrapper: {
+		margin: 30,
+	},
+	buttonsWrapper: {
+		display: 'flex',
+		justifyContent: 'space-around',
+	},
+	tableHeaderRow: {
+		backgroundColor: 'black',
+	},
+	tableHeaderText: {
+		color: 'white',
+		fontWeight: 'bold',
+	},
+	buttonNotSelected: {
+		backgroundColor: 'white',
+	},
+	buttonSelected: {
+		backgroundColor: 'blue',
+	},
+	partitionButtons: {
+		backgroundColor: 'white',
+	},
+	primaryButtons: {
+		backgroundColor: 'white',
+		justifySelf: 'center',
+		color: 'black',
+	},
+	modal: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	insideModalDiv: {
+		display: 'flex',
+		width: 300,
+		height: 300,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'white',
+		borderRadius: '5%',
+	},
+	button: {
+		marginTop: 10,
+		backgroundColor: 'red',
+	},
 });
 
 interface Options {
-  method: string;
-  body: string;
-  headers: any;
+	method: string;
+	body: string;
+	headers: any;
 }
 
 const TopicsDisplay = () => {

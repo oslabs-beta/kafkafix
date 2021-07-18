@@ -19,8 +19,8 @@ export class KafkaController {
 		});
 
 		req.app.locals.kafka = kafka;
-		req.app.locals.consumer = {};
-		req.app.locals.producer = {};
+		req.app.locals.consumers = {};
+		req.app.locals.producers = {};
 
 		return next();
 	};

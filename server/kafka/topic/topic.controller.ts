@@ -19,7 +19,7 @@ export class TopicController {
 	};
 
 	/** //*
-   * ADD handle multiple topics
+	 * ADD handle multiple topics
 	 * @desc    create topics
 	 * @param   {string[]{}}  topics
 	 * @param   {string}      topic
@@ -68,6 +68,7 @@ export class TopicController {
 	static createPartition: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
 		const { topic, count } = req.body;
+		console.log('body', req.body);
 		const [, error] = await handleAsync(
 			admin.createPartitions({ topicPartitions: [{ topic, count }] })
 		);
