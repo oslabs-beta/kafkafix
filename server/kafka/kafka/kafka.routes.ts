@@ -35,29 +35,43 @@ export class KafkaRoutes extends RouteConfig {
 
 		/**
 		 * @POST     Initialize producer
-		 * @desc     Initialize an instance of producer for all topics
+		 * @desc     Initialize an instance of producer
 		 */
 		this.app
 			.route('/api/producer')
-			.get(
-				[TopicController.listTopics, ProducerController.producer],
-				(req: Request, res: Response) => {
-					return res.status(200);
-				}
-			);
+			.post([ProducerController.startProducer], (req: Request, res: Response) => {
+				return res.status(200);
+			});
+
+		/**
+		 * @PUT      Stops producer
+		 * @desc     Stops given producer by topic
+		 */
+		this.app
+			.route('/api/producer')
+			.put([ProducerController.stopProducer], (req: Request, res: Response) => {
+				return res.status(200);
+			});
 
 		/**
 		 * @POST     Initialize consumer
-		 * @desc     Initialize an instance of consumer and send list of consumer groups
+		 * @desc     Initialize an instance of consumer
 		 */
 		this.app
 			.route('/api/consumer')
-			.post(
-				[ConsumerController.consumer, GroupController.listGroups],
-				(req: Request, res: Response) => {
-					return res.status(200);
-				}
-			);
+			.post([ConsumerController.startConsumer], (req: Request, res: Response) => {
+				return res.status(200);
+			});
+
+		/**
+		 * @PUT      Stops consumer
+		 * @desc     Stops given consumer by topic and groupId
+		 */
+		this.app
+			.route('/api/consumer')
+			.put([ConsumerController.stopConsumer], (req: Request, res: Response) => {
+				return res.status(200);
+			});
 
 		/**
 		 * @POST     Initialize kafka

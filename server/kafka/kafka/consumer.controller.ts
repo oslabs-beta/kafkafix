@@ -8,16 +8,12 @@ export class ConsumerController {
 	/**
 	 * @desc     starts a consumer for given topic and groupId
 	 */
-	static consumer: RequestHandler = async (req, res, next) => {
+	static startConsumer: RequestHandler = async (req, res, next) => {
 		const { topic, groupId } = req.body;
-		console.log('body', req.body);
 		const ws: WebSocket = req.app.locals.ws;
 		const consumer: Consumer = req.app.locals.kafka.consumer({ groupId });
-		const store = req.app.locals.consumer;
 
-		// store[topic][groupId]
-		// 	? store[topic][groupId].push(consumer)
-		// 	: (store[topic][groupId] = []);
+		req.app.locals.consumers[topic][groupId] = consumer;
 
 		const [, connectErr] = await handleAsync(consumer.connect());
 		const [, subscribeErr] = await handleAsync(
@@ -39,6 +35,23 @@ export class ConsumerController {
 				ws.send(messageFormat);
 			},
 		});
+
+		return next();
+	};
+
+	/**
+	 * @desc     stops consumer by given topic name and groupId
+	 */
+	static stopConsumer: RequestHandler = async (req, res, next) => {
+		const { topic, groupId } = req.body;
+		const consumer = req.app.locals.conumers[topic][groupId];
+
+		if (!consumer) return next(new Error('consumer does not exist'));
+
+		const [, error] = await handleAsync(consumer.disconnect());
+		if (error) return next(error);
+
+		delete req.app.locals.consumer[topic][groupId];
 
 		return next();
 	};
