@@ -1,11 +1,8 @@
 import fetch from 'node-fetch';
 import { RequestHandler } from 'express';
-import dotenv from 'dotenv';
 
 import { handleAsync } from '../common';
 import { MBeans } from './MBeans';
-
-dotenv.config();
 
 const url = 'http://localhost:9090/api/v1/query?query=';
 

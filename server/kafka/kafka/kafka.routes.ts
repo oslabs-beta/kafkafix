@@ -20,7 +20,6 @@ export class KafkaRoutes extends RouteConfig {
 		this.app
 			.route('/api/composeup')
 			.post([KafkaController.composeUp], (req: Request, res: Response) => {
-				console.log('hi from docker');
 				return res.status(200);
 			});
 
