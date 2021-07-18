@@ -127,10 +127,24 @@ const TopicsDisplay = () => {
     setModalForCreateTopic(!modalForCreateTopic);
   };
 
+  // state for modal
   const [modalForConsumer, setModalForConsumer] = useState(false);
+
+  // state for button
+  const [isConsumerStarted, setIsConsumerStarted] = useState(false);
 
   const toggleConsumerModal = () => {
     setModalForConsumer(!modalForConsumer);
+  };
+
+  // state for modal
+  const [modalForProducer, setModalForProducer] = useState(false);
+
+  // state for button
+  const [isProducerStarted, setIsProducerStarted] = useState(false);
+
+  const toggleProducerModal = () => {
+    setModalForProducer(!modalForProducer);
   };
 
   const handleCreateTopic = () => {
@@ -184,26 +198,46 @@ const TopicsDisplay = () => {
       .catch((e) => console.log('error in deleting topic, ', e));
   };
 
-  const handleStartProducer = () => {
-    fetch('/api/producer', { method: 'GET' })
+  const handleToggleProducer = () => {
+    // include inputted data from modal
+
+    const topic = (
+      document.getElementById('selectProducer') as HTMLInputElement
+    ).value;
+
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic: topic }),
+    };
+
+    if (isProducerStarted) {
+      options.method = 'PUT';
+    }
+
+    fetch('/api/producer', options)
       .then((data) => data.json())
       .then((data) => {
         console.log(data);
       })
       .catch((e) => console.log(e));
+
+    setIsProducerStarted(!isProducerStarted);
+    toggleProducerModal();
   };
 
-  const handleStartConsumer = () => {
-    fetch('/api/consumer', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((e) => console.log(e));
-  };
+  // // what are we using this function for?
+  // const handleStartConsumer = () => {
+  //   fetch('/api/consumer', {
+  //     method: 'GET',
+  //     headers: { 'Content-Type': 'application/json' },
+  //   })
+  //     .then((data) => data.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //     })
+  //     .catch((e) => console.log(e));
+  // };
 
   // let defaultObj: any = {};
   // rows.forEach((obj) => (defaultObj[obj.topicName] = false));
@@ -221,7 +255,7 @@ const TopicsDisplay = () => {
   //   buttonNotSelected: 'buttonSelected',
   // };
 
-  const handleSelectTopicClick = () => {
+  const handleToggleConsumer = () => {
     const topic = (document.getElementById('selectTopic') as HTMLInputElement)
       .value;
     const groupId = (
@@ -236,10 +270,17 @@ const TopicsDisplay = () => {
       headers: { 'content-type': 'application/json' },
     };
 
+    if (isConsumerStarted) {
+      option.method = 'PUT';
+    }
+
     fetch('/api/consumer', option)
       .then((data) => data.json())
       .then((data) => toggleConsumerModal())
       .catch((e) => console.log(e.target));
+
+    setIsConsumerStarted(!isConsumerStarted);
+    toggleConsumerModal();
     // console.log('after split ', e.target.id.split('button'));
     // const [, key] = e.target.id.split('button');
     // console.log('topic is ', key);
@@ -266,8 +307,13 @@ const TopicsDisplay = () => {
           >
             Create Topic
           </Button>
-          <Button size='small' variant='text' onClick={handleStartProducer}>
-            Start Producer
+          <Button
+            size='small'
+            variant='text'
+            onClick={toggleProducerModal}
+            className={classes.primaryButtons}
+          >
+            {!isProducerStarted ? 'Start Producer' : 'Stop Producer'}
           </Button>
           <Button
             size='small'
@@ -275,7 +321,7 @@ const TopicsDisplay = () => {
             variant='text'
             className={classes.primaryButtons}
           >
-            Start Consumer
+            {!isConsumerStarted ? 'Start Consumer' : 'Stop Consumer'}
           </Button>
         </Paper>
         <Table aria-label='collapsible table'>
@@ -291,40 +337,6 @@ const TopicsDisplay = () => {
               </TableCell>
             </TableRow>
           </TableHead>
-
-          {/* <Link to='partition/topic1/part1' style={{ textDecoration: 'none' }}>
-          <Button
-            size='small'
-            variant='outlined'
-            className={classes.partitionButtons}
-          >
-            Stream
-          </Button>
-        </Link> */}
-          <Modal
-            open={modalForCreateTopic}
-            onClose={toggleCreateTopicModal}
-            aria-labelledby='create-partition'
-            aria-describedby='create-partition'
-            className={classes.modal}
-          >
-            <div className={classes.insideModalDiv}>
-              <Typography variant='h6'>Enter Topic Name</Typography>
-              <Input id='inputTopic' type='text' placeholder='KafkaFix' />
-              <Input
-                id='inputNumberOfPartitions'
-                type='number'
-                placeholder='3'
-              />
-              <Button
-                variant='outlined'
-                className={classes.button}
-                onClick={handleCreateTopic}
-              >
-                Create
-              </Button>
-            </div>
-          </Modal>
 
           {/* Table Body*/}
           {isConnected && (
@@ -346,6 +358,54 @@ const TopicsDisplay = () => {
             // create a topic
           )}
         </Table>
+
+        {/* Modal for Creating a new topic */}
+        <Modal
+          open={modalForCreateTopic}
+          onClose={toggleCreateTopicModal}
+          aria-labelledby='create-partition'
+          aria-describedby='create-partition'
+          className={classes.modal}
+        >
+          <div className={classes.insideModalDiv}>
+            <Typography variant='h6'>Enter Topic Name</Typography>
+            <Input id='inputTopic' type='text' placeholder='KafkaFix' />
+            <Input id='inputNumberOfPartitions' type='number' placeholder='3' />
+            <Button
+              variant='outlined'
+              className={classes.button}
+              onClick={handleCreateTopic}
+            >
+              Create
+            </Button>
+          </div>
+        </Modal>
+
+        {/* Modal for Producer */}
+        <Modal
+          open={modalForProducer}
+          onClose={toggleProducerModal}
+          aria-labelledby='start-producer'
+          aria-describedby='start-producer'
+          className={classes.modal}
+        >
+          <div className={classes.insideModalDiv}>
+            <Typography variant='h6'>Producer to start</Typography>
+
+            <Input id='selectProducer' type='text' placeholder='Kafkafix' />
+
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleToggleProducer}
+              className={classes.button}
+            >
+              Start
+            </Button>
+          </div>
+        </Modal>
+
+        {/* Modal for Consumer */}
         <Modal
           open={modalForConsumer}
           onClose={toggleConsumerModal}
@@ -369,7 +429,7 @@ const TopicsDisplay = () => {
             <Button
               variant='contained'
               color='primary'
-              onClick={handleSelectTopicClick}
+              onClick={handleToggleConsumer}
               className={classes.button}
             >
               Start
