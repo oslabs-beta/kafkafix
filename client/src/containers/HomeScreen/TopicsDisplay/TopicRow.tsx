@@ -108,7 +108,7 @@ export const TopicRow = (props: { row: any }) => {
     const options: RequestInit | Options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic: 'kafkafix', count: 3 }),
+      body: JSON.stringify({ topic: 'kafkafix', count: Number(input?.value) }),
     };
     console.log('options', options);
     //finish the then after getting reposne
