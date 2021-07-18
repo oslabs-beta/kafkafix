@@ -28,13 +28,25 @@ export class KafkaController {
 	/**
 	 * @desc  starts an instance of admin
 	 */
-	static admin: RequestHandler = async (req, res, next) => {
+	static startAdmin: RequestHandler = async (req, res, next) => {
 		const kafka: Kafka = req.app.locals.kafka;
 		const admin = kafka.admin();
 		const [, error] = await handleAsync(admin.connect());
 
 		if (error) return next(error);
 		req.app.locals.admin = admin;
+
+		return next();
+	};
+
+	/**
+	 * @desc  disconnects admin
+	 */
+	static disconnectAdmin: RequestHandler = async (req, res, next) => {
+		const admin: Admin = req.app.locals.admin;
+		const [, error] = await handleAsync(admin.disconnect());
+
+		if (error) return next(error);
 
 		return next();
 	};
@@ -58,7 +70,7 @@ export class KafkaController {
 	static composeDown: RequestHandler = async (req, res, next) => {
 		const { folderPath } = req.body;
 		exec(`docker compose down`, { cwd: folderPath });
-    
+
 		return next();
 	};
 
