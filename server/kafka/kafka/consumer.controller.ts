@@ -12,8 +12,9 @@ export class ConsumerController {
 		const { topic, groupId } = req.body;
 		const ws: WebSocket = req.app.locals.ws;
 		const consumer: Consumer = req.app.locals.kafka.consumer({ groupId });
+		const store = req.app.locals.consumers;
 
-		req.app.locals.consumers[topic][groupId] = consumer;
+		!store[topic] ? (store[topic] = {}) : (store[topic][groupId] = consumer);
 
 		const [, connectErr] = await handleAsync(consumer.connect());
 		const [, subscribeErr] = await handleAsync(

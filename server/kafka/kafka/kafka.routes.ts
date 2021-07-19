@@ -56,6 +56,7 @@ export class KafkaRoutes extends RouteConfig {
 		this.app.route('/api/connect').put([
 			KafkaController.disconnectAdmin,
 			(req: Request, res: Response) => {
+				console.log('disconnect admin');
 				return res.status(200);
 			},
 		]);
@@ -81,6 +82,7 @@ export class KafkaRoutes extends RouteConfig {
 		this.app
 			.route('/api/producer')
 			.put([ProducerController.stopProducer], (req: Request, res: Response) => {
+				console.log('disconnect producer');
 				return res.status(200);
 			});
 
@@ -104,6 +106,7 @@ export class KafkaRoutes extends RouteConfig {
 		this.app
 			.route('/api/consumer')
 			.put([ConsumerController.stopConsumer], (req: Request, res: Response) => {
+				console.log('disconnect consumer');
 				return res.status(200);
 			});
 

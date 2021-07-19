@@ -52,9 +52,9 @@ export class KafkaController {
 	};
 
 	/**
+   * Images must be on the computer
 	 * @desc      starts all containers
 	 */
-	//! send folder path?
 	static composeUp: RequestHandler = async (req, res, next) => {
 		const { filePath } = req.body;
 		const folderPath = filePath.slice(0, filePath.lastIndexOf('\\'));
@@ -66,7 +66,6 @@ export class KafkaController {
 	/**
 	 * @desc      stops all containers
 	 */
-	//! I need path that was stored to docker compose down
 	static composeDown: RequestHandler = async (req, res, next) => {
 		const { folderPath } = req.body;
 		exec(`docker compose down`, { cwd: folderPath });
