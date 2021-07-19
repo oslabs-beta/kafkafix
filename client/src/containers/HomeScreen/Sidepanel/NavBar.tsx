@@ -28,7 +28,7 @@ import {
 } from '@material-ui/icons';
 
 import GroupIcon from '@material-ui/icons/Group';
-
+import TableChartIcon from '@material-ui/icons/TableChart';
 // importing Link from react router dom
 import { Link } from 'react-router-dom';
 
@@ -39,6 +39,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { any } from 'prop-types';
 
 import { NotifItems } from './NotifItems';
+import {logoutActionCreator} from '../../../state/actions/userActions';
 
 // import login function
 
@@ -162,6 +163,25 @@ const NavBar: FC = () => {
             </ListItem>
           </Link>
 
+          <Link
+            to='partition/topic1/part1'
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
+            <ListItem
+              button
+              key='Visualize Streams'
+              className={classes.listItem}
+            >
+              <TableChartIcon />
+              <ListItemText
+                primary='Visualize Streams'
+                className={classes.listItemText}
+              >
+                Message Streams
+              </ListItemText>
+            </ListItem>
+          </Link>
+
           {/* New Item - Groups */}
           <Link to='Groups' style={{ textDecoration: 'none', color: 'black' }}>
             <ListItem button key='Groups' className={classes.listItem}>
@@ -240,7 +260,9 @@ const NavBar: FC = () => {
             <Button onClick={() => setNotif({ open: true })}>
               <Notifications fontSize='large' style={{ color: 'white' }} />
             </Button>
-            <Button>
+            <Button onClick={()=>{
+              console.log('inside button click for signout');
+              dispatch(logoutActionCreator())}}>
               <AccountCircle fontSize='large' style={{ color: 'white' }} />
             </Button>
           </Toolbar>

@@ -12,4 +12,4 @@ export const USER_SIGNUP_FAIL = 'USER_SIGNUP_FAIL';
 
 export const USER_LOGOUT = 'USER_LOGOUT';
 
-export const CREATE_NEWUSER = 'CREATE_NEWUSER';
+export const SET_USER = 'SET_USER';

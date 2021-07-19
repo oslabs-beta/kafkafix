@@ -1,5 +1,5 @@
-import React from 'react';
-import Partitions from './HomeScreen/TopicsDisplay/Partitions';
+import React from "react";
+import Partitions from "./HomeScreen/TopicsDisplay/Partitions";
 
 /* ----------------- Update -----------------
 I removed the side panel component and moved Navbar and connect to be part of Homescreen.
@@ -8,13 +8,21 @@ I removed the partiton component from homescreen. Clicking on topic dropsdown to
 ---------------------------------------------*/
 
 // importing TopicsDisplay
-import TopicsDisplay from './HomeScreen/TopicsDisplay';
+import TopicsDisplay from "./HomeScreen/TopicsDisplay";
 
 // importing Navbar
-import NavBar from './HomeScreen/Sidepanel/NavBar';
+import NavBar from "./HomeScreen/Sidepanel/NavBar";
 
 // importing connect
-import Connect from './HomeScreen/Sidepanel/Connect';
+import Connect from "./HomeScreen/Sidepanel/Connect";
+
+import { useDispatch, useSelector } from "react-redux";
+import { UserState } from "../state/reducers/userReducer";
+import { overallState } from "../state/reducers/index";
+import {
+  Redirect
+} from "react-router-dom";
+// import {logoutActionCreator} from '../state/actions/userActions';
 
 // importing components from Material UI
 import {
@@ -23,23 +31,27 @@ import {
   Divider,
   Typography,
   makeStyles,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 // styles for homescreen component
 const useStyles = makeStyles({
   homeWrapper: {
-    display: 'flex',
-    height: '100vh',
-    alignItems: 'start',
+    display: "flex",
+    height: "100vh",
+    alignItems: "start",
   },
   rightSideWrapper: {
-    height: '100%',
+    height: "100%",
   },
 });
 
 const HomeScreen = () => {
   // creating a classes variable to customize styles
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const email = useSelector<overallState, UserState["email"]>(
+    (state) => state.user.email
+  );
 
   return (
     <React.Fragment>
@@ -48,6 +60,8 @@ const HomeScreen = () => {
         <Connect />
         <TopicsDisplay />
       </div>
+      {/* <button onClick={()=>dispatch(logoutActionCreator())}>Sign Out</button> */}
+      {!email && <Redirect to='/'/>}
     </React.Fragment>
   );
 };

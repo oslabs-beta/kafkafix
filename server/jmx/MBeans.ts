@@ -17,4 +17,8 @@ export enum MBeans {
 
 	zkRequestLatencyMs = 'kafka_server_zookeeperclientmetrics_zookeeperrequestlatencyms',
 	zkRequestLatencyMsCount = 'kafka_server_zookeeperclientmetrics_zookeeperrequestlatencyms_count',
+
+	memoryBytesUsed = 'jvm_memory_bytes_used',
+	cpuUsage = 'process_cpu_seconds_total',
+	memoryCacheuser = 'jvm_memory_pool_bytes_used',
 }

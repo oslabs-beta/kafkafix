@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { kafkaDataReducer, KafkaState } from './kafkaDataReducer';
-import sampleReducer from './sampleReducer';
+import { userReducer, UserState } from './userReducer';
 
 export interface overallState {
-  sample: any;
   kafka: KafkaState;
+  user: UserState
 }
 
 //state = {
@@ -13,8 +13,8 @@ export interface overallState {
 // }
 
 const reducers = combineReducers({
-  sample: sampleReducer,
   kafka: kafkaDataReducer,
+  user: userReducer,
 });
 
 export default reducers;

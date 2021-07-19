@@ -26,14 +26,20 @@ import { MTPaginationOptions } from '../PartitionScreen/MTPaginationOptions';
 
 // importing styles
 const useRowStyles = makeStyles({
+  bigwrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
   root: {
     '& > *': {
       borderBottom: 'unset',
     },
+    // marginTop: 30,
   },
   tableWrapper: {
-    margin: 30,
-    boxShadow: '10px 5px 5px lightgrey;',
+    marginTop: 30,
   },
   tableHeaderRow: {
     backgroundColor: 'black',
@@ -94,7 +100,7 @@ export const ErrorTable: FC = () => {
   };
 
   return (
-    <>
+    <div className={classes.bigwrapper}>
       <TableFilter errorMessage={errors} />
       <TableContainer component={Paper} className={classes.tableWrapper}>
         <Table aria-label='custom pagination table'>
@@ -146,6 +152,6 @@ export const ErrorTable: FC = () => {
           </TableFooter>
         </Table>
       </TableContainer>
-    </>
+    </div>
   );
 };

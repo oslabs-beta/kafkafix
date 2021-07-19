@@ -1,16 +1,24 @@
-
 import React from "react";
-import { useState } from "react";
+import { useState, FC } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import { useHistory } from "react-router-dom";
 // import GuestLogIn from "./guestlogin.jsx";
 import { makeStyles } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import {
+  setUserActionCreator,
+  loginRequestActionCreator,
+  loginSuccessActionCreator,
+  loginFailActionCreator,
+  signUpRequestActionCreator,
+  signUpSuccessActionCreator,
+  signUpFailActionCreator,
+} from "../../state/actions/userActions";
 
 // import dotenv from 'dotenv';
 // dotenv.config();
-
 
 const useStyles = makeStyles({
   btn: {
@@ -25,27 +33,28 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Login(props: { updateUser: (arg0: any) => void; }) {
+export const Login: FC = () => {
   const classes = useStyles();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(null);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   // form validation; email and password need to be > one char
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
 
-  function handleSubmit(event: { preventDefault: () => void; }) {
+  function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
   }
 
   const signUp = () => {
     // fetch request to the server on the 'signup' route, method is post
-
-    fetch("/signup", {
+    dispatch(signUpRequestActionCreator());
+    fetch("/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,17 +64,22 @@ export default function Login(props: { updateUser: (arg0: any) => void; }) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log('email is ', email);
+        dispatch(setUserActionCreator(email));
+        dispatch(signUpSuccessActionCreator());
         console.log("new user signed up: ", data);
-        props.updateUser(data.userId);
-        history.push("/NEWFOLDER"); // mention where to go
+        // props.updateUser(data.userId);
+        // history.push("/home"); // mention where to go
       })
       .catch((error) => {
+        dispatch(signUpFailActionCreator(error));
         console.error("Error:", error);
       });
   };
 
   const login = () => {
-    fetch("/login", {
+    dispatch(loginRequestActionCreator());
+    fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,21 +94,26 @@ export default function Login(props: { updateUser: (arg0: any) => void; }) {
         return response.json();
       })
       .then((data) => {
-        props.updateUser(data.userId);
-        history.push(`/NEWFOLDER`); // mention where to go
+        console.log( 'email is ', email);
+        dispatch(setUserActionCreator(email));
+        dispatch(loginSuccessActionCreator());
+        console.log("login", data);
+        // props.updateUser(data.userId);
+        // history.push(`/home`); // mention where to go
       })
       .catch((error) => {
+        dispatch(loginFailActionCreator(error));
         console.error("Error:", error);
       });
   };
-    // const logout = () => {
-    //     props.updateUser(null);
-    //     fetch("/logout", {
-    //         method: "POST",
-    //         credentials: "include",
-    //     });
-    //     history.push("/login");
-    // };
+  // const logout = () => {
+  //     props.updateUser(null);
+  //     fetch("/logout", {
+  //         method: "POST",
+  //         credentials: "include",
+  //     });
+  //     history.push("/login");
+  // };
   return (
     <div>
       <form className="loginPage">
@@ -135,7 +154,6 @@ export default function Login(props: { updateUser: (arg0: any) => void; }) {
                 }
                 return;
               }}
-            
             >
               {isLogin ? "Log in" : "Sign up"}
             </Button>
@@ -155,4 +173,4 @@ export default function Login(props: { updateUser: (arg0: any) => void; }) {
       </form>
     </div>
   );
-}
+};
