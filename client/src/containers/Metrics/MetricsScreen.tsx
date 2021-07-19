@@ -21,6 +21,7 @@ import {
 const useStyles = makeStyles(() => ({
   metricsWrapper: {
     display: 'flex',
+    flexDirection: 'column',
   },
   button: {
     display: 'block',
@@ -45,8 +46,8 @@ export const MetricsScreen = () => {
     setIsSelectOpen(!isSelectOpen);
   };
 
-  const handleSelectedMetric = (e: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedMetric(e.target.value as string);
+  const handleSelectedMetric = (e: any) => {
+    setSelectedMetric(e.target.value);
 
     // we might nead a helper fuction to create labels and values before storing in state
     // {
@@ -58,6 +59,15 @@ export const MetricsScreen = () => {
     //   }]
     // }
     // make fetch request and save data to redux - data to be used in reusable charts
+
+    let url = 'http://localhost:9090/api/v1/query?query=';
+
+    console.log('selected metric', selectedMetric);
+    console.log('e.target.value =>', e.target.value);
+    console.log('this is the fetch request url =>', `${url}${e.target.value}`);
+    fetch((url += e.target.value))
+      .then((data) => data.json())
+      .then((data) => console.log(data));
   };
 
   return (
@@ -74,11 +84,13 @@ export const MetricsScreen = () => {
             onOpen={toggleSelect}
             value={selectedMetric}
             onChange={handleSelectedMetric}
-          ></Select>
-          {/* Mapping menu items manually grabbed from Prometheus */}
-          {requestParameters().map((el) => (
-            <MenuItem value={el}>{el}</MenuItem>
-          ))}
+          >
+            <MenuItem value=''>None</MenuItem>
+            {/* Mapping menu items manually grabbed from Prometheus */}
+            {requestParameters().map((el) => (
+              <MenuItem value={el}>{el}</MenuItem>
+            ))}
+          </Select>
         </FormControl>
 
         {/* Import bar Chart */}
