@@ -52,3 +52,10 @@ export const appendNotifActionCreator = (input: any) => {
     payload: input,
   };
 };
+
+export const populateChartActionCreator = (input: any) => {
+  return {
+    type: Type.POPULATE_CHART,
+    payload: input,
+  };
+};

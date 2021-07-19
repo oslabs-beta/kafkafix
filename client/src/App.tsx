@@ -35,7 +35,7 @@ const App: FC = () => {
           <Route path='/' exact component={HomeScreen} />
           <Route path='/metrics' component={MetricsScreen} />
           <Route path='/failureReports' component={FailureReportScreen} />
-          <Route path='/groups' component={Groups} />
+          {/* <Route path='/groups' component={Groups} /> */}
           <Route
             path='/partition/:topic/:partitionID'
             render={(props) => (
