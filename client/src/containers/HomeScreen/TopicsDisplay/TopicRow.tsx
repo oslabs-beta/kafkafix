@@ -182,7 +182,7 @@ export const TopicRow = (props: { row: any }) => {
                       Leader
                     </TableCell>
                     <TableCell className={classes.tableHeaderText}>
-                      Parttion-errode
+                      Partition-errode
                     </TableCell>
                     <TableCell className={classes.tableHeaderText}>
                       ISR

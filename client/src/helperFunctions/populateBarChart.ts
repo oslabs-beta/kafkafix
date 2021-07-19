@@ -1,11 +1,6 @@
+import { populateBarChartActionCreator } from '../state/actions/actions';
 
-
-
-const createData = () => {
-
-}
+const createBarChartData = () => {};
 
 // fire Action Creator
-const populateData = () => {
-    
-}
+const populateBarChart = () => {};
