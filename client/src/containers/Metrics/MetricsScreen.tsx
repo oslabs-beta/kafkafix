@@ -16,6 +16,7 @@ import {
   Modal,
   Card,
 } from '@material-ui/core';
+import NavBar from '../HomeScreen/Sidepanel/NavBar';
 
 // styles
 const useStyles = makeStyles(() => ({
@@ -73,9 +74,10 @@ export const MetricsScreen = () => {
   return (
     <React.Fragment>
       <Card className={classes.metricsWrapper}>
+      <NavBar />
         {/* Form to select metric you want to display */}
         <FormControl className={classes.formControl}>
-          <InputLabel>Select a metric from the list</InputLabel>
+          <InputLabel>Select a metric from the dropdown</InputLabel>
           <Select
             labelId='select-metric'
             id='slectMetric'
@@ -88,7 +90,7 @@ export const MetricsScreen = () => {
             <MenuItem value=''>None</MenuItem>
             {/* Mapping menu items manually grabbed from Prometheus */}
             {requestParameters().map((el) => (
-              <MenuItem value={el}>{el}</MenuItem>
+              <MenuItem key={el} value={el}>{el}</MenuItem>
             ))}
           </Select>
         </FormControl>

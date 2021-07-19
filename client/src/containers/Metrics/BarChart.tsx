@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Chart } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
+
+// chart.js 3 is ESM tree shakeable and requires to register all components that you are going to use. Thus, you have to register the linear scale manually
+Chart.register(...registerables);
 
 export const BarChart = () => {
   // state object to plot the chart on
@@ -60,6 +63,7 @@ export const BarChart = () => {
 
   return (
     <>
+
       <canvas ref={chartContainer} />
     </>
   );
