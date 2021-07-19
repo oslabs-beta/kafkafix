@@ -57,7 +57,7 @@ export default function Login(props: { updateUser: (arg0: any) => void; }) {
       .then((data) => {
         console.log("new user signed up: ", data);
         props.updateUser(data.userId);
-        history.push("/landing"); // mention where to go
+        history.push("/NEWFOLDER"); // mention where to go
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -81,7 +81,7 @@ export default function Login(props: { updateUser: (arg0: any) => void; }) {
       })
       .then((data) => {
         props.updateUser(data.userId);
-        history.push(`/landing`); // mention where to go
+        history.push(`/NEWFOLDER`); // mention where to go
       })
       .catch((error) => {
         console.error("Error:", error);
