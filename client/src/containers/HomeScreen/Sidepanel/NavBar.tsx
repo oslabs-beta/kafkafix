@@ -183,7 +183,7 @@ const NavBar: FC = () => {
           </Link>
 
           {/* New Item - Groups */}
-          <Link to='Groups' style={{ textDecoration: 'none', color: 'black' }}>
+          {/* <Link to='Groups' style={{ textDecoration: 'none', color: 'black' }}>
             <ListItem button key='Groups' className={classes.listItem}>
               <GroupIcon></GroupIcon>
               <ListItemText
@@ -193,7 +193,8 @@ const NavBar: FC = () => {
             </ListItem>
           </Link>
           <Divider />
-        </List>
+       */}
+         </List>
 
         <List className={classes.bottomHalfList}>
           {/* list item 3 */}

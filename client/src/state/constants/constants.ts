@@ -7,4 +7,5 @@ export enum Type {
   APPEND_MESSAGE,
   POPULATE_NOTIF,
   APPEND_NOTIF,
+  POPULATE_CHART,
 }

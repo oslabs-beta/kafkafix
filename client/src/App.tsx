@@ -46,6 +46,9 @@ const App: FC = () => {
     <>
       <Router>
         <Switch>
+          <Route path='/metrics' component={MetricsScreen} />
+          <Route path='/failureReports' component={FailureReportScreen} />
+          {/* <Route path='/groups' component={Groups} /> */}
           <Route
             path="/"
             exact
