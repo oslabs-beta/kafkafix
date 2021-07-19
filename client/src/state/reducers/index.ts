@@ -3,7 +3,7 @@ import { kafkaDataReducer, KafkaState } from './kafkaDataReducer';
 import { userReducer, UserState } from './userReducer';
 import metricsReducer from './metricsReducer';
 import sampleReducer from './sampleReducer';
-import { userReducer } from './userReducer';
+// import { userReducer } from './userReducer';
 
 export interface overallState {
   kafka: KafkaState;
