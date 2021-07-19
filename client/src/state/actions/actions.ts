@@ -53,9 +53,9 @@ export const appendNotifActionCreator = (input: any) => {
   };
 };
 
-export const populateBarChartActionCreator = (input: any) => {
+export const populateChartActionCreator = (input: any) => {
   return {
-    type: Type.POPULATE_BARCHART,
+    type: Type.POPULATE_CHART,
     payload: input,
   };
 };

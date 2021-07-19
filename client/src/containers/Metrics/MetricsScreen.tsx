@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { requestParameters } from './requestParameters';
 import { BarChart } from './BarChart';
+import NavBar from '../HomeScreen/Sidepanel/NavBar';
+import { PieChart } from './PieChart';
 
 // importing componenents from M-UI
 import {
@@ -13,16 +15,23 @@ import {
   Typography,
   Input,
   makeStyles,
-  Modal,
   Card,
 } from '@material-ui/core';
-import NavBar from '../HomeScreen/Sidepanel/NavBar';
 
 // styles
 const useStyles = makeStyles(() => ({
   metricsWrapper: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  barChart: {
+    alignItems: 'center',
+  },
+  pieChart: {
+    width: 600,
+    alignSelf: 'center',
+    marginTop: 50,
+    marginBottom: 40,
   },
   button: {
     display: 'block',
@@ -50,15 +59,8 @@ export const MetricsScreen = () => {
   const handleSelectedMetric = (e: any) => {
     setSelectedMetric(e.target.value);
 
-    // we might nead a helper fuction to create labels and values before storing in state
-    // {
-    //   labels: ['A', 'B', 'C', ...],
-    //   datasets: [{
-    //     label: 'My data',
-    //     data: [10, 20, 30, ...],
-    //     backgroundColor: '#112233'
-    //   }]
-    // }
+    // we nead a helper fuction to create labels and values before storing in state
+
     // make fetch request and save data to redux - data to be used in reusable charts
 
     let url = 'http://localhost:9090/api/v1/query?query=';
@@ -74,7 +76,7 @@ export const MetricsScreen = () => {
   return (
     <React.Fragment>
       <Card className={classes.metricsWrapper}>
-      <NavBar />
+        <NavBar />
         {/* Form to select metric you want to display */}
         <FormControl className={classes.formControl}>
           <InputLabel>Select a metric from the dropdown</InputLabel>
@@ -90,14 +92,22 @@ export const MetricsScreen = () => {
             <MenuItem value=''>None</MenuItem>
             {/* Mapping menu items manually grabbed from Prometheus */}
             {requestParameters().map((el) => (
-              <MenuItem key={el} value={el}>{el}</MenuItem>
+              <MenuItem key={el} value={el}>
+                {el}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
 
         {/* Import bar Chart */}
-        <BarChart />
-        {/* Import Other Charts */}
+        <Card className={classes.barChart}>
+          <BarChart />
+        </Card>
+
+        {/* Import pie Chart */}
+        <div className={classes.pieChart}>
+          <PieChart />
+        </div>
       </Card>
     </React.Fragment>
   );

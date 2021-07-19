@@ -2,19 +2,19 @@ import { Type } from '../constants/constants';
 import { Action } from '../actions/actions';
 
 interface metricsState {
-  barChartData: Object;
+  chartData: Object;
 }
 const initialState: metricsState = {
-  barChartData: {},
+  chartData: {},
 };
 
 const metricsReducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case Type.POPULATE_BARCHART:
-      console.log('arrived in metricsReducer under POPULATE BARCHART');
+    case Type.POPULATE_CHART:
+      console.log('arrived in metricsReducer under POPULATE_CHART');
       return {
         ...state,
-        barChartData: action.payload,
+        chartData: action.payload,
       };
     default:
       return state;
