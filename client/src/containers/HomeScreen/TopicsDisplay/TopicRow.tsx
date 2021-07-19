@@ -95,9 +95,13 @@ export const TopicRow = (props: { row: any }) => {
   };
 
   const handleCreatePartition = () => {
-    // grabbing input
+    // grabbing inputs
     const input: HTMLInputElement | null =
       document.querySelector('#inputPartition');
+
+    const topic: HTMLInputElement | null = document.querySelector(
+      '#inputTopicForPartition'
+    );
 
     // input validation
     if (input && input.value === '') {
@@ -108,7 +112,10 @@ export const TopicRow = (props: { row: any }) => {
     const options: RequestInit | Options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic: 'kafkafix', count: Number(input?.value) }),
+      body: JSON.stringify({
+        topic: topic?.value,
+        numPartitions: Number(input?.value),
+      }),
     };
     console.log('options', options);
     //finish the then after getting reposne
@@ -175,7 +182,7 @@ export const TopicRow = (props: { row: any }) => {
                       Leader
                     </TableCell>
                     <TableCell className={classes.tableHeaderText}>
-                      Parttion-errode
+                      Partition-errode
                     </TableCell>
                     <TableCell className={classes.tableHeaderText}>
                       ISR
@@ -224,6 +231,11 @@ export const TopicRow = (props: { row: any }) => {
                   >
                     <div className={classes.insideModalDiv}>
                       <Typography variant='h6'>Number of Partitions</Typography>
+                      <Input
+                        id='inputTopicForPartition'
+                        type='text'
+                        placeholder='KafkaFix'
+                      />
                       <Input
                         id='inputPartition'
                         type='number'
