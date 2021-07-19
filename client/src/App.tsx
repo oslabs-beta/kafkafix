@@ -1,21 +1,29 @@
-import React, { FC } from 'react';
+import React, { FC } from "react";
 // app renders 1 component -- Home Screen --
 
 // importing browser capabilities
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  useLocation,
+} from "react-router-dom";
 
 // importing HomeScreen and router components
-import HomeScreen from './containers/HomeScreen';
-import { FailureReportScreen } from './containers/FailureReports/FailureReportScreen';
-import { MetricsScreen } from './containers/Metrics/MetricsScreen';
-import Partitions from './containers/HomeScreen/TopicsDisplay/Partitions';
-import ws from './websocket';
-import { useDispatch, useSelector } from 'react-redux';
-import { appendMessageActionCreator } from './state/actions/actions';
-import { KafkaState } from './state/reducers/kafkaDataReducer';
-import { overallState } from './state/reducers/index';
-import { PartitionScreen } from './containers/PartitionScreen/PartitionScreen';
-import { Groups } from './containers/HomeScreen/Sidepanel/Groups';
+import HomeScreen from "./containers/HomeScreen";
+import { FailureReportScreen } from "./containers/FailureReports/FailureReportScreen";
+import { MetricsScreen } from "./containers/Metrics/MetricsScreen";
+import Partitions from "./containers/HomeScreen/TopicsDisplay/Partitions";
+import ws from "./websocket";
+import { useDispatch, useSelector } from "react-redux";
+import { appendMessageActionCreator } from "./state/actions/actions";
+import { KafkaState } from "./state/reducers/kafkaDataReducer";
+import { overallState } from "./state/reducers/index";
+import { PartitionScreen } from "./containers/PartitionScreen/PartitionScreen";
+import { Groups } from "./containers/HomeScreen/Sidepanel/Groups";
+import { Login } from "./containers/Authentication/Login";
+import { UserState } from "./state/reducers/userReducer";
 
 const wss = ws();
 
@@ -23,21 +31,35 @@ const wss = ws();
 // import { useFetch } from './hooks/useFetch';
 
 const App: FC = () => {
-  const dispatch = useDispatch();
-  const messages = useSelector<overallState, KafkaState['messages']>(
-    (state) => state.kafka.messages
+  // const dispatch = useDispatch();
+  // const messages = useSelector<overallState, KafkaState['messages']>(
+  //   (state) => state.kafka.messages
+  // );
+  const email = useSelector<overallState, UserState["email"]>(
+    (state) => state.user.email
   );
+  console.log(email);
+  //   const location = useLocation();
+  // console.log(location.pathname);
 
   return (
     <>
       <Router>
         <Switch>
-          <Route path='/' exact component={HomeScreen} />
           <Route path='/metrics' component={MetricsScreen} />
           <Route path='/failureReports' component={FailureReportScreen} />
           {/* <Route path='/groups' component={Groups} /> */}
           <Route
-            path='/partition/:topic/:partitionID'
+            path="/"
+            exact
+            render={() => (email.length ? <Redirect to="/home" /> : <Login />)}
+          />
+          <Route path="/home" exact component={HomeScreen} />
+          <Route path="/metrics" component={MetricsScreen} />
+          <Route path="/failureReports" component={FailureReportScreen} />
+          <Route path="/groups" component={Groups} />
+          <Route
+            path="/partition/:topic/:partitionID"
             render={(props) => (
               <PartitionScreen
                 topic={props.match.params.topic}

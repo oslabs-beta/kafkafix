@@ -39,6 +39,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { any } from 'prop-types';
 
 import { NotifItems } from './NotifItems';
+import {logoutActionCreator} from '../../../state/actions/userActions';
 
 // import login function
 
@@ -260,7 +261,9 @@ const NavBar: FC = () => {
             <Button onClick={() => setNotif({ open: true })}>
               <Notifications fontSize='large' style={{ color: 'white' }} />
             </Button>
-            <Button>
+            <Button onClick={()=>{
+              console.log('inside button click for signout');
+              dispatch(logoutActionCreator())}}>
               <AccountCircle fontSize='large' style={{ color: 'white' }} />
             </Button>
           </Toolbar>
