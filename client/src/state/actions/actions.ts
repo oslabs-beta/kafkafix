@@ -52,3 +52,10 @@ export const appendNotifActionCreator = (input: any) => {
     payload: input,
   };
 };
+
+export const populateBarChartActionCreator = (input: any) => {
+  return {
+    type: Type.POPULATE_BARCHART,
+    payload: input,
+  };
+};
