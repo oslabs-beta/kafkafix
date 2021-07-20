@@ -34,12 +34,11 @@ services:
       KAFKA_LOG4J_LOGGERS: kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO
       KAFKA_OPTS: -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/usr/app/prom-jmx-agent-config.yml
 
-      # configure JMX 
+      # configure JMX
       JMX_PORT: 9999
       KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
-      KAFKA_JMX_OPTS: 
-        -Djava.rmi.server.hostname=127.0.0.1
-        -Dcom.sun.management.jmxremote=true 
+      KAFKA_JMX_OPTS: -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote=true
         -Dcom.sun.management.jmxremote.local.only=false
         -Dcom.sun.management.jmxremote.rmi.port=9999
         -Dcom.sun.management.jmxremote.port=9999
@@ -49,6 +48,6 @@ services:
     volumes:
       # configure directory
       - ./zk-kafka/kafka/data:/var/lib/kafka/data
-      - /var/run/docker.sock:/var/run/docker.sock
+      # - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zookeeper
