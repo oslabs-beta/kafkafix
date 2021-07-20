@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import { kafkaDataReducer, KafkaState } from './kafkaDataReducer';
 import { userReducer, UserState } from './userReducer';
-import metricsReducer from './metricsReducer';
-import sampleReducer from './sampleReducer';
+import {metricsReducer, MetricsState} from './metricsReducer';
 // import { userReducer } from './userReducer';
 
 export interface overallState {
   kafka: KafkaState;
-  user: UserState
+  user: UserState,
+  metrics: MetricsState
 }
 
 //state = {
