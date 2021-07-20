@@ -13,3 +13,4 @@ export const USER_SIGNUP_FAIL = 'USER_SIGNUP_FAIL';
 export const USER_LOGOUT = 'USER_LOGOUT';
 
 export const SET_USER = 'SET_USER';
+export const SET_ERROR = 'SET_ERROR';

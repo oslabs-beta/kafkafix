@@ -9,6 +9,7 @@ import {
   USER_SIGNUP_FAIL,
   USER_LOGOUT,
   SET_USER,
+  SET_ERROR,
 } from "../constants/userConstants";
 
 export interface Action {
@@ -67,6 +68,13 @@ export const signUpFailActionCreator = (error: string) => {
 export const logoutActionCreator = () => {
   return {
     type: USER_LOGOUT
+  }
+}
+
+export const setErrorActionCreator = (error: string) => {
+  return {
+    type: SET_ERROR,
+    payload: error
   }
 }
 

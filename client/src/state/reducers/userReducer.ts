@@ -5,7 +5,7 @@ export interface UserState {
   email: string;
   signupLoading: boolean;
   LOGINLoading: boolean;
-  error: boolean;
+  error: string;
   preferences: any;
 }
 
@@ -13,7 +13,7 @@ const initialState: UserState = {
   email: "",
   signupLoading: false,
   LOGINLoading: false,
-  error: false,
+  error: "",
   preferences: null,
 };
 
@@ -28,10 +28,14 @@ export const userReducer = (
         ...state,
         email: action.payload,
       };
+    case types.SET_ERROR: 
+      return {
+        ...state,
+        error: action.payload
+      }
     case types.USER_LOGIN_REQUEST:
       return { ...state, LOGINLoading: true };
     case types.USER_LOGIN_SUCCESS:
-      console.log("action payload for sucessful LOGIN", action.payload);
       return { ...state, LOGINloading: false };
     case types.USER_LOGIN_FAIL:
       return { ...state, LOGINLoading: false, error: action.payload };
@@ -42,8 +46,6 @@ export const userReducer = (
     case types.USER_SIGNUP_FAIL:
       return { ...state, signupLoading: false, error: action.payload };
     case types.USER_LOGOUT:
-      console.log('reached user logout');
-      console.log('initial state ', initialState);
       return {...initialState};
     default:
       return state;
