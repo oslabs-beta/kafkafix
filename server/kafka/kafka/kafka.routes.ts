@@ -28,20 +28,52 @@ export class KafkaRoutes extends RouteConfig {
 		 * @desc     Stop Docker containers from docker-compose file
 		 */
 		this.app
-			.route('/api/composedown')
-			.post([KafkaController.composeDown], (req: Request, res: Response) => {
+			.route('/api/connect')
+			.put([KafkaController.composeDown], (req: Request, res: Response) => {
 				return res.status(200);
 			});
+
+		/**
+		 * @POST     Initialize Kafka
+		 * @desc    sends cluster info and all metadata
+		 */
+		this.app.route('/api/connect').post([
+			KafkaController.kafka,
+			KafkaController.startAdmin,
+			KafkaController.describeCluster,
+			TopicController.getAllTopicMetadata,
+			GroupController.listGroups,
+			(req: Request, res: Response) => {
+				const { cluster, metadata, groups } = res.locals;
+				return res.status(200).json({ cluster, metadata, groups });
+			},
+		]);
+
+		/**
+		 * @PUT     Disconnects Kafka
+		 * @desc    disconnects admin kafka instance
+		 */
+		this.app.route('/api/connect').put([
+			KafkaController.disconnectAdmin,
+			(req: Request, res: Response) => {
+				console.log('disconnect admin');
+				return res.status(200);
+			},
+		]);
 
 		/**
 		 * @POST     Initialize producer
 		 * @desc     Initialize an instance of producer
 		 */
+
 		this.app
 			.route('/api/producer')
-			.post([ProducerController.startProducer], (req: Request, res: Response) => {
-				return res.status(200);
-			});
+			.post(
+				[ProducerController.startProducer],
+				(req: Request, res: Response) => {
+					return res.status(200);
+				}
+			);
 
 		/**
 		 * @PUT      Stops producer
@@ -50,6 +82,7 @@ export class KafkaRoutes extends RouteConfig {
 		this.app
 			.route('/api/producer')
 			.put([ProducerController.stopProducer], (req: Request, res: Response) => {
+				console.log('disconnect producer');
 				return res.status(200);
 			});
 
@@ -59,9 +92,12 @@ export class KafkaRoutes extends RouteConfig {
 		 */
 		this.app
 			.route('/api/consumer')
-			.post([ConsumerController.startConsumer], (req: Request, res: Response) => {
-				return res.status(200);
-			});
+			.post(
+				[ConsumerController.startConsumer],
+				(req: Request, res: Response) => {
+					return res.status(200);
+				}
+			);
 
 		/**
 		 * @PUT      Stops consumer
@@ -70,24 +106,9 @@ export class KafkaRoutes extends RouteConfig {
 		this.app
 			.route('/api/consumer')
 			.put([ConsumerController.stopConsumer], (req: Request, res: Response) => {
+				console.log('disconnect consumer');
 				return res.status(200);
 			});
-
-		/**
-		 * @POST     Initialize kafka
-		 * @desc    sends cluster info and all metadata
-		 */
-		this.app.route('/api/connect').post([
-			KafkaController.kafka,
-			KafkaController.admin,
-			KafkaController.describeCluster,
-			TopicController.getAllTopicMetadata,
-			GroupController.listGroups,
-			(req: Request, res: Response) => {
-				const { cluster, metadata, groups } = res.locals;
-				return res.status(200).json({ cluster, metadata, groups });
-			},
-		]);
 
 		return this.app;
 	}
