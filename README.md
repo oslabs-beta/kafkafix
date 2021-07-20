@@ -1,9 +1,16 @@
+![logo]()
+
+### [Homepage](https://www.kafkafix.com)
+### [Repository](https://github.com/oslabs-beta/kafkafix)
+
 ## Table of Content
 
 - [ Motivation ](#-motivation)
 - [ Features ](#-features)
 - [ Install ](#-install)
-- [ How to Use ](#-contributors)
+- [ How to Use ](#-how-to-use)
+- [ Contribute ](#-contribute)
+- [ Contributors ](#-contributors)
 
 ## Motivation
 
@@ -71,6 +78,13 @@ Just visit https://wwww.kafkafix.com and download and install.
 
 > 1. Click on Create a Paritition button.
 > 2. Then pass in a number of partitions to be added for the topic.
+
+## Contribute
+New contritbutions to the library are welcome, but we ask that you please follow these guidelines.
+
+> 1. Before opening a PR for major additions or changes, please test on your local development. This way, it will save overall time spent and allow for faster implementation by maintainers.
+> 2. Conside whether your changes are useful for all users.
+> 3. Avoid breaking changes unless there is an upcoming major release, which are infrequent. We encourage people to care a lot about backwards compatibility.
 
 ## Contributors
 
