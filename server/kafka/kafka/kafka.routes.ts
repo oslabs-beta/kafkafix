@@ -28,8 +28,8 @@ export class KafkaRoutes extends RouteConfig {
 		 * @desc     Stop Docker containers from docker-compose file
 		 */
 		this.app
-			.route('/api/composedown')
-			.post([KafkaController.composeDown], (req: Request, res: Response) => {
+			.route('/api/connect')
+			.put([KafkaController.composeDown], (req: Request, res: Response) => {
 				return res.status(200);
 			});
 

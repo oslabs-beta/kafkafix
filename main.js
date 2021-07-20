@@ -65,7 +65,6 @@ ipcMain.on('open-partition', () => {
 });
 
 function uploadFile() {
-	// Resolves to a Promise<Object>
 	dialog
 		.showOpenDialog({
 			title: 'Select your docker-compose file',
@@ -83,7 +82,6 @@ function uploadFile() {
 					: ['openFile', 'openDirectory'],
 		})
 		.then(file => {
-			// if file wasn't canceled
 			if (!file.canceled) {
 				const filePath = file.filePaths[0].toString();
 
