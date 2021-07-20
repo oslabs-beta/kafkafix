@@ -29,6 +29,7 @@ export class TopicController {
 	static createTopics: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
 		const { topic, numPartitions, replicationFactor } = req.body;
+		console.log(req.body);
 		const [success, error] = await handleAsync(
 			admin.createTopics({
 				topics: [{ topic, numPartitions, replicationFactor }],
@@ -68,7 +69,6 @@ export class TopicController {
 	static createPartition: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
 		const { topic, count } = req.body;
-		console.log('body', req.body);
 		const [, error] = await handleAsync(
 			admin.createPartitions({ topicPartitions: [{ topic, count }] })
 		);
