@@ -1,14 +1,27 @@
 import { Type } from '../constants/constants';
 import { Action } from '../actions/actions';
 
-interface metricsState {
-  chartData: Object;
+export interface MetricsState {
+  chartData: ChartData | Object;
 }
-const initialState: metricsState = {
+
+interface ChartData {
+  labels: string[],
+  datasets: DataSet[]
+}
+
+interface DataSet {
+  label: string,
+  data: number[],
+  backgroundColor: string [],
+  borderWidth: number
+}
+
+const initialState: MetricsState = {
   chartData: {},
 };
 
-const metricsReducer = (state = initialState, action: any) => {
+export const metricsReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case Type.POPULATE_CHART:
       console.log('arrived in metricsReducer under POPULATE_CHART');
@@ -21,4 +34,4 @@ const metricsReducer = (state = initialState, action: any) => {
   }
 };
 
-export default metricsReducer;
+// export default metricsReducer;
