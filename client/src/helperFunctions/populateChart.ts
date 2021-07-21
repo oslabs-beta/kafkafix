@@ -43,6 +43,7 @@ const createChartData = (inputData: any) => {
 
 // fire Action Creator
 export const populateChart = (data: any, dispatch: any) => {
+  if (data.length === 0) return dispatch(populateChartActionCreator({}));
   const formattedData = createChartData(data);
   dispatch(populateChartActionCreator(formattedData));
 };

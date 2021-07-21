@@ -43,6 +43,7 @@
 		"electron": "^13.1.6",
 		"electron-builder": "^22.11.7",
 		"electron-is-dev": "^2.0.0",
+		"electron-squirrel-startup": "^1.0.0",
 		"express": "^4.17.1",
 		"firebase": "^8.7.0",
 		"form-data": "^4.0.0",
