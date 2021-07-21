@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import { useHistory } from "react-router-dom";
-// import GuestLogIn from "./guestlogin.jsx";
 import { makeStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,23 +16,29 @@ import {
   signUpSuccessActionCreator,
   signUpFailActionCreator,
 } from "../../state/actions/userActions";
+import {
+  OauthLoginRequestActionCreator,
+  OauthLoginSuccessActionCreator,
+  OauthLoginFailActionCreator,
+  OauthSetErrorActionCreator
+} from "../../state/actions/oauthActions";
 import { overallState } from "../../state/reducers/index";
 import { UserState } from "../../state/reducers/userReducer";
+// import { OauthState } from "../../state/reducers/OauthReducer";
 
-// import dotenv from 'dotenv';
-// dotenv.config();
+
 
 const useStyles = makeStyles({
   btn: {
     fontSize: 20,
-    // display: flex,
-    // align-items: center
-    // justifyContent: 'left',
-    backgroundColor: "white",
-    // margin: auto,
-    // padding:10
+    color: "white",
+    backgroundColor: "black",
     marginLeft: 25,
   },
+  loginPage: {
+    textAlign: 'center',
+    color: "black",
+  }
 });
 
 export const Login: FC = () => {
@@ -112,14 +117,33 @@ export const Login: FC = () => {
         console.error("Error:", error);
       });
   };
-  // const logout = () => {
-  //     props.updateUser(null);
-  //     fetch("/logout", {
-  //         method: "POST",
-  //         credentials: "include",
-  //     });
-  //     history.push("/login");
-  // };
+  const oauthLogin = () => {
+    dispatch(OauthLoginRequestActionCreator());
+    fetch('/oauth-callback', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.status != 200) {
+          throw Error();
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("email is ", email);
+        dispatch(OauthLoginSuccessActionCreator());
+        console.log("login", data);
+      })
+      .catch((error) => {
+        dispatch(OauthLoginFailActionCreator(error));
+        console.error("Error:", error);
+      });
+  };
+  
   const handleSubmitButton = () => {
     if (validateForm()) {
       if (isLogin) login();
@@ -154,11 +178,13 @@ export const Login: FC = () => {
 
   return (
     <div>
-      <form className="loginPage">
+      
+      <form className={classes.loginPage}>
         <h1>{isLogin ? "Log in" : "Sign up"}</h1>
         <Box m={2}>
           <div>
             <TextField
+              
               onSubmit={handleSubmit}
               type="text"
               value={email}
@@ -186,10 +212,12 @@ export const Login: FC = () => {
             <Button className={classes.btn} onClick={handleSubmitButton}>
               {isLogin ? "Log in" : "Sign up"}
             </Button>
-            <Button className={classes.btn} onClick={handleGithubLogin}>
-              {isLogin && "Log in With Github"}
-            </Button>
+            {/* <Button className={classes.btn} onClick={handleGithubLogin}> */}
+            {/* {isLogin &&  <Button>Login With Github <Button/>}
+            </Button> */}
+            
           </p>
+          {isLogin &&  <Button className={classes.btn} onClick={handleGithubLogin}>Login With Github </Button>}
           <div>
             <p style={{ color: "red" }}>
               {/* {" "} */}
@@ -203,7 +231,8 @@ export const Login: FC = () => {
             </u>
           </div>
         </div>
-      </form>
+        </form>
+        
     </div>
   );
 };
