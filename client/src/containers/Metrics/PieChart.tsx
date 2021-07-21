@@ -1,5 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
+import { useSelector } from 'react-redux';
+import { overallState } from '../../state/reducers/index';
+import { MetricsState } from '../../state/reducers/metricsReducer';
+
+// import {
+//   InputLabel,
+//   Button,
+//   Select,
+//   FormControl,
+//   MenuItem,
+//   Paper,
+//   Typography,
+//   Input,
+//   makeStyles,
+//   Card,
+// } from '@material-ui/core';
 
 // chart.js 3 is ESM tree shakeable and requires to register all components that you are going to use. Thus, you have to register the linear scale manually
 Chart.register(...registerables);
@@ -9,7 +25,11 @@ export const PieChart = () => {
   const chartContainer: any = useRef(null);
 
   // state of barchart
-  const [chartInstance, setChartInstance] = useState(null);
+  const [chartInstance, setChartInstance] = useState<any>(null);
+
+  const chartData = useSelector<overallState, MetricsState['chartData']>(
+    (state) => state.metrics.chartData
+  );
 
   const config: any = {
     type: 'polarArea',
@@ -33,21 +53,36 @@ export const PieChart = () => {
     ],
   };
 
+  // const handleEmptyReturnValue = (): any => {
+  //   return (
+  //     <Card className={classes.emptyWrapper}>
+  //       <Typography variant='h6'>
+  //         The selected metric is currently unavailable
+  //       </Typography>
+  //       <Typography variant='caption'>
+  //         Data is generated as you run your kafka cluster. Select another metric
+  //       </Typography>
+  //     </Card>
+  //   );
+  // };
+
   useEffect(() => {
     // grab formatted data from state
 
     // assign it to chartConfig.data
-    config.data = demoData;
-
+    if (chartInstance) chartInstance.clear();
+    config.data = chartData;
     if (chartContainer && chartContainer.current) {
       const newChartInstance: any = new Chart(chartContainer.current, config);
       setChartInstance(newChartInstance);
     }
-  }, [chartContainer]);
+  }, [chartContainer, chartData]);
 
   return (
     <>
-      <canvas ref={chartContainer} />
+      {Object.values(chartData).length ? (
+        <canvas id='canvas2' ref={chartContainer} />
+      ) : null}
     </>
   );
 };

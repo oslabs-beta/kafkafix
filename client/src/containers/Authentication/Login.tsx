@@ -1,14 +1,15 @@
 import React from "react";
-import { useState, FC } from "react";
+import { useState, FC, useRef } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import { useHistory } from "react-router-dom";
 // import GuestLogIn from "./guestlogin.jsx";
 import { makeStyles } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setUserActionCreator,
+  setErrorActionCreator,
   loginRequestActionCreator,
   loginSuccessActionCreator,
   loginFailActionCreator,
@@ -16,6 +17,8 @@ import {
   signUpSuccessActionCreator,
   signUpFailActionCreator,
 } from "../../state/actions/userActions";
+import { overallState } from "../../state/reducers/index";
+import { UserState } from "../../state/reducers/userReducer";
 
 // import dotenv from 'dotenv';
 // dotenv.config();
@@ -39,8 +42,11 @@ export const Login: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(null);
-  const history = useHistory();
+  // const history = useHistory();
   const dispatch = useDispatch();
+  const errorMessage = useSelector<overallState, UserState["error"]>(
+    (state) => state.user.error
+  );
 
   // form validation; email and password need to be > one char
   function validateForm() {
@@ -64,7 +70,7 @@ export const Login: FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('email is ', email);
+        console.log("email is ", email);
         dispatch(setUserActionCreator(email));
         dispatch(signUpSuccessActionCreator());
         console.log("new user signed up: ", data);
@@ -94,7 +100,7 @@ export const Login: FC = () => {
         return response.json();
       })
       .then((data) => {
-        console.log( 'email is ', email);
+        console.log("email is ", email);
         dispatch(setUserActionCreator(email));
         dispatch(loginSuccessActionCreator());
         console.log("login", data);
@@ -114,6 +120,38 @@ export const Login: FC = () => {
   //     });
   //     history.push("/login");
   // };
+  const handleSubmitButton = () => {
+    if (validateForm()) {
+      if (isLogin) login();
+      else signUp();
+    } else {
+      dispatch(
+        setErrorActionCreator("Cannot leave email/password fields empty")
+      );
+    }
+  };
+
+  const handleChangePage = () => {
+    const emailField: HTMLInputElement | null =
+      document.querySelector("#emailField");
+    const passwordField: HTMLInputElement | null =
+      document.querySelector("#passwordField");
+    if (emailField) {
+      console.log(emailField);
+      console.log(emailField.value);
+      emailField.value = "";
+    }
+    if (passwordField) {
+      passwordField.value = "";
+    }
+    dispatch(setErrorActionCreator(""));
+    setIsLogin(!isLogin);
+  };
+  
+  const handleGithubLogin = () => {
+
+  } 
+
   return (
     <div>
       <form className="loginPage">
@@ -127,6 +165,7 @@ export const Login: FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               label="email"
               variant="outlined"
+              id="emailField"
             />
           </div>
         </Box>
@@ -138,36 +177,30 @@ export const Login: FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               label="password"
               variant="outlined"
+              id="passwordField"
             />
           </div>
         </Box>
         <div>
-          <div>
-            <Button
-              className={classes.btn}
-              onClick={() => {
-                if (validateForm()) {
-                  if (isLogin) {
-                    return login();
-                  }
-                  return signUp();
-                }
-                return;
-              }}
-            >
+          <p>
+            <Button className={classes.btn} onClick={handleSubmitButton}>
               {isLogin ? "Log in" : "Sign up"}
             </Button>
-          </div>
+            <Button className={classes.btn} onClick={handleGithubLogin}>
+              {isLogin && "Log in With Github"}
+            </Button>
+          </p>
           <div>
-            <p
+            <p style={{ color: "red" }}>
+              {/* {" "} */}
+              {errorMessage}
+            </p>
+            <u
               style={{ cursor: "pointer" }}
               onClick={() => setIsLogin(!isLogin)}
             >
-              {" "}
-              <u>
-                {isLogin ? "Create an account" : "Already have an account?"}
-              </u>
-            </p>
+              {isLogin ? "Create an account" : "Already have an account?"}
+            </u>
           </div>
         </div>
       </form>
