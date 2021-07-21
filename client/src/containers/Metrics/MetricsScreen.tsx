@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { requestParameters } from './requestParameters';
 import { BarChart } from './BarChart';
 import NavBar from '../HomeScreen/Sidepanel/NavBar';
 import { PieChart } from './PieChart';
+import { useDispatch, useSelector } from 'react-redux';
+import { populateChart } from '../../helperFunctions/populateChart';
 
 // importing componenents from M-UI
 import {
@@ -43,7 +45,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const MetricsScreen = () => {
+export const MetricsScreen: FC = () => {
   const classes = useStyles();
 
   // local state for opening the selction for metrics
@@ -51,6 +53,8 @@ export const MetricsScreen = () => {
 
   // local state for saving selected value
   const [selectedMetric, setSelectedMetric] = useState('');
+
+  const dispatch = useDispatch();
 
   const toggleSelect = () => {
     setIsSelectOpen(!isSelectOpen);
@@ -70,7 +74,14 @@ export const MetricsScreen = () => {
     console.log('this is the fetch request url =>', `${url}${e.target.value}`);
     fetch((url += e.target.value))
       .then((data) => data.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log('data from fetch',data);
+        const {
+          data: { result },
+        } = data;
+        console.log('grabbing result array from error from fetch', result);
+        populateChart(result, dispatch);
+      });
   };
 
   return (
