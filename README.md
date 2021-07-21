@@ -1,6 +1,7 @@
-![logo](https://github.com/oslabs-beta/kafkafix/blob/main/assets/KafkaFix%20(png).png)
+![logo](<https://github.com/oslabs-beta/kafkafix/blob/main/assets/KafkaFix%20(png).png>)
 
 ### [Homepage](https://www.kafkafix.com)
+
 ### [Repository](https://github.com/oslabs-beta/kafkafix)
 
 ## Table of Content
@@ -80,6 +81,7 @@ Just visit https://wwww.kafkafix.com and download and install.
 > 2. Then pass in a number of partitions to be added for the topic.
 
 ## Contribute
+
 ### New contritbutions to the library are welcome, but we ask that you please follow these guidelines.
 
 > 1. Before opening a PR for major additions or changes, please test on your local development. This way, it will save overall time spent and allow for faster implementation by maintainers.
@@ -88,7 +90,10 @@ Just visit https://wwww.kafkafix.com and download and install.
 
 ## Contributors
 
-### Andy Wang
-### Kyu Sung Park
-### Ranisha Rafeeque
-### Yom Woldemichael
+### Andy Wang [@Github](https://github.com/andywang0121)[@LinkedIn](https://www.linkedin.com/in/andywang0121/)
+
+### Kyu Sung Park [@Github](https://github.com/qkrrbtjd90)[@LinkedIn](https://www.linkedin.com/in/kyusungpark/)
+
+### Ranisha Rafeeque [@Github](https://github.com/ranisharafeeque)[@LinkedIn](https://www.linkedin.com/in/ranisha-rafeeque-s-k/)
+
+### Yom Woldemichael [@Github](https://github.com/yomwold)[@LinkedIn](https://www.linkedin.com/in/yomfwoldemichael/)
