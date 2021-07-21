@@ -1,4 +1,4 @@
-![logo](<https://github.com/oslabs-beta/kafkafix/blob/main/assets/KafkaFix%20(png).png>)
+![logo](<https://github.com/oslabs-beta/kafkafix/blob/main/documents/KafkaFix%20(png).png>)
 
 ### [Homepage](https://www.kafkafix.com)
 
@@ -90,10 +90,10 @@ Just visit https://wwww.kafkafix.com and download and install.
 
 ## Contributors
 
-### Andy Wang [@Github](https://github.com/andywang0121)[@LinkedIn](https://www.linkedin.com/in/andywang0121/)
+### Andy Wang [github](https://github.com/andywang0121) [linkedIn](https://www.linkedin.com/in/andywang0121/)
 
-### Kyu Sung Park [@Github](https://github.com/qkrrbtjd90)[@LinkedIn](https://www.linkedin.com/in/kyusungpark/)
+### Kyu Sung Park [github](https://github.com/qkrrbtjd90) [linkedIn](https://www.linkedin.com/in/kyusungpark/)
 
-### Ranisha Rafeeque [@Github](https://github.com/ranisharafeeque)[@LinkedIn](https://www.linkedin.com/in/ranisha-rafeeque-s-k/)
+### Ranisha Rafeeque [github](https://github.com/ranisharafeeque) [linkedIn](https://www.linkedin.com/in/ranisha-rafeeque-s-k/)
 
-### Yom Woldemichael [@Github](https://github.com/yomwold)[@LinkedIn](https://www.linkedin.com/in/yomfwoldemichael/)
+### Yom Woldemichael [github](https://github.com/yomwold) [linkedIn](https://www.linkedin.com/in/yomfwoldemichael/)
