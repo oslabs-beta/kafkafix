@@ -1,8 +1,9 @@
 import React, { FC, MouseEvent, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { overallState } from '../../../state/reducers';
 // // importing IPCReder
 const { ipcRenderer } = window.require('electron');
+import { populateData } from '../../../helperFunctions/populateData';
 
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 
@@ -94,6 +95,7 @@ export const TopicRow = (props: { row: any }) => {
     ipcRenderer.send('open-partition');
   };
 
+  const dispatch = useDispatch();
   const handleCreatePartition = () => {
     // grabbing inputs
     const input: HTMLInputElement | null =
@@ -124,6 +126,7 @@ export const TopicRow = (props: { row: any }) => {
       .then((data) => {
         console.log('data from backend after sending to add partition ', data);
         // reset everything in redux
+        populateData(data, dispatch);
       })
       .catch((e) => console.log(e));
   };

@@ -65,45 +65,45 @@ ipcMain.on('open-partition', () => {
 });
 
 function uploadFile() {
-	dialog
-		.showOpenDialog({
-			title: 'Select your docker-compose file',
-			defaultPath: path.join(__dirname, '../assets/'),
-			buttonLabel: 'Select',
-			filters: [
-				{
-					name: 'YML file',
-					extensions: ['yml', 'yaml'],
-				},
-			],
-			properties:
-				process.platform !== 'darwin'
-					? ['openFile']
-					: ['openFile', 'openDirectory'],
-		})
-		.then(file => {
-			if (!file.canceled) {
-				const filePath = file.filePaths[0].toString();
+  dialog
+    .showOpenDialog({
+      title: 'Select your docker-compose file',
+      defaultPath: path.join(__dirname, '../assets/'),
+      buttonLabel: 'Select',
+      filters: [
+        {
+          name: 'YML file',
+          extensions: ['yml', 'yaml'],
+        },
+      ],
+      properties:
+        process.platform !== 'darwin'
+          ? ['openFile']
+          : ['openFile', 'openDirectory'],
+    })
+    .then((file) => {
+      if (!file.canceled) {
+        const filePath = file.filePaths[0].toString();
 
-				fetch('http://localhost:3000/api/composeup', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ filePath }),
-				});
+        fetch('http://localhost:3000/api/composeup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filePath }),
+        }).catch((e) => console.log('error from fetch', e));
 
-				// axios
-				// 	.post('http://localhost:3000/api/composeup', {
-				// 		filePath,
-				// 	})
-				// 	.catch(e =>
-				// 		console.log('error in sending fetch request for file', e)
-				// 	);
-			}
-			// else {
-			// 	console.log('Error in reading file', err);
-			// }
-		});
-	// .catch(e => console.log('error while selecting YAML => ', e));
+        // axios
+        // 	.post('http://localhost:3000/api/composeup', {
+        // 		filePath,
+        // 	})
+        // 	.catch(e =>
+        // 		console.log('error in sending fetch request for file', e)
+        // 	);
+      }
+      // else {
+      // 	console.log('Error in reading file', err);
+      // }
+    });
+  // .catch(e => console.log('error while selecting YAML => ', e));
 }
 
 ipcMain.on('upload-file', () => {

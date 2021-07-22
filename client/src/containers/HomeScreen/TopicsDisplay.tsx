@@ -166,7 +166,7 @@ const TopicsDisplay = () => {
         method: 'POST',
         body: JSON.stringify({
           topic: topicName.value,
-          partitions: numberOfPartitions.value,
+          numPartitions: numberOfPartitions.value,
         }),
         headers: { 'Content-Type': 'application/json' },
       };
@@ -176,7 +176,7 @@ const TopicsDisplay = () => {
         .then((data) => {
           populateData(data, dispatch);
           toggleCreateTopicModal();
-          alert('got a response');
+          alert('Created a new topic');
         })
         .catch((e) => console.log(e));
     }

@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
 import { overallState } from '../../state/reducers/index';
-import { TableFilter } from './TableFilter';
 
 // importing components
 import {
@@ -101,7 +100,6 @@ export const ErrorTable: FC = () => {
 
   return (
     <div className={classes.bigwrapper}>
-      <TableFilter errorMessage={errors} />
       <TableContainer component={Paper} className={classes.tableWrapper}>
         <Table aria-label='custom pagination table'>
           <TableHead>
