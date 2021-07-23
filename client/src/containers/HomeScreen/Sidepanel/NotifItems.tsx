@@ -5,7 +5,7 @@ import { KafkaState } from '../../../state/reducers/kafkaDataReducer';
 import { overallState } from '../../../state/reducers';
 
 // importing component
-import { Paper, Typography, Card, makeStyles } from '@material-ui/core';
+import { Typography, Card, makeStyles } from '@material-ui/core';
 
 // fucntion that returns the object to be saved in state
 interface Error {
@@ -69,12 +69,10 @@ export const NotifItems: FC<notifItemsProps> = ({ setNotif }) => {
   //   .catch((e: any) => console.log('error in fetching data from notifs', e));
 
   // init a websocket connection
+  // can edit the slices to depend on a state/allow user to config
   const notifs = useSelector<overallState, KafkaState['notif']>((state) =>
     state.kafka.notif.slice(-10)
   );
-  // can edit the slices to depend on a state/allow user to config
-
-  console.log('NOTIFS', notifs);
 
   return (
     <React.Fragment>
@@ -83,7 +81,6 @@ export const NotifItems: FC<notifItemsProps> = ({ setNotif }) => {
         className={classes.list}
         onClick={() => setNotif({ open: false })}
       >
-        {/* use cards for the errors */}
         {notifs.map((el) => (
           <Card className={classes.divForNotifs}>
             <div className={classes.span}>

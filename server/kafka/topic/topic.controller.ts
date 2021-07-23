@@ -4,7 +4,7 @@ import { Admin } from 'kafkajs';
 import { handleAsync } from '../../common';
 
 export class TopicController {
-	/** //*
+	/** 
 	 * @desc      list the names of all existing topics
 	 * @returns   {string[]}
 	 */
@@ -18,7 +18,7 @@ export class TopicController {
 		return next();
 	};
 
-	/** //*
+	/** 
 	 * ADD handle multiple topics
 	 * @desc    create topics
 	 * @param   {string[]{}}  topics
@@ -42,7 +42,7 @@ export class TopicController {
 		return next();
 	};
 
-	/** //*
+	/** 
 	 * @desc    delete a topic
 	 * @param   {string[]}  topics
 	 * @param   { string }  topic
@@ -59,7 +59,7 @@ export class TopicController {
 		return next();
 	};
 
-	/** //*
+	/**
 	 * @desc    create partitions for a topic.
 	 * @secs    It will resolve in case of success. In case of errors, method will throw exceptions
 	 * @param   {[]{}}    topicPartitions
@@ -82,7 +82,7 @@ export class TopicController {
 	 * @desc    get metadata of a topic
 	 * @param   {string[]}  topics
 	 * @param   {string}    topic
-	 * @returns   // CHECK
+	 * @returns
 	 */
 	static topicMetadata: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
@@ -97,9 +97,9 @@ export class TopicController {
 		return next();
 	};
 
-	/** //*
+	/**
 	 * @desc     get metadata for all topics
-	 * @returns  // CHECK
+	 * @returns
 	 */
 	static getAllTopicMetadata: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
@@ -130,7 +130,7 @@ export class TopicController {
 	/**
 	 * @desc      get offset for a topic specified by timestamp
 	 * @param     {string}  topic
-	 * @param     {// ADD}  timestamp
+	 * @param     { }  timestamp
 	 * @returns   {[]{}}
 	 */
 	static TopicOffsetsByTimestamp: RequestHandler = async (req, res, next) => {

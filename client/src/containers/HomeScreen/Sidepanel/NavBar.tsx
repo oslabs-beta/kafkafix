@@ -38,8 +38,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { NotifItems } from './NotifItems';
 import {logoutActionCreator} from '../../../state/actions/userActions';
 
-// import login function
-
 // styles for Navbar component - using makeStyles hook - invoked within function
 const useStyles = makeStyles({
   navbar: {
@@ -63,7 +61,6 @@ const useStyles = makeStyles({
     marginTop: 25,
   },
   bottomHalfList: {
-    // marginTop: 250,
     justifySelf: 'end',
   },
   listItem: {

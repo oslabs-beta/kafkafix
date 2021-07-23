@@ -10,7 +10,6 @@ export interface TopicData {
 
 export interface KafkaState {
   isConnected: boolean;
-  // topics: TopicData[];
   data: any[];
   messages: any[];
   notif: any[];
@@ -18,7 +17,6 @@ export interface KafkaState {
 
 const initialState: KafkaState = {
   isConnected: false,
-  // topics: [dummy, dummy, dummy],
   data: [],
   messages: [],
   notif: [],
@@ -30,7 +28,6 @@ export const kafkaDataReducer = (
 ): KafkaState => {
   switch (action.type) {
     case Type.CONNECTED:
-      console.log('arrived here in kafkaDataReducer under connected');
       return {
         ...state,
         isConnected: true,
@@ -40,11 +37,6 @@ export const kafkaDataReducer = (
         ...state,
         isConnected: false,
       };
-    // case Type.POPULATE_TOPICS:
-    //   return {
-    //     ...state,
-    //     topics: action.payload,
-    //   };
     case Type.POPULATE_DATA:
       return {
         ...state,

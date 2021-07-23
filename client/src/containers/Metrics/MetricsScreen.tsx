@@ -68,17 +68,12 @@ export const MetricsScreen: FC = () => {
 
     let url = 'http://localhost:9090/api/v1/query?query=';
 
-    console.log('selected metric', selectedMetric);
-    console.log('e.target.value =>', e.target.value);
-    console.log('this is the fetch request url =>', `${url}${e.target.value}`);
     fetch((url += e.target.value))
       .then((data) => data.json())
       .then((data) => {
-        console.log('data from fetch',data);
         const {
           data: { result },
         } = data;
-        console.log('grabbing result array from error from fetch', result);
         populateChart(result, dispatch);
       });
   };

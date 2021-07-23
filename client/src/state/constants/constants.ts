@@ -1,5 +1,4 @@
 export enum Type {
-  SAMPLE_ACTION,
   CONNECTED,
   DISCONNECTED,
   POPULATE_TOPICS,
