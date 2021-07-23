@@ -1,5 +1,3 @@
-// import Axios from "axios";
-// import Cookie from "js-cookie";
 import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,

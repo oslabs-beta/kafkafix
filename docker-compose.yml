@@ -23,7 +23,6 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:19092,OUTSIDE://${DOCKER_HOST_IP:-127.0.0.1}:9092
-      # KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:19092,OUTSIDE://localhost:9092
       KAFKA_LISTENERS: INSIDE://:19092,OUTSIDE://:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
@@ -44,6 +43,5 @@ services:
 
     volumes:
       - ./zk-kafka/kafka/data:/var/lib/kafka/data
-      # - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zookeeper

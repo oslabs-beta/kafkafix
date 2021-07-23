@@ -77,7 +77,7 @@ Just visit https://wwww.kafkafix.com and download and install.
 
 ### Creating a Partition
 
-> 1. Click on Create a Paritition button.
+> 1. Click on Create a Partition button.
 > 2. Then pass in a number of partitions to be added for the topic.
 
 ## Contribute

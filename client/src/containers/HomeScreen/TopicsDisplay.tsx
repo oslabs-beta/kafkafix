@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { overallState } from '../../state/reducers';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
@@ -9,12 +9,6 @@ import { populateData } from '../../helperFunctions/populateData';
 Topics Row is now part of topics display becasue of the collapsable table
 */
 
-// importing IPCReder
-// const { ipcRenderer } = window.require("electron");
-
-// importing prop types
-import PropTypes from 'prop-types';
-// importing componenets from Material UI
 import {
 	Button,
 	Box,
@@ -36,17 +30,9 @@ import {
 } from '@material-ui/core';
 import { ErrorRounded } from '@material-ui/icons';
 
-// importing icons from material-UI
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-// import { useFetch } from '../../hooks/useFetch';
-// import { MBeans } from '../../../../server/jmx/MBeans';
 
-// const data = await useFetch(
-// 	`http://localhost:9090/api/v1/query?query=${MBeans.isrShrinksPerSec}`
-// );
-
-// fucntion to make styles for rows
 const useRowStyles = makeStyles({
 	root: {
 		'& > *': {
