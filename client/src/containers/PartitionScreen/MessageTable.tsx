@@ -4,7 +4,6 @@ import { MTPaginationOptions } from './MTPaginationOptions';
 import { appendMessageActionCreator } from '../../state/actions/actions';
 
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -14,12 +13,8 @@ import {
   TableFooter,
   TablePagination,
   Paper,
-  Typography,
-  Input,
   makeStyles,
-  Modal,
 } from '@material-ui/core';
-import CommunicationSpeakerPhone from 'material-ui/svg-icons/communication/speaker-phone';
 
 const useRowStyles = makeStyles({
   root: {
@@ -51,20 +46,6 @@ export const MessageTable: FC<MessageTableProps> = ({
   setMessages,
 }) => {
   const classes = useRowStyles();
-  console.log('inside message table');
-  console.log('messages ', messages);
-
-  // ws.onmessage = (event: any) => {
-  //   console.log("client received: ", event.data);
-  //   // console.log('type of data for event.data', typeof event.data);
-  //   const array = event.data.split("message: ");
-  //   // console.log(array);
-  //   // console.log(array[1]);
-  //   const data = JSON.parse(array[1]);
-  //   // console.log('data after parse', data);
-  //   // dispatch(appendMessageActionCreator(data));
-  //   setMessages([...messages, data]);
-  // };
 
   const flattenObj = (obj: any) => {
     const flatObj: any = {};
@@ -77,14 +58,12 @@ export const MessageTable: FC<MessageTableProps> = ({
   };
 
   messages = messages.map((el) => flattenObj(el));
-  console.log('flatmessages', messages);
 
   const [pageSize, setPageSize] = useState(25);
   const [pageIndex, setPageIndex] = useState(
     Math.floor(messages.length / pageSize)
   );
   const [togglePause, setTogglePause] = useState(false);
-  // if (!togglePause) setPageIndex(Math.floor(messages.length / pageSize));
   const start = pageIndex * pageSize;
   const end = Math.min(start + pageSize, messages.length);
   const showMessages = messages.slice(start, end);
@@ -103,13 +82,8 @@ export const MessageTable: FC<MessageTableProps> = ({
   const dispatch = useDispatch();
 
   ws.onmessage = (event: any) => {
-    console.log('client received: ');
-    // console.log('type of data for event.data', typeof event.data);
     const array = event.data.split('message: ');
-    // console.log(array);
-    // console.log(array[1]);
     const data = JSON.parse(array[1]);
-    // console.log('data after parse', data);
     dispatch(appendMessageActionCreator(data));
     if (!togglePause) setPageIndex(Math.floor(messages.length / pageSize));
   };

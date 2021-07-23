@@ -18,7 +18,7 @@ interface IErrors {
 
 interface IProps {
 	namespace: string;
-	log: any; // CHECK type
+	log: any; 
 }
 
 const { createLogger, transports } = winston;
@@ -36,13 +36,6 @@ export class LogController {
 			transports: [
 				new transports.Console(),
 				new transports.File({ filename: 'error.log' }),
-				// new transports.MongoDB({
-				// 	level: 'error',
-				// 	db: process.env.MONGO_URI,
-				// 	options: { useUnifiedTopology: true },
-				// 	collection: 'logs',
-				// 	format: combine(json(), metadata()),
-				// }),
 			],
 		});
 
@@ -65,7 +58,6 @@ export class LogController {
 	 * @desc    get all previous errors from error.log
 	 * @returns {Array{}}
 	 */
-	// CHECK after packaging, does the file save to right place?
 	static getErrors: RequestHandler = (req, res, next) => {
 		const path = './error.log';
 

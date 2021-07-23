@@ -40,7 +40,7 @@ export class GroupController {
 		return next();
 	};
 
-	/** // ADD handle multiple partitions
+	/**
 	 * @desc    set the consumer group offset to any value
 	 * @param   {string}  groupId
 	 * @param   {string}  topic
@@ -60,7 +60,7 @@ export class GroupController {
 		return next();
 	};
 
-	/** // ADD handle multiple partitions
+	/** 
 	 * @desc resets the consumer group offset to the earliest or lastest offset (latest by default)
 	 */
 

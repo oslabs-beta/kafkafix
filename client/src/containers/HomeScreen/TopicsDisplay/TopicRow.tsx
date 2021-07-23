@@ -12,15 +12,12 @@ import {
   Button,
   Box,
   Collapse,
-  Divider,
   IconButton,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Typography,
   Input,
   makeStyles,
@@ -117,7 +114,7 @@ export const TopicRow = (props: { row: any }) => {
         numPartitions: Number(input?.value),
       }),
     };
-    console.log('options', options);
+    
     //finish the then after getting reposne
     fetch('/api/partition', options)
       .then((data: any) => data.json())

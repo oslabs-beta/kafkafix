@@ -33,15 +33,10 @@ import TableChartIcon from '@material-ui/icons/TableChart';
 import { Link } from 'react-router-dom';
 
 // imports for customizing styles
-// clsx allows for conditional styling to be used - unsure if we will need clsx
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { any } from 'prop-types';
 
 import { NotifItems } from './NotifItems';
 import {logoutActionCreator} from '../../../state/actions/userActions';
-
-// import login function
 
 // styles for Navbar component - using makeStyles hook - invoked within function
 const useStyles = makeStyles({
@@ -66,7 +61,6 @@ const useStyles = makeStyles({
     marginTop: 25,
   },
   bottomHalfList: {
-    // marginTop: 250,
     justifySelf: 'end',
   },
   listItem: {

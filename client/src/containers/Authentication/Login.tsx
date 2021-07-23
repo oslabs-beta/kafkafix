@@ -1,10 +1,8 @@
 import React from "react";
-import { useState, FC, useRef } from "react";
+import { useState, FC } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
-import { useHistory } from "react-router-dom";
-// import GuestLogIn from "./guestlogin.jsx";
 import { makeStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,18 +18,12 @@ import {
 import { overallState } from "../../state/reducers/index";
 import { UserState } from "../../state/reducers/userReducer";
 
-// import dotenv from 'dotenv';
-// dotenv.config();
+
 
 const useStyles = makeStyles({
   btn: {
     fontSize: 20,
-    // display: flex,
-    // align-items: center
-    // justifyContent: 'left',
     backgroundColor: "white",
-    // margin: auto,
-    // padding:10
     marginLeft: 25,
   },
 });
@@ -42,13 +34,12 @@ export const Login: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(null);
-  // const history = useHistory();
+
   const dispatch = useDispatch();
   const errorMessage = useSelector<overallState, UserState["error"]>(
     (state) => state.user.error
   );
 
-  // form validation; email and password need to be > one char
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
@@ -58,7 +49,6 @@ export const Login: FC = () => {
   }
 
   const signUp = () => {
-    // fetch request to the server on the 'signup' route, method is post
     dispatch(signUpRequestActionCreator());
     fetch("/api/signup", {
       method: "POST",
@@ -70,16 +60,11 @@ export const Login: FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("email is ", email);
         dispatch(setUserActionCreator(email));
         dispatch(signUpSuccessActionCreator());
-        console.log("new user signed up: ", data);
-        // props.updateUser(data.userId);
-        // history.push("/home"); // mention where to go
       })
       .catch((error) => {
         dispatch(signUpFailActionCreator(error));
-        console.error("Error:", error);
       });
   };
 
@@ -100,12 +85,9 @@ export const Login: FC = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("email is ", email);
         dispatch(setUserActionCreator(email));
         dispatch(loginSuccessActionCreator());
-        console.log("login", data);
-        // props.updateUser(data.userId);
-        // history.push(`/home`); // mention where to go
+       
       })
       .catch((error) => {
         dispatch(loginFailActionCreator(error));
@@ -118,7 +100,6 @@ export const Login: FC = () => {
   //         method: "POST",
   //         credentials: "include",
   //     });
-  //     history.push("/login");
   // };
   const handleSubmitButton = () => {
     if (validateForm()) {
