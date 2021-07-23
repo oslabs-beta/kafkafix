@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import { handleAsync } from "../common";
 const bcrypt = require("bcrypt");
-import { User, UserDocument } from "../db/user.model";
 import fs from "fs";
 import path from "path";
 
