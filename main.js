@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const isDev = require('electron-is-dev');
 const path = require('path');
 const fetch = require('node-fetch');
 
@@ -14,8 +15,13 @@ function createWindow() {
 	});
 
 	const filePath = `file://${path.join(__dirname, './client/src/index.html')}`;
-
 	win.loadURL(filePath);
+  
+	const startURL = isDev
+		? 'http://localhost:8080'
+		: `file://${path.join(__dirname, './client/src/index.html')}`;
+
+	win.loadURL(startURL);
 }
 
 app.whenReady().then(() => {
@@ -46,7 +52,7 @@ ipcMain.on('open-partition', () => {
 function uploadFile() {
 	dialog
 		.showOpenDialog({
-			title: 'Select your docker-compose file',
+			title: 'Select docker-compose file',
 			defaultPath: path.join(__dirname, '../assets/'),
 			buttonLabel: 'Select',
 			filters: [
@@ -68,7 +74,7 @@ function uploadFile() {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ filePath }),
-				});
+				}).catch(e => console.log('error from fetch', e));
 			}
 		});
 }

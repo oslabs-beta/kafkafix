@@ -1,26 +1,27 @@
-![logo]()
+![logo](<https://github.com/oslabs-beta/kafkafix/blob/main/documents/KafkaFix%20(png).png>)
 
 ### [Homepage](https://www.kafkafix.com)
+
 ### [Repository](https://github.com/oslabs-beta/kafkafix)
 
 ## Table of Content
 
-- [ Motivation ](#-motivation)
-- [ Features ](#-features)
-- [ Install ](#-install)
-- [ How to Use ](#-how-to-use)
-- [ Contribute ](#-contribute)
-- [ Contributors ](#-contributors)
+- [Motivation](#-motivation)
+- [Features](#-features)
+- [Install](#-install)
+- [How to Use](#-how-to-use)
+- [Contribute](#-contribute)
+- [Contributors](#-contributors)
 
 ## Motivation
 
 KafkaFix is designed to simple and lightweight local Kafka development tool with support for graphical UI for monitoring JMX attributes with Prometheus.
 
-Kafkafix aims to get rid of all configurations on the user's end to simplify the process and offer better user experience. Users whom use Kafkafix simply has to fire up the applicaiton with their docker compose file. Then, everything is good to go.
+Kafkafix aims to get rid of all configurations on the user's end to simplify the process and offer better user experience. Users simply have to fire up the application with their docker compose file. Then, everything is good to go.
 
 ## Features
 
-Users are able to fully manage their local Kafka instance and perform any operations, such as , create images, start consumers and producers, visualize streams of data, manage errors.
+Users are able to fully manage their local Kafka instance and perform any operations, such as, create topics, start consumers and producers, visualize streams of data, manage errors.
 
 ## Install
 
@@ -76,11 +77,12 @@ Just visit https://wwww.kafkafix.com and download and install.
 
 ### Creating a Partition
 
-> 1. Click on Create a Paritition button.
+> 1. Click on Create a Partition button.
 > 2. Then pass in a number of partitions to be added for the topic.
 
 ## Contribute
-New contritbutions to the library are welcome, but we ask that you please follow these guidelines.
+
+### New contritbutions to the library are welcome, but we ask that you please follow these guidelines.
 
 > 1. Before opening a PR for major additions or changes, please test on your local development. This way, it will save overall time spent and allow for faster implementation by maintainers.
 > 2. Conside whether your changes are useful for all users.
@@ -88,7 +90,10 @@ New contritbutions to the library are welcome, but we ask that you please follow
 
 ## Contributors
 
-Andy Wang
-Kyu Sung Park
-Ranisha Rafeeque
-Yom Woldemichael
+### Andy Wang [github](https://github.com/andywang0121) [linkedIn](https://www.linkedin.com/in/andywang0121/)
+
+### Kyu Sung Park [github](https://github.com/qkrrbtjd90) [linkedIn](https://www.linkedin.com/in/kyusungpark/)
+
+### Ranisha Rafeeque [github](https://github.com/ranisharafeeque) [linkedIn](https://www.linkedin.com/in/ranisha-rafeeque-s-k/)
+
+### Yom Woldemichael [github](https://github.com/yomwold) [linkedIn](https://www.linkedin.com/in/yomfwoldemichael/)
