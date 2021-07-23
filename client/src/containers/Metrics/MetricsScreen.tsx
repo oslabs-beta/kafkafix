@@ -6,7 +6,6 @@ import { PieChart } from './PieChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { populateChart } from '../../helperFunctions/populateChart';
 
-// importing componenents from M-UI
 import {
   InputLabel,
   Button,

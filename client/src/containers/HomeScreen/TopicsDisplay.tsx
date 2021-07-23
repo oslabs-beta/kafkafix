@@ -1,14 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { overallState } from '../../state/reducers';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
 import { TopicRow } from './TopicsDisplay/TopicRow';
 import { populateData } from '../../helperFunctions/populateData';
-
-// importing IPCReder
-// const { ipcRenderer } = window.require("electron");
-
-// importing componenets from Material UI
 import {
 	Button,
 	Table,
@@ -25,11 +20,9 @@ import {
 } from '@material-ui/core';
 import { ErrorRounded } from '@material-ui/icons';
 
-// importing icons from material-UI
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
-// function to make styles for rows
 const useRowStyles = makeStyles({
 	root: {
 		'& > *': {
@@ -149,7 +142,7 @@ const TopicsDisplay: FC = () => {
         method: 'POST',
         body: JSON.stringify({
           topic: topicName.value,
-          partitions: numberOfPartitions.value,
+          numPartitions: numberOfPartitions.value,
         }),
         headers: { 'Content-Type': 'application/json' },
       };
@@ -159,7 +152,7 @@ const TopicsDisplay: FC = () => {
         .then((data) => {
           populateData(data, dispatch);
           toggleCreateTopicModal();
-          alert('got a response');
+          alert('Created a new topic');
         })
         .catch((e) => console.log(e));
     }

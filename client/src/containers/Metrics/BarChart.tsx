@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { overallState } from '../../state/reducers/index';
 import { MetricsState } from '../../state/reducers/metricsReducer';
 
-// importing componenents from M-UI
 import {
   Typography,
   makeStyles,
