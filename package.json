@@ -4,10 +4,14 @@
 	"description": "kafkafix",
 	"main": "main.js",
 	"scripts": {
-		"start": "concurrently \"wait-on http://localhost:8080 && electron .\" \"nodemon ./server/index.ts\" \"webpack serve\"",
+		"start1": "concurrently \"wait-on http://localhost:8080 && electron .\" \"nodemon ./server/index.ts\" \"webpack serve\"",
+		"start": "concurrently \"electron .\" \"nodemon ./server/index.ts\" \"webpack serve\"",
 		"convert": "tsc -p ./",
 		"build": "webpack --mode production",
-		"bundle": "NODE_ENV=production webpack"
+		"bundle": "NODE_ENV=production webpack",
+    "electron": "electron dist/bundle.js",
+    "start-server": "nodemon ./server/index.ts",
+    "start-electron": "electron ."
 	},
 	"repository": {
 		"type": "git",
@@ -17,12 +21,7 @@
 		"Electron",
 		"typescript"
 	],
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/oslabs-beta/kafkafix/issues"
-	},
-	"homepage": "https://github.com/oslabs-beta/kafkafix#readme",
+	"files": [],
 	"dependencies": {
 		"@material-ui/core": "^4.11.4",
 		"@material-ui/icons": "^4.11.2",
