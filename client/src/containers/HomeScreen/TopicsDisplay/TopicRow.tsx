@@ -88,9 +88,9 @@ export const TopicRow = (props: { row: any }) => {
   const [isOpenModal, setOpenModal] = useState(false);
 
   // function to handle partition click -- opens a new window -- we need to know which partiton to show live data for
-  const handleClickPartition = () => {
-    ipcRenderer.send('open-partition');
-  };
+  // const handleClickPartition = () => {
+  //   ipcRenderer.send('open-partition');
+  // };
 
   const dispatch = useDispatch();
   const handleCreatePartition = () => {
@@ -113,7 +113,7 @@ export const TopicRow = (props: { row: any }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         topic: topic?.value,
-        numPartitions: Number(input?.value),
+        count: Number(input?.value),
       }),
     };
     

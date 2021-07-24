@@ -29,6 +29,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../build')));
 
+app.get('/*', (req, res) => {
+	return res.sendFile(path.join(__dirname, '../build/index.html'));
+});
+
 // routes
 const routes: Array<RouteConfig> = [];
 routes.push(new AuthRoutes(app));
@@ -39,16 +43,12 @@ routes.push(new KafkaRoutes(app));
 routes.push(new LogRoutes(app));
 routes.push(new TopicRoutes(app));
 
-app.get('/*', (req, res) => {
-	return res.sendFile(path.join(__dirname, '../build/index.html'));
-});
-
 //! server index html
-app.get('/partition', (req, res) => {
-	return res
-		.status(200)
-		.sendFile(path.resolve(__dirname, '../client/src/index.html'));
-});
+// app.get('/partition', (req, res) => {
+// 	return res
+// 		.status(200)
+// 		.sendFile(path.resolve(__dirname, '../client/src/index.html'));
+// });
 
 // 404
 app.use('*', (req: Request, res: Response) => {

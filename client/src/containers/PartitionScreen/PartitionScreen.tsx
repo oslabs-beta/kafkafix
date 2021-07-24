@@ -8,13 +8,11 @@ import NavBar from '../HomeScreen/Sidepanel/NavBar';
 interface PartitionScreenProps {
 	topic: string;
 	partitionID: string;
-	ws: WebSocket;
 }
 
 export const PartitionScreen: FC<PartitionScreenProps> = ({
 	topic,
 	partitionID,
-	ws,
 }) => {
 	const dispatch = useDispatch();
 	const messages = useSelector<overallState, KafkaState['messages']>(
@@ -24,7 +22,7 @@ export const PartitionScreen: FC<PartitionScreenProps> = ({
 	return (
 		<>
 			<NavBar />
-			<MessageTable messages={messages} ws={ws} setMessages={dispatch} />
+			<MessageTable messages={messages} setMessages={dispatch} />
 		</>
 	);
 };

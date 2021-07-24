@@ -4,7 +4,7 @@ import { Admin } from 'kafkajs';
 import { handleAsync } from '../../common';
 
 export class TopicController {
-	/** 
+	/**
 	 * @desc      list the names of all existing topics
 	 * @returns   {string[]}
 	 */
@@ -18,7 +18,7 @@ export class TopicController {
 		return next();
 	};
 
-	/** 
+	/**
 	 * ADD handle multiple topics
 	 * @desc    create topics
 	 * @param   {string[]{}}  topics
@@ -29,7 +29,7 @@ export class TopicController {
 	static createTopics: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
 		const { topic, numPartitions, replicationFactor } = req.body;
-		
+
 		const [success, error] = await handleAsync(
 			admin.createTopics({
 				topics: [{ topic, numPartitions, replicationFactor }],
@@ -42,7 +42,7 @@ export class TopicController {
 		return next();
 	};
 
-	/** 
+	/**
 	 * @desc    delete a topic
 	 * @param   {string[]}  topics
 	 * @param   { string }  topic
@@ -69,6 +69,7 @@ export class TopicController {
 	static createPartition: RequestHandler = async (req, res, next) => {
 		const admin: Admin = req.app.locals.admin;
 		const { topic, count } = req.body;
+		console.log(topic, count);
 		const [, error] = await handleAsync(
 			admin.createPartitions({ topicPartitions: [{ topic, count }] })
 		);
