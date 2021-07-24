@@ -6,3 +6,4 @@
 error.log
 firebase.ts
 package-lock.json
+/dist

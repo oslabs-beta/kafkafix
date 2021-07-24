@@ -15,7 +15,7 @@ module.exports = {
 			{
 				test: /\.tsx?$/,
 				use: 'ts-loader',
-				exclude: [/node_modules/, path.resolve(__dirname, './testapp')],
+				exclude: [/node_modules/],
 			},
 			{
 				test: /\.css$/i,
@@ -27,6 +27,7 @@ module.exports = {
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js'],
 	},
+
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist'),
