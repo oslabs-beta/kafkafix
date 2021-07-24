@@ -61,7 +61,7 @@ export const NotifItems: FC<notifItemsProps> = ({ setNotif }) => {
 
   // fetch request for new notifs
 
-  // fetch('/api/notification')
+  // fetch('http://localhost:3000/api/notification')
   //   .then((data: any) => data.json())
   //   .then((data: Error[]) => {
   //     populateNotif(data, dispatch);

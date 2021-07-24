@@ -147,7 +147,7 @@ const TopicsDisplay: FC = () => {
         headers: { 'Content-Type': 'application/json' },
       };
 
-      fetch('/api/topic', options)
+      fetch('http://localhost:3000/api/topic', options)
         .then((data) => data.json())
         .then((data) => {
           populateData(data, dispatch);
@@ -166,7 +166,7 @@ const TopicsDisplay: FC = () => {
       headers: { 'Content-Type': 'application/json' },
     };
 
-    fetch('/api/topic', options)
+    fetch('http://localhost:3000/api/topic', options)
       .then((data) => data.json())
       .then((data) => {
         populateData(data, dispatch);
@@ -191,7 +191,7 @@ const TopicsDisplay: FC = () => {
       options.method = 'PUT';
     }
 
-    fetch('/api/producer', options)
+    fetch('http://localhost:3000/api/producer', options)
       .then((data) => data.json())
       .then((data) => {
         console.log(data);
@@ -221,7 +221,7 @@ const TopicsDisplay: FC = () => {
       option.method = 'PUT';
     }
 
-    fetch('/api/consumer', option)
+    fetch('http://localhost:3000/api/consumer', option)
       .then((data) => data.json())
       .then((data) => toggleConsumerModal())
       .catch((e) => console.log(e.target));

@@ -94,10 +94,10 @@ const Connect: FC = props => {
 			body,
 		};
 
-		fetch('/api/connect', options)
+		fetch('http://localhost:3000/api/connect', options)
 			.then(data => data.json())
 			.then(data => {
-				fetch('/api/notification', {
+				fetch('http://localhost:3000/api/notification', {
 					method: 'GET',
 					headers: { 'content-type': 'application/json' },
 				})

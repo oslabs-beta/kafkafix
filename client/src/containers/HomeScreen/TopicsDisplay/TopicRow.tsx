@@ -118,7 +118,7 @@ export const TopicRow = (props: { row: any }) => {
     };
     
     //finish the then after getting reposne
-    fetch('/api/partition', options)
+    fetch('http://localhost:3000/api/partition', options)
       .then((data: any) => data.json())
       .then((data) => {
         console.log('data from backend after sending to add partition ', data);

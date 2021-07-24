@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const url = require('url');
 const path = require('path');
 const fetch = require('node-fetch');
 
@@ -24,9 +25,15 @@ const createWindow = () => {
 			contextIsolation: false,
 		},
 	});
-	const filePath = `file://${path.join(__dirname, './dist/index.html')}`;
+	// const filePath = `file://${path.join(__dirname, './build/index.html')}`;
 
-	win.loadURL(filePath);
+	// win.loadURL('http://localhost:3000');
+
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, './build/index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
 };
 
 const createPartitionWindow = () => {
