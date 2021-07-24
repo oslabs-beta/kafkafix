@@ -7,7 +7,7 @@ I removed the partiton component from homescreen. Clicking on topic dropsdown to
 ---------------------------------------------*/
 
 // importing TopicsDisplay
-import TopicsDisplay from "./TopicsDisplay/TopicsDisplay";
+import { TopicsDisplay } from "./TopicsDisplay/TopicsDisplay";
 
 // importing Navbar
 import NavBar from "./Sidepanel/NavBar";
@@ -18,9 +18,7 @@ import Connect from "./Sidepanel/Connect";
 import { useDispatch, useSelector } from "react-redux";
 import { UserState } from "../../state/reducers/userReducer";
 import { overallState } from "../../state/reducers/index";
-import {
-  Redirect
-} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 // import {logoutActionCreator} from '../state/actions/userActions';
 
 // importing components from Material UI
@@ -60,7 +58,7 @@ const HomeScreen = () => {
         <TopicsDisplay />
       </div>
       {/* <button onClick={()=>dispatch(logoutActionCreator())}>Sign Out</button> */}
-      {!email && <Redirect to='/'/>}
+      {!email && <Redirect to="/" />}
     </React.Fragment>
   );
 };
