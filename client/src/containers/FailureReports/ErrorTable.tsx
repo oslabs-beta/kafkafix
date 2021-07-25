@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
 import { overallState } from '../../state/reducers/index';
-import { TableFilter } from './TableFilter';
 
 // importing components
 import {
@@ -36,7 +35,6 @@ const useRowStyles = makeStyles({
     '& > *': {
       borderBottom: 'unset',
     },
-    // marginTop: 30,
   },
   tableWrapper: {
     marginTop: 30,
@@ -50,29 +48,25 @@ const useRowStyles = makeStyles({
   },
 });
 
-// import errors from store
-// make a table
-
 export const ErrorTable: FC = () => {
   const classes = useRowStyles();
 
   const errors = useSelector<overallState, KafkaState['notif']>(
     (state) => state.kafka.notif
-  ); // 30
-  console.log('errors from the redux state ', errors);
+  ); 
 
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(
     Math.floor(errors.length / pageSize)
   );
   const [togglePause, setTogglePause] = useState(false);
-  const start = pageIndex * pageSize; // 0
-  const end = Math.min(start + pageSize, errors.length); // 8
-  const showErrors = errors.slice(start, end); //0 -8
+  const start = pageIndex * pageSize; 
+  const end = Math.min(start + pageSize, errors.length); 
+  const showErrors = errors.slice(start, end); 
 
   const numEmptyRows = pageSize - (end - start);
 
-  const emptyRows = []; // 2
+  const emptyRows = []; 
   for (let i = 0; i < numEmptyRows; i++) {
     emptyRows.push(
       <TableRow key={'emptyRow' + i} style={{ height: 53 }}>
@@ -101,7 +95,6 @@ export const ErrorTable: FC = () => {
 
   return (
     <div className={classes.bigwrapper}>
-      <TableFilter errorMessage={errors} />
       <TableContainer component={Paper} className={classes.tableWrapper}>
         <Table aria-label='custom pagination table'>
           <TableHead>

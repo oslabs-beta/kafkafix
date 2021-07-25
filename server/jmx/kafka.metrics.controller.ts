@@ -6,7 +6,6 @@ import { MBeans } from './MBeans';
 
 const url = 'http://localhost:9090/api/v1/query?query=';
 
-//* Kafka-emitted metrics
 export class KafkaMetricsController {
 	/**
 	 * @name UnderReplicatedPartitions
@@ -126,7 +125,6 @@ export class KafkaMetricsController {
 	 * @desc Total time (in ms) to serve the specified request (Produce/Fetch)
 	 * @metricType Gauge
 	 */
-	// CHECK quantile
 	static totalTimeMs: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.totalTimeMs;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
@@ -207,7 +205,6 @@ export class KafkaMetricsController {
 	 * @desc Number of (producer|consumer|follower) requests per second
 	 * @metricType Counter
 	 */
-	// CHECK - need to test result with endpoint
 	static requestsPerSecond: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.requestsPerSecond;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));

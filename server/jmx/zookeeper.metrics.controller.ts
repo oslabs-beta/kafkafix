@@ -16,17 +16,16 @@ export class ZookeeperMetricsController {
 		const ws: WebSocket = req.app.locals.ws;
 		const MBean = MBeans.zkRequestLatencyMs;
 
-		// check
 		setInterval(async () => {
 			const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
 			const data = await response.json();
 
 			if (error) return next(error);
-			// res.locals.zkRequestLatencyMs = data.data.result;
+			res.locals.zkRequestLatencyMs = data.data.result;
 			ws.send(data.data.result);
 		}, 5000);
 
-		// return next();
+		return next();
 	};
 
 	/**
@@ -38,7 +37,7 @@ export class ZookeeperMetricsController {
 	static zkRequestLatencyMsCount: RequestHandler = async (req, res, next) => {
 		const MBean = MBeans.zkRequestLatencyMsCount;
 		const [response, error] = await handleAsync(fetch(`${url}${MBean}`));
-		const data = await response.json(); // CHECK type - changed handle async
+		const data = await response.json();
 
 		if (error) return next(error);
 		res.locals.zkRequestLatencyMsCount = data.data.result;

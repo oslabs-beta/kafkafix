@@ -12,21 +12,10 @@ export class LogRoutes extends RouteConfig {
 		 * @GET     api/errors
 		 * @desc    get all previous errors
 		 */
-		// CHECK format for errors
 		this.app
 			.route('/api/notification')
 			.get([LogController.getErrors], (req: Request, res: Response) => {
 				return res.status(200).json(res.locals.errors);
-			});
-
-		/**
-		 * @DELETE  api/errors
-		 * @desc    delete an errror from db
-		 */
-		this.app
-			.route('/api/errors')
-			.delete([LogController.deleteError], (req: Request, res: Response) => {
-				return res.sendStatus(200);
 			});
 
 		return this.app;

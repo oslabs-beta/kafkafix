@@ -1,73 +1,47 @@
-// requiring in app and browser window modules
-const { app, BrowserWindow, ipcMain } = require('electron');
-// import IPCmain from electron
-
-// importing electron is dev
-const isDev = require('electron-is-dev');
-
-// requring in path
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
-
-// importing electron, formdata, axios and fs modules
-const { dialog } = require('electron');
-const fs = require('fs');
-// const FormData = require('form-data');
-const axios = require('axios').default;
 const fetch = require('node-fetch');
 
-// function for creating a window
-function createWindow() {
-  const win = new BrowserWindow({
-    width: 1000,
-    height: 800,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
+app.whenReady().then(() => createWindow());
 
-  const startURL = isDev
-    ? 'http://localhost:8080'
-    : `file://${path.join(__dirname, './client/src/index.html')}`;
-
-  // loading the html file
-  win.loadURL(startURL);
-}
-
-app.whenReady().then(() => {
-  // calling the function above
-  createWindow();
-
-  // activating the app when no windows are available opens a new one
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
-
-  // closes app when all windows are closed - for windows/linux
-  app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit();
-  });
+app.on('activate', () => {
+	if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-// fucntion for creating partition window
-function createPartitionWindow() {
-  const win = new BrowserWindow({
-    width: 500,
-    height: 500,
-  });
-
-  win.loadURL('http://localhost:8080/partition');
-}
-
-ipcMain.on('open-partition', () => {
-  createPartitionWindow();
+app.on('window-all-closed', () => {
+	if (process.platform !== 'darwin') app.quit();
 });
 
-function uploadFile() {
+ipcMain.on('open-partition', () => createPartitionWindow());
+ipcMain.on('upload-file', () => uploadFile());
+
+const createWindow = () => {
+	const win = new BrowserWindow({
+		width: 1000,
+		height: 800,
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false,
+		},
+	});
+	const filePath = `file://${path.join(__dirname, './dist/index.html')}`;
+
+	win.loadURL(filePath);
+};
+
+const createPartitionWindow = () => {
+	const win = new BrowserWindow({
+		width: 500,
+		height: 500,
+	});
+
+	win.loadURL('http://localhost:8080/partition');
+};
+
+const uploadFile = () => {
 	dialog
 		.showOpenDialog({
-			title: 'Select your docker-compose file',
+			title: 'Select docker-compose file',
 			defaultPath: path.join(__dirname, '../assets/'),
 			buttonLabel: 'Select',
 			filters: [
@@ -84,28 +58,15 @@ function uploadFile() {
 		.then(file => {
 			if (!file.canceled) {
 				const filePath = file.filePaths[0].toString();
-
-				fetch('http://localhost:3000/api/composeup', {
+				const options = {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ filePath }),
-				});
+				};
 
-				// axios
-				// 	.post('http://localhost:3000/api/composeup', {
-				// 		filePath,
-				// 	})
-				// 	.catch(e =>
-				// 		console.log('error in sending fetch request for file', e)
-				// 	);
+				fetch('http://localhost:3000/api/composeup', options).catch(e =>
+					console.log('error: docker compose up', e)
+				);
 			}
-			// else {
-			// 	console.log('Error in reading file', err);
-			// }
 		});
-	// .catch(e => console.log('error while selecting YAML => ', e));
-}
-
-ipcMain.on('upload-file', () => {
-  uploadFile();
-});
+};

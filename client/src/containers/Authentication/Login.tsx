@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, FC, useRef } from "react";
+import { useState, FC } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
@@ -44,14 +44,13 @@ const useStyles = makeStyles({
 export const Login: FC = () => {
   const classes = useStyles();
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(null);
   const dispatch = useDispatch();
-  const errorMessage = useSelector<overallState, UserState["error"]>(
+  const errorMessage = useSelector<overallState, UserState['error']>(
     (state) => state.user.error
   );
-
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -63,17 +62,16 @@ export const Login: FC = () => {
 
   const signUp = () => {
     dispatch(signUpRequestActionCreator());
-    fetch("/api/signup", {
-      method: "POST",
+    fetch('/api/signup', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include",
+      credentials: 'include',
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("email is ", email);
         dispatch(setUserActionCreator(email));
         dispatch(signUpSuccessActionCreator());
         console.log("new user signed up: ", data);
@@ -81,19 +79,18 @@ export const Login: FC = () => {
       })
       .catch((error) => {
         dispatch(signUpFailActionCreator(error));
-        console.error("Error:", error);
       });
   };
 
   const login = () => {
     dispatch(loginRequestActionCreator());
-    fetch("/api/login", {
-      method: "POST",
+    fetch('/api/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include",
+      credentials: 'include',
     })
       .then((response) => {
         if (response.status != 200) {
@@ -102,14 +99,12 @@ export const Login: FC = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("email is ", email);
         dispatch(setUserActionCreator(email));
         dispatch(loginSuccessActionCreator());
-        console.log("login", data);
       })
       .catch((error) => {
         dispatch(loginFailActionCreator(error));
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
   // const oauthLogin = () => {
@@ -145,31 +140,29 @@ export const Login: FC = () => {
       else signUp();
     } else {
       dispatch(
-        setErrorActionCreator("Cannot leave email/password fields empty")
+        setErrorActionCreator('Cannot leave email/password fields empty')
       );
     }
   };
 
   const handleChangePage = () => {
     const emailField: HTMLInputElement | null =
-      document.querySelector("#emailField");
+      document.querySelector('#emailField');
     const passwordField: HTMLInputElement | null =
-      document.querySelector("#passwordField");
+      document.querySelector('#passwordField');
     if (emailField) {
       console.log(emailField);
       console.log(emailField.value);
-      emailField.value = "";
+      emailField.value = '';
     }
     if (passwordField) {
-      passwordField.value = "";
+      passwordField.value = '';
     }
-    dispatch(setErrorActionCreator(""));
+    dispatch(setErrorActionCreator(''));
     setIsLogin(!isLogin);
   };
-  
-  const handleGithubLogin = () => {
 
-  } 
+  const handleGithubLogin = () => {};
 
   return (
     <div>
@@ -181,31 +174,31 @@ export const Login: FC = () => {
             <TextField
               
               onSubmit={handleSubmit}
-              type="text"
+              type='text'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              label="email"
-              variant="outlined"
-              id="emailField"
+              label='email'
+              variant='outlined'
+              id='emailField'
             />
           </div>
         </Box>
         <Box m={2}>
           <div>
             <TextField
-              type="password"
+              type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              label="password"
-              variant="outlined"
-              id="passwordField"
+              label='password'
+              variant='outlined'
+              id='passwordField'
             />
           </div>
         </Box>
         <div>
           <p>
             <Button className={classes.btn} onClick={handleSubmitButton}>
-              {isLogin ? "Log in" : "Sign up"}
+              {isLogin ? 'Log in' : 'Sign up'}
             </Button>
             {/* <Button className={classes.btn} onClick={handleGithubLogin}> */}
             {/* {isLogin &&  <Button>Login With Github <Button/>}
@@ -214,15 +207,15 @@ export const Login: FC = () => {
           </p>
           {isLogin &&  <Button className={classes.btn} onClick={handleGithubLogin}>Login With Github </Button>}
           <div>
-            <p style={{ color: "red" }}>
+            <p style={{ color: 'red' }}>
               {/* {" "} */}
               {errorMessage}
             </p>
             <u
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => setIsLogin(!isLogin)}
             >
-              {isLogin ? "Create an account" : "Already have an account?"}
+              {isLogin ? 'Create an account' : 'Already have an account?'}
             </u>
           </div>
         </div>

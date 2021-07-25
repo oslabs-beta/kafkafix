@@ -4,16 +4,8 @@ import { useSelector } from 'react-redux';
 import { overallState } from '../../state/reducers/index';
 import { MetricsState } from '../../state/reducers/metricsReducer';
 
-// importing componenents from M-UI
 import {
-  InputLabel,
-  Button,
-  Select,
-  FormControl,
-  MenuItem,
-  Paper,
   Typography,
-  Input,
   makeStyles,
   Card,
 } from '@material-ui/core';
@@ -34,25 +26,6 @@ export const BarChart: FC = () => {
   const classes = useStyles();
   // state of barchart
   const [chartInstance, setChartInstance] = useState<any>(null);
-
-  // const chartData = {
-  //   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  //   datasets: [
-  //     {
-  //       label: '# of Votes',
-  //       data: [12, 19, 3, 5, 2, 3],
-  //       backgroundColor: [
-  //         'rgba(255, 99, 132, 0.2)',
-  //         'rgba(54, 162, 235, 0.2)',
-  //         'rgba(255, 206, 86, 0.2)',
-  //         'rgba(75, 192, 192, 0.2)',
-  //         'rgba(153, 102, 255, 0.2)',
-  //         'rgba(255, 159, 64, 0.2)',
-  //       ],
-  //       borderWidth: 4,
-  //     },
-  //   ],
-  // };
 
   const chartData = useSelector<overallState, MetricsState['chartData']>(
     (state) => state.metrics.chartData
@@ -75,30 +48,7 @@ export const BarChart: FC = () => {
     },
   };
 
-  // const demoData = {
-  //   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  //   datasets: [
-  //     {
-  //       label: '# of Votes',
-  //       data: [12, 19, 3, 5, 2, 3],
-  //       backgroundColor: [
-  //         'rgba(255, 99, 132, 0.2)',
-  //         'rgba(54, 162, 235, 0.2)',
-  //         'rgba(255, 206, 86, 0.2)',
-  //         'rgba(75, 192, 192, 0.2)',
-  //         'rgba(153, 102, 255, 0.2)',
-  //         'rgba(255, 159, 64, 0.2)',
-  //       ],
-  //       borderWidth: 4,
-  //     },
-  //   ],
-  // };
-
   useEffect(() => {
-    // grab formatted data from state
-
-    // assign it to chartConfig.data
-    // chartConfig.data = chartData;
     if (chartInstance) chartInstance.clear();
     if (chartContainer && chartContainer.current) {
       const newChartInstance: any = new Chart(
@@ -122,16 +72,6 @@ export const BarChart: FC = () => {
     );
   };
 
-  const destroyCanvas = () => {
-    const oldCanvas: HTMLCanvasElement | null =
-      document.querySelector('canvas');
-    if (oldCanvas) {
-      // const twod = oldCanvas.getContext("2d");
-      // if (twod)
-      oldCanvas.remove();
-    }
-  };
-
   return (
     <>
       {Object.values(chartData).length ? (
@@ -142,26 +82,3 @@ export const BarChart: FC = () => {
     </>
   );
 };
-
-/*
-                format for data object
-{
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)"
-        ],
-        borderWidth: 4
-      }
-    ]
-  }
-
-*/

@@ -5,7 +5,6 @@ import WebSocket, { Server } from 'ws';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-// import { DB } from './db';
 import { RouteConfig } from './common/route.config';
 import { AuthRoutes } from './auth/auth.routes';
 import { OAuthRoutes } from './oauth/oauth.routes';
@@ -74,7 +73,6 @@ server.listen(PORT, () => {
 });
 
 // websocket server
-// CHECK if wss.on vs wss.once
 wss.once('connection', (ws: WebSocket) => {
 	app.locals.ws = ws;
 	console.log('ws connected');

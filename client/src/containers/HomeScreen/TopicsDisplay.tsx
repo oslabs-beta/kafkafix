@@ -4,23 +4,8 @@ import { overallState } from '../../state/reducers';
 import { KafkaState } from '../../state/reducers/kafkaDataReducer';
 import { TopicRow } from './TopicsDisplay/TopicRow';
 import { populateData } from '../../helperFunctions/populateData';
-/*
-------------------------------Update------------------------
-Topics Row is now part of topics display becasue of the collapsable table
-*/
-
-// importing IPCReder
-// const { ipcRenderer } = window.require("electron");
-
-// importing prop types
-import PropTypes from 'prop-types';
-// importing componenets from Material UI
 import {
 	Button,
-	Box,
-	Collapse,
-	Divider,
-	IconButton,
 	Table,
 	TableBody,
 	TableCell,
@@ -32,21 +17,12 @@ import {
 	Input,
 	makeStyles,
 	Modal,
-	Checkbox,
 } from '@material-ui/core';
 import { ErrorRounded } from '@material-ui/icons';
 
-// importing icons from material-UI
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-// import { useFetch } from '../../hooks/useFetch';
-// import { MBeans } from '../../../../server/jmx/MBeans';
 
-// const data = await useFetch(
-// 	`http://localhost:9090/api/v1/query?query=${MBeans.isrShrinksPerSec}`
-// );
-
-// fucntion to make styles for rows
 const useRowStyles = makeStyles({
 	root: {
 		'& > *': {
@@ -108,7 +84,7 @@ interface Options {
 	headers: any;
 }
 
-const TopicsDisplay = () => {
+const TopicsDisplay: FC = () => {
   const classes = useRowStyles();
   const isConnected = useSelector<overallState, KafkaState['isConnected']>(
     (state) => state.kafka.isConnected
@@ -116,7 +92,7 @@ const TopicsDisplay = () => {
 
   const rows = useSelector<overallState, KafkaState['data']>(
     (state) => state.kafka.data
-  ); // [{topicName, partitions, ... }, {}]
+  ); 
 
   const dispatch = useDispatch();
 
@@ -166,7 +142,7 @@ const TopicsDisplay = () => {
         method: 'POST',
         body: JSON.stringify({
           topic: topicName.value,
-          partitions: numberOfPartitions.value,
+          numPartitions: numberOfPartitions.value,
         }),
         headers: { 'Content-Type': 'application/json' },
       };
@@ -176,7 +152,7 @@ const TopicsDisplay = () => {
         .then((data) => {
           populateData(data, dispatch);
           toggleCreateTopicModal();
-          alert('got a response');
+          alert('Created a new topic');
         })
         .catch((e) => console.log(e));
     }
@@ -226,35 +202,6 @@ const TopicsDisplay = () => {
     toggleProducerModal();
   };
 
-  // // what are we using this function for?
-  // const handleStartConsumer = () => {
-  //   fetch('/api/consumer', {
-  //     method: 'GET',
-  //     headers: { 'Content-Type': 'application/json' },
-  //   })
-  //     .then((data) => data.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //     })
-  //     .catch((e) => console.log(e));
-  // };
-
-  // let defaultObj: any = {};
-  // rows.forEach((obj) => (defaultObj[obj.topicName] = false));
-  // // {topic1: false, topic2: false ... }
-  // const [buttonState, setButtonState] = useState(defaultObj);
-  // console.log(buttonState);
-
-  // interface Colors {
-  //   buttonSelected: string;
-  //   buttonNotSelected: string;
-  // }
-
-  // const colorSwitch: any = {
-  //   buttonSelected: 'buttonNotSelected',
-  //   buttonNotSelected: 'buttonSelected',
-  // };
-
   const handleToggleConsumer = () => {
     const topic = (document.getElementById('selectTopic') as HTMLInputElement)
       .value;
@@ -281,18 +228,6 @@ const TopicsDisplay = () => {
 
     setIsConsumerStarted(!isConsumerStarted);
     toggleConsumerModal();
-    // console.log('after split ', e.target.id.split('button'));
-    // const [, key] = e.target.id.split('button');
-    // console.log('topic is ', key);
-    // setButtonState({ ...buttonState, [key]: !buttonState[key] });
-    // console.log('event target class', e.target.className);
-    // e.target.className = colorSwitch[e.target.className];
-    // console.log('event target class after switch ', e.target.className);
-    // console.log(e.target.className === 'buttonSelected');
-    // if (e.target.className === 'buttonSelected')
-    //   e.target.style = classes.buttonSelected;
-    // else if (e.target.className === 'buttonNotSelected')
-    //   e.target.style = classes.buttonNotSelected;
   };
 
   return (

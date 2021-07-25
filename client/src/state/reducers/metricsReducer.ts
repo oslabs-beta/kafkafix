@@ -24,7 +24,6 @@ const initialState: MetricsState = {
 export const metricsReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case Type.POPULATE_CHART:
-      console.log('arrived in metricsReducer under POPULATE_CHART');
       return {
         ...state,
         chartData: action.payload,
@@ -33,5 +32,3 @@ export const metricsReducer = (state = initialState, action: any) => {
       return state;
   }
 };
-
-// export default metricsReducer;

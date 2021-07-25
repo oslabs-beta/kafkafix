@@ -1,10 +1,6 @@
 import { RequestHandler } from 'express';
 import fs from 'fs';
 const winston = require('winston');
-require('winston-mongodb').MongoDB;
-
-import { handleAsync } from '../common';
-import { Log } from '../db/log.model';
 
 interface IErrors {
 	level: string;
@@ -18,7 +14,7 @@ interface IErrors {
 
 interface IProps {
 	namespace: string;
-	log: any; // CHECK type
+	log: any;
 }
 
 const { createLogger, transports } = winston;
@@ -36,13 +32,6 @@ export class LogController {
 			transports: [
 				new transports.Console(),
 				new transports.File({ filename: 'error.log' }),
-				// new transports.MongoDB({
-				// 	level: 'error',
-				// 	db: process.env.MONGO_URI,
-				// 	options: { useUnifiedTopology: true },
-				// 	collection: 'logs',
-				// 	format: combine(json(), metadata()),
-				// }),
 			],
 		});
 
@@ -65,7 +54,6 @@ export class LogController {
 	 * @desc    get all previous errors from error.log
 	 * @returns {Array{}}
 	 */
-	// CHECK after packaging, does the file save to right place?
 	static getErrors: RequestHandler = (req, res, next) => {
 		const path = './error.log';
 
@@ -90,30 +78,5 @@ export class LogController {
 			console.error(e);
 			return next(e);
 		}
-	};
-
-	/**
-	 * @desc    get all previous errors from db
-	 * @returns
-	 */
-	static fetchErrors: RequestHandler = async (req, res, next) => {
-		const [errors, error] = await handleAsync(Log.find({}));
-
-		if (error) return next(error);
-		res.locals.errors = errors;
-
-		return next();
-	};
-
-	/**
-	 * @desc    delete an error from db
-	 */
-	static deleteError: RequestHandler = async (req, res, next) => {
-		const { id } = req.body;
-		const [, error] = await handleAsync(Log.deleteOne({ _id: id }));
-
-		if (error) return next(error);
-
-		return next();
 	};
 }
