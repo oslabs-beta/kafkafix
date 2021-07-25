@@ -228,10 +228,6 @@ export class KafkaMetricsController {
 
 		res.locals.requestsPerSecond = { fetchConsumer, fetchFollower, produce };
 
-		// console.log(res.locals.fetchConsumer);
-		// console.log(res.locals.fetchFollower);
-		// console.log(res.locals.produce);
-
 		return next();
 	};
 

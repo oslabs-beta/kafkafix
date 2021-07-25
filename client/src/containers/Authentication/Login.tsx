@@ -50,7 +50,7 @@ export const Login: FC = () => {
 
   const signUp = () => {
     dispatch(signUpRequestActionCreator());
-    fetch('/api/signup', {
+    fetch('http://localhost:3000/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export const Login: FC = () => {
 
   const login = () => {
     dispatch(loginRequestActionCreator());
-    fetch('/api/login', {
+    fetch('http://localhost:3000/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

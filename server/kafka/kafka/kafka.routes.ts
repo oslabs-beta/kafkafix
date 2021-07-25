@@ -1,15 +1,15 @@
-import { Application, Request, Response } from 'express';
+import { Application, Request, Response } from "express";
 
-import { RouteConfig } from '../../common/route.config';
-import { KafkaController } from './kafka.controller';
-import { TopicController } from '../topic/topic.controller';
-import ProducerController from './producer.controller';
-import { ConsumerController } from './consumer.controller';
-import { GroupController } from '../group/group.controller';
+import { RouteConfig } from "../../common/route.config";
+import { KafkaController } from "./kafka.controller";
+import { TopicController } from "../topic/topic.controller";
+import ProducerController from "./producer.controller";
+import { ConsumerController } from "./consumer.controller";
+import { GroupController } from "../group/group.controller";
 
 export class KafkaRoutes extends RouteConfig {
   constructor(app: Application) {
-    super(app, 'KafkaRoutes');
+    super(app, "KafkaRoutes");
   }
 
   routes() {
@@ -18,7 +18,7 @@ export class KafkaRoutes extends RouteConfig {
      * @desc     Initialize Docker containers from docker-compose file
      */
     this.app
-      .route('/api/composeup')
+      .route("/api/composeup")
       .post([KafkaController.composeUp], (req: Request, res: Response) => {
         return res.status(200);
       });
@@ -28,8 +28,8 @@ export class KafkaRoutes extends RouteConfig {
      * @desc     Stop Docker containers from docker-compose file
      */
     this.app
-      .route('/api/connect')
-      .put([KafkaController.composeDown], (req: Request, res: Response) => {
+      .route("/api/disconnect")
+      .delete([KafkaController.composeDown], (req: Request, res: Response) => {
         return res.status(200);
       });
 
@@ -37,7 +37,7 @@ export class KafkaRoutes extends RouteConfig {
      * @POST     Initialize Kafka
      * @desc    sends cluster info and all metadata
      */
-    this.app.route('/api/connect').post([
+    this.app.route("/api/connect").post([
       KafkaController.kafka,
       KafkaController.startAdmin,
       KafkaController.describeCluster,
@@ -53,10 +53,10 @@ export class KafkaRoutes extends RouteConfig {
      * @PUT     Disconnects Kafka
      * @desc    disconnects admin kafka instance
      */
-    this.app.route('/api/connect').put([
+    this.app.route("/api/connect").put([
       KafkaController.disconnectAdmin,
       (req: Request, res: Response) => {
-        console.log('disconnect admin');
+        console.log("disconnect admin");
         return res.status(200);
       },
     ]);
@@ -67,7 +67,7 @@ export class KafkaRoutes extends RouteConfig {
      */
 
     this.app
-      .route('/api/producer')
+      .route("/api/producer")
       .post(
         [ProducerController.startProducer],
         (req: Request, res: Response) => {
@@ -80,9 +80,9 @@ export class KafkaRoutes extends RouteConfig {
      * @desc     Stops given producer by topic
      */
     this.app
-      .route('/api/producer')
+      .route("/api/producer")
       .put([ProducerController.stopProducer], (req: Request, res: Response) => {
-        console.log('disconnect producer');
+        console.log("disconnect producer");
         return res.status(200);
       });
 
@@ -91,7 +91,7 @@ export class KafkaRoutes extends RouteConfig {
      * @desc     Initialize an instance of consumer
      */
     this.app
-      .route('/api/consumer')
+      .route("/api/consumer")
       .post(
         [ConsumerController.startConsumer],
         (req: Request, res: Response) => {
@@ -104,9 +104,9 @@ export class KafkaRoutes extends RouteConfig {
      * @desc     Stops given consumer by topic and groupId
      */
     this.app
-      .route('/api/consumer')
+      .route("/api/consumer")
       .put([ConsumerController.stopConsumer], (req: Request, res: Response) => {
-        console.log('disconnect consumer');
+        console.log("disconnect consumer");
         return res.status(200);
       });
 
