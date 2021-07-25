@@ -44,8 +44,8 @@ export const NotifItems: FC<notifItemsProps> = ({ setNotif }) => {
   const classes = useStyles();
 
   // can edit the slices to depend on a state/allow user to config
-  const notifs = useSelector<overallState, KafkaState["notif"]>((state) =>
-    state.kafka.notif.slice(-10)
+  const notifs = useSelector<overallState, KafkaState["errors"]>((state) =>
+    state.kafka.errors.slice(-10)
   );
 
   return (
@@ -67,7 +67,7 @@ export const NotifItems: FC<notifItemsProps> = ({ setNotif }) => {
             </Typography>
 
             <div className={classes.span}>
-              <Typography variant="button">{el.clientID}</Typography>
+              <Typography variant="button">{el.clientId}</Typography>
               <Typography variant="caption">{el.message}</Typography>
             </div>
           </Card>
