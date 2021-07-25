@@ -1,0 +1,22 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: auto;
+  align-items: center;
+  padding: 10;
+}
+
+.title {
+  font-weight: bold;
+  text-align: center;
+}
+.overline {
+  font-weight: lighter;
+  text-align: center;
+}
+
+.button {
+  margin-top: 10;
+  background-color: "red";
+}

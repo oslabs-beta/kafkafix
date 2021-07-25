@@ -1,25 +1,42 @@
-import { Type } from '../constants/constants';
-import { Action } from '../actions/actions';
-
-export interface TopicData {
-  name: string;
-  partitionNum: number;
-  consumerNum: number;
-  producerNum: number;
-}
+import { Type } from "../constants/constants";
+import { Action } from "../actions/actions";
 
 export interface KafkaState {
   isConnected: boolean;
-  data: any[];
-  messages: any[];
-  notif: any[];
+  data: DataEntries[];
+  messages: Object[];
+  errors: ErrorMessages[];
+}
+
+export interface DataEntries {
+  topicName: string;
+  partitions: number;
+  partitionData: partitionDataEntries[];
+}
+
+export interface partitionDataEntries {
+  id: number;
+  partitionErrorCode: any;
+  leader: boolean;
+  replicas: any;
+  isr: any;
+}
+
+interface ErrorMessages {
+  level: string;
+  namespace: string;
+  message: string;
+  error: string;
+  clientId: string;
+  broker: string;
+  timestamp: string;
 }
 
 const initialState: KafkaState = {
   isConnected: false,
   data: [],
   messages: [],
-  notif: [],
+  errors: [],
 };
 
 export const kafkaDataReducer = (
@@ -50,12 +67,12 @@ export const kafkaDataReducer = (
     case Type.POPULATE_NOTIF:
       return {
         ...state,
-        notif: action.payload,
+        errors: action.payload,
       };
     case Type.APPEND_NOTIF:
       return {
         ...state,
-        notif: [...state.notif, action.payload],
+        errors: [...state.errors, action.payload],
       };
     default:
       return state;

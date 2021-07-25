@@ -1,6 +1,4 @@
-import {
-  populateDataActionCreator,
-} from '../state/actions/actions';
+import { populateDataActionCreator } from "../state/actions/actions";
 
 const createData = (
   topicName: string,
@@ -8,8 +6,8 @@ const createData = (
   partitionData: any
 ) => {
   return {
-    topicName: topicName,
-    partitions: partitions,
+    topicName,
+    partitions,
     partitionData: partitionData.map((el: any) => ({
       id: el.partitionId,
       partitionErrorCode: el.partitionErrorCode,
