@@ -1,19 +1,5 @@
-import React from "react";
-
-/* ----------------- Update -----------------
-I removed the side panel component and moved Navbar and connect to be part of Homescreen.
-
-I removed the partiton component from homescreen. Clicking on topic dropsdown to show more info about topic(including partitions) -- clicking on a partition opens a new window (which shows the live data stream)
----------------------------------------------*/
-
-// importing TopicsDisplay
-import { TopicsDisplay } from "./TopicsDisplay/TopicsDisplay";
-
-// importing Navbar
+import React, { FC } from "react";
 import NavBar from "./Sidepanel/NavBar";
-
-// importing connect
-import Connect from "./Sidepanel/Connect";
 
 import { useDispatch, useSelector } from "react-redux";
 import { UserState } from "../../state/reducers/userReducer";
@@ -22,17 +8,12 @@ import { Redirect } from "react-router-dom";
 // import {logoutActionCreator} from '../state/actions/userActions';
 
 // importing components from Material UI
-import {
-  Button,
-  Card,
-  Divider,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { StartContainer } from "./StartContainer/StartContainer";
 
 // styles for homescreen component
 const useStyles = makeStyles({
-  homeWrapper: {
+  startContainer: {
     display: "flex",
     height: "100vh",
     alignItems: "start",
@@ -42,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-const HomeScreen = () => {
+export const HomeScreen: FC = () => {
   // creating a classes variable to customize styles
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -53,14 +34,9 @@ const HomeScreen = () => {
   return (
     <React.Fragment>
       <NavBar />
-      <div className={classes.homeWrapper}>
-        <Connect />
-        <TopicsDisplay />
-      </div>
+      <StartContainer />
       {/* <button onClick={()=>dispatch(logoutActionCreator())}>Sign Out</button> */}
       {!email && <Redirect to="/" />}
     </React.Fragment>
   );
 };
-
-export default HomeScreen;
