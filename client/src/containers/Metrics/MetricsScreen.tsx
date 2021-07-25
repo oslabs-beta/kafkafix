@@ -66,16 +66,6 @@ export const MetricsScreen: FC = () => {
 
 		// make fetch request and save data to redux - data to be used in reusable charts
 
-		console.log('metrics page');
-		//! TEST fetch and see data
-		fetch('http://localhost:3000/api/metrics', {
-			method: 'GET',
-			headers: {},
-		})
-			.then(res => res.json())
-			.then(data => console.log('FRONT METRIC', data))
-			.catch(e => console.log(e));
-
 		let url = 'http://localhost:9090/api/v1/query?query=';
 
 		fetch((url += e.target.value))
