@@ -16,15 +16,15 @@ import {
   signUpSuccessActionCreator,
   signUpFailActionCreator,
 } from "../../state/actions/userActions";
-import {
-  OauthLoginRequestActionCreator,
-  OauthLoginSuccessActionCreator,
-  OauthLoginFailActionCreator,
-  OauthSetErrorActionCreator
-} from "../../state/actions/oauthActions";
+// import {
+//   OauthLoginRequestActionCreator,
+//   OauthLoginSuccessActionCreator,
+//   OauthLoginFailActionCreator,
+//   OauthSetErrorActionCreator
+// } from "../../state/actions/oauthActions";
 import { overallState } from "../../state/reducers/index";
 import { UserState } from "../../state/reducers/userReducer";
-// import { OauthState } from "../../state/reducers/OauthReducer";
+
 
 
 
@@ -47,13 +47,12 @@ export const Login: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(null);
-  // const history = useHistory();
   const dispatch = useDispatch();
   const errorMessage = useSelector<overallState, UserState["error"]>(
     (state) => state.user.error
   );
 
-  // form validation; email and password need to be > one char
+
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
@@ -63,7 +62,6 @@ export const Login: FC = () => {
   }
 
   const signUp = () => {
-    // fetch request to the server on the 'signup' route, method is post
     dispatch(signUpRequestActionCreator());
     fetch("/api/signup", {
       method: "POST",
@@ -79,8 +77,7 @@ export const Login: FC = () => {
         dispatch(setUserActionCreator(email));
         dispatch(signUpSuccessActionCreator());
         console.log("new user signed up: ", data);
-        // props.updateUser(data.userId);
-        // history.push("/home"); // mention where to go
+    
       })
       .catch((error) => {
         dispatch(signUpFailActionCreator(error));
@@ -109,40 +106,38 @@ export const Login: FC = () => {
         dispatch(setUserActionCreator(email));
         dispatch(loginSuccessActionCreator());
         console.log("login", data);
-        // props.updateUser(data.userId);
-        // history.push(`/home`); // mention where to go
       })
       .catch((error) => {
         dispatch(loginFailActionCreator(error));
         console.error("Error:", error);
       });
   };
-  const oauthLogin = () => {
-    dispatch(OauthLoginRequestActionCreator());
-    fetch('/oauth-callback', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.status != 200) {
-          throw Error();
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("email is ", email);
-        dispatch(OauthLoginSuccessActionCreator());
-        console.log("login", data);
-      })
-      .catch((error) => {
-        dispatch(OauthLoginFailActionCreator(error));
-        console.error("Error:", error);
-      });
-  };
+  // const oauthLogin = () => {
+  //   dispatch(OauthLoginRequestActionCreator());
+  //   fetch('/oauth-callback', {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ email, password }),
+  //     credentials: "include",
+  //   })
+  //     .then((response) => {
+  //       if (response.status != 200) {
+  //         throw Error();
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("email is ", email);
+  //       dispatch(OauthLoginSuccessActionCreator());
+  //       console.log("login", data);
+  //     })
+  //     .catch((error) => {
+  //       dispatch(OauthLoginFailActionCreator(error));
+  //       console.error("Error:", error);
+  //     });
+  // };
   
   const handleSubmitButton = () => {
     if (validateForm()) {
