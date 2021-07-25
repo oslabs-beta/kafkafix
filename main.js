@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const url = require('url');
 const path = require('path');
 const fetch = require('node-fetch');
+const isDev = require('electron-is-dev');
 
 app.whenReady().then(() => createWindow());
 
@@ -26,14 +27,14 @@ const createWindow = () => {
 		},
 	});
 
-	win.loadURL(
-		url.format({
-			pathname: path.join(__dirname, './build/index.html'),
-			protocol: 'file:',
-			slashes: true,
-		})
-	);
-};
+// 	win.loadURL(
+// 		url.format({
+// 			pathname: path.join(__dirname, './build/index.html'),
+// 			protocol: 'file:',
+// 			slashes: true,
+// 		})
+// 	);
+// };
 
 // const createPartitionWindow = () => {
 // 	const win = new BrowserWindow({
@@ -41,8 +42,14 @@ const createWindow = () => {
 // 		height: 500,
 // 	});
 
-// 	win.loadURL('http://localhost:8080/partition');
-// };
+  const startURL = isDev
+    ? 'http://localhost:8080'
+    : `file://${path.join(__dirname, './client/src/index.html')}`;
+
+  win.loadURL(startURL);
+
+	// win.loadURL('http://localhost:8080/partition');
+};
 
 const uploadFile = () => {
 	dialog

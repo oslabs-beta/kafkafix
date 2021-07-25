@@ -23,15 +23,11 @@ export const server = http.createServer(app);
 const wss = new Server({ server });
 
 // middlewares
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:8080' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../build')));
-
-app.get('/*', (req, res) => {
-	return res.sendFile(path.join(__dirname, '../build/index.html'));
-});
 
 // routes
 const routes: Array<RouteConfig> = [];
@@ -42,6 +38,10 @@ routes.push(new JMXRoutes(app));
 routes.push(new KafkaRoutes(app));
 routes.push(new LogRoutes(app));
 routes.push(new TopicRoutes(app));
+
+app.get('/*', (req, res) => {
+	return res.sendFile(path.join(__dirname, '../build/index.html'));
+});
 
 //! server index html
 // app.get('/partition', (req, res) => {

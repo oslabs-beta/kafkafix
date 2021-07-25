@@ -18,6 +18,7 @@ export const CreatePartitionModal: FC<CreatePartitionModalProps> = ({
 }) => {
   const inputPartition = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
+
   const handleCreatePartition = () => {
     if (inputPartition.current) {
       let count: number | string = inputPartition.current.value;
@@ -43,10 +44,12 @@ export const CreatePartitionModal: FC<CreatePartitionModalProps> = ({
             data
           );
           populateData(data, dispatch);
+          setModalStatus(false);
         })
         .catch((e) => console.log(e));
     }
   };
+
   return (
     <>
       <Modal
@@ -66,7 +69,7 @@ export const CreatePartitionModal: FC<CreatePartitionModalProps> = ({
           <Typography variant="h6">Add # of Partitions</Typography>
           <Input
             id="inputPartition"
-            ref={inputPartition}
+            inputRef={inputPartition}
             type="number"
             placeholder="#"
           />

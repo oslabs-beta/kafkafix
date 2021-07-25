@@ -14,8 +14,6 @@ import { Interface } from 'readline';
 // maybe for metrics/ graphics for failure report
 // timestamp  ( within a range) >=,   <=, a < timestamp, b
 
-//   Interface
-// importing styles
 const colorState: any = {
   buttonSelected: 'blue',
   buttonNotSelected: 'white',
