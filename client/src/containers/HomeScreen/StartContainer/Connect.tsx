@@ -8,47 +8,13 @@ import {
   populateNotifActionCreator,
 } from "../../../state/actions/actions";
 import { populateData } from "../../../helperFunctions/populateData";
-
-// importing IPC renderer form Electron
-const { ipcRenderer } = window.require("electron");
-
-// importing componenets from Material UI
-import { Button, Card, Typography, Input, makeStyles } from "@material-ui/core";
-
-// styles for connect Component
-const useStyles = makeStyles({
-  form: {
-    alignSelf: "start",
-    margin: 30,
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    height: "auto",
-    width: "auto",
-
-    alignItems: "center",
-    padding: 10,
-  },
-  title: {
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  overline: {
-    fontWeight: "lighter",
-    textAlign: "center",
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: "red",
-  },
-});
+import { Button, Card, Typography, Input } from "@material-ui/core";
+import "../../../../stylesheets/StartContainer.css";
 
 export const Connect: FC = () => {
   const isConnected = useSelector<overallState, KafkaState["isConnected"]>(
     (state) => state.kafka.isConnected
   );
-  const classes = useStyles();
 
   const dispatch = useDispatch();
   const inputPort = useRef<HTMLInputElement>(null);
@@ -105,8 +71,8 @@ export const Connect: FC = () => {
 
   return (
     <>
-      <Card className={classes.card}>
-        <Typography variant="subtitle1" className={classes.title}>
+      <Card className="card">
+        <Typography variant="subtitle1" className="title">
           Enter Your Broker Port Number
         </Typography>
         <Input
@@ -119,7 +85,7 @@ export const Connect: FC = () => {
           autoFocus={true}
         />
         <Button
-          className={classes.button}
+          className="button"
           variant="contained"
           color="primary"
           onClick={() => (isConnected ? handleDisconnect : handleConnect)}

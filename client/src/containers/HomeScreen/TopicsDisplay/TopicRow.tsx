@@ -1,13 +1,11 @@
-import React, { FC, MouseEvent, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { overallState } from '../../../state/reducers';
+import React, { FC, MouseEvent, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { overallState } from "../../../state/reducers";
 // // importing IPCReder
-const { ipcRenderer } = window.require('electron');
-import { populateData } from '../../../helperFunctions/populateData';
+const { ipcRenderer } = window.require("electron");
+import { populateData } from "../../../helperFunctions/populateData";
 
-import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
-
-import { Link } from 'react-router-dom';
+import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 
 import {
   Button,
@@ -21,69 +19,12 @@ import {
   TableRow,
   Typography,
   Input,
-  makeStyles,
   Modal,
-} from '@material-ui/core';
-
-import { ErrorRounded } from '@material-ui/icons';
-
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-  tableWrapper: {
-    margin: 30,
-    boxShadow: '10px 5px 5px lightgrey;',
-  },
-  tableHeaderRow: {
-    backgroundColor: 'black',
-  },
-  tableHeaderText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  partitionButtons: {
-    backgroundColor: 'white',
-  },
-  primaryButtons: {
-    backgroundColor: 'white',
-    justifySelf: 'center',
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  insideModalDiv: {
-    display: 'flex',
-    width: 300,
-    height: 300,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: '5%',
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: 'red',
-  },
-});
-
-interface Options {
-  // headers: {};
-  body: string;
-  method: string;
-}
+} from "@material-ui/core";
 
 export const TopicRow = (props: { row: any }) => {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
 
   const [isOpenModal, setOpenModal] = useState(false);
 
@@ -96,32 +37,32 @@ export const TopicRow = (props: { row: any }) => {
   const handleCreatePartition = () => {
     // grabbing inputs
     const input: HTMLInputElement | null =
-      document.querySelector('#inputPartition');
+      document.querySelector("#inputPartition");
 
     const topic: HTMLInputElement | null = document.querySelector(
-      '#inputTopicForPartition'
+      "#inputTopicForPartition"
     );
 
     // input validation
-    if (input && input.value === '') {
-      alert('cannot leave the name field empty for the partition');
+    if (input && input.value === "") {
+      alert("cannot leave the name field empty for the partition");
       return;
     }
     // fetch request
-    const options: RequestInit | Options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         topic: topic?.value,
         count: Number(input?.value),
       }),
     };
-    
+
     //finish the then after getting reposne
-    fetch('http://localhost:3000/api/partition', options)
+    fetch("http://localhost:3000/api/partition", options)
       .then((data: any) => data.json())
       .then((data) => {
-        console.log('data from backend after sending to add partition ', data);
+        console.log("data from backend after sending to add partition ", data);
         // reset everything in redux
         populateData(data, dispatch);
       })
@@ -138,19 +79,19 @@ export const TopicRow = (props: { row: any }) => {
 
   return (
     <React.Fragment>
-      <TableRow className={classes.root}>
+      <TableRow className="root">
         <TableCell>
           {/* onclick - arrow changes */}
           <IconButton
-            aria-label='expand row'
-            size='small'
+            aria-label="expand row"
+            size="small"
             onClick={() => setOpen(!open)}
           >
             {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
           </IconButton>
         </TableCell>
 
-        <TableCell component='th' scope='row'>
+        <TableCell component="th" scope="row">
           {row.topicName}
         </TableCell>
         <TableCell>{row.partitions}</TableCell>
@@ -159,37 +100,29 @@ export const TopicRow = (props: { row: any }) => {
       {/* Create another TableRow for the partitions*/}
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
-          <Collapse in={open} timeout='auto' unmountOnExit>
+          <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={3}>
               <Typography
-                style={{ fontWeight: 'bold' }}
-                align='left'
-                variant='h6'
+                style={{ fontWeight: "bold" }}
+                align="left"
+                variant="h6"
                 gutterBottom
-                component='div'
+                component="div"
               >
                 Partitions
               </Typography>
 
               {/* Table headers for Partitions */}
-              <Table size='small' aria-label='partitions'>
+              <Table size="small" aria-label="partitions">
                 <TableHead>
-                  <TableRow className={classes.tableHeaderRow}>
-                    <TableCell className={classes.tableHeaderText}>
-                      Id
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      Leader
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
+                  <TableRow className="tableHeaderRow">
+                    <TableCell className="tableHeaderText">Id</TableCell>
+                    <TableCell className="tableHeaderText">Leader</TableCell>
+                    <TableCell className="tableHeaderText">
                       Partition-errode
                     </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      ISR
-                    </TableCell>
-                    <TableCell className={classes.tableHeaderText}>
-                      Replicas
-                    </TableCell>
+                    <TableCell className="tableHeaderText">ISR</TableCell>
+                    <TableCell className="tableHeaderText">Replicas</TableCell>
                   </TableRow>
                 </TableHead>
 
@@ -203,7 +136,7 @@ export const TopicRow = (props: { row: any }) => {
                         key={data.id}
                         // onClick={() => handleClickPartition()}
                       >
-                        <TableCell component='th' scope='row'>
+                        <TableCell component="th" scope="row">
                           {data.id}
                         </TableCell>
                         <TableCell>{data.leader}</TableCell>
@@ -216,7 +149,7 @@ export const TopicRow = (props: { row: any }) => {
                   ))}
                   <Button
                     onClick={openModal}
-                    variant='text'
+                    variant="text"
                     // className={classes.primaryButtons}
                   >
                     Create Partition
@@ -225,27 +158,27 @@ export const TopicRow = (props: { row: any }) => {
                   <Modal
                     open={isOpenModal}
                     onClose={closeModal}
-                    aria-labelledby='create-partition'
-                    aria-describedby='create-partition'
-                    className={classes.modal}
+                    aria-labelledby="create-partition"
+                    aria-describedby="create-partition"
+                    className="modal"
                   >
-                    <div className={classes.insideModalDiv}>
-                      <Typography variant='h6'>Number of Partitions</Typography>
+                    <div className="insideModalDiv">
+                      <Typography variant="h6">Number of Partitions</Typography>
                       <Input
-                        id='inputTopicForPartition'
-                        type='text'
-                        placeholder='KafkaFix'
+                        id="inputTopicForPartition"
+                        type="text"
+                        placeholder="KafkaFix"
                       />
                       <Input
-                        id='inputPartition'
-                        type='number'
-                        placeholder='3'
+                        id="inputPartition"
+                        type="number"
+                        placeholder="3"
                       />
                       <Button
-                        variant='contained'
-                        color='primary'
+                        variant="contained"
+                        color="primary"
                         onClick={handleCreatePartition}
-                        className={classes.button}
+                        className="button"
                       >
                         Create
                       </Button>

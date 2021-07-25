@@ -7,6 +7,7 @@ import { populateData } from "../../../helperFunctions/populateData";
 import { TopicModal } from "./TopicModal";
 import { ProducerModal } from "./ProducerModal";
 import { ConsumerModal } from "./ConsumerModal";
+import "../../../../stylesheets/TopicsDisplay.css";
 
 import {
   Button,
@@ -17,72 +18,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  makeStyles,
 } from "@material-ui/core";
 
-const useRowStyles = makeStyles({
-  root: {
-    "& > *": {
-      borderBottom: "unset",
-    },
-  },
-  tableWrapper: {
-    margin: 30,
-  },
-  buttonsWrapper: {
-    display: "flex",
-    justifyContent: "space-around",
-  },
-  tableHeaderRow: {
-    backgroundColor: "black",
-  },
-  tableHeaderText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  buttonNotSelected: {
-    backgroundColor: "white",
-  },
-  buttonSelected: {
-    backgroundColor: "blue",
-  },
-  partitionButtons: {
-    backgroundColor: "white",
-  },
-  primaryButtons: {
-    backgroundColor: "white",
-    justifySelf: "center",
-    color: "black",
-  },
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  insideModalDiv: {
-    display: "flex",
-    width: 300,
-    height: 300,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-    borderRadius: "5%",
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: "red",
-  },
-});
-
-interface Options {
-  method: string;
-  body: string;
-  headers: any;
-}
-
 export const TopicsDisplay: FC = () => {
-  const classes = useRowStyles();
   const isConnected = useSelector<overallState, KafkaState["isConnected"]>(
     (state) => state.kafka.isConnected
   );
@@ -99,10 +37,6 @@ export const TopicsDisplay: FC = () => {
   const [isProducerStarted, setIsProducerStarted] = useState(false);
 
   const dispatch = useDispatch();
-
-  const toggleConsumerModal = () => {
-    setModalForConsumer(!modalForConsumer);
-  };
 
   const handleClickProducerButton = () => {
     if (isProducerStarted) {
@@ -138,7 +72,7 @@ export const TopicsDisplay: FC = () => {
 
   const deleteTopicHandler = (topicName: String) => {
     console.log("delete topic topic name", topicName);
-    const options: Options = {
+    const options = {
       method: "DELETE",
       body: JSON.stringify({ topic: topicName }),
       headers: { "Content-Type": "application/json" },
@@ -154,12 +88,12 @@ export const TopicsDisplay: FC = () => {
 
   return (
     <React.Fragment>
-      <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Paper className={classes.buttonsWrapper}>
+      <TableContainer component={Paper} className="tableWrapper">
+        <Paper className="buttonWrapper">
           <Button
             size="small"
             variant="text"
-            className={classes.primaryButtons}
+            className="primaryButtons"
             onClick={() => setModalForCreateTopic(true)}
           >
             Create Topic
@@ -169,7 +103,7 @@ export const TopicsDisplay: FC = () => {
             size="small"
             variant="text"
             onClick={handleClickProducerButton}
-            className={classes.primaryButtons}
+            className="primaryButtons"
           >
             {!isProducerStarted ? "Start Producer" : "Stop Producer"}
           </Button>
@@ -178,7 +112,7 @@ export const TopicsDisplay: FC = () => {
             size="small"
             onClick={handleClickConsumerButton}
             variant="text"
-            className={classes.primaryButtons}
+            className="primaryButtons"
           >
             {!isConsumerStarted ? "Start Consumer" : "Stop Consumer"}
           </Button>
@@ -186,14 +120,10 @@ export const TopicsDisplay: FC = () => {
         <Table aria-label="collapsible table">
           {/* Table Head */}
           <TableHead>
-            <TableRow className={classes.tableHeaderRow}>
+            <TableRow className="tableHeaderRow">
               <TableCell />
-              <TableCell className={classes.tableHeaderText}>
-                Topic Name
-              </TableCell>
-              <TableCell className={classes.tableHeaderText}>
-                Partitions
-              </TableCell>
+              <TableCell className="tableHeaderText">Topic Name</TableCell>
+              <TableCell className="tableHeaderText">Partitions</TableCell>
             </TableRow>
           </TableHead>
 

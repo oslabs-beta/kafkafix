@@ -1,0 +1,53 @@
+.root {
+  border-bottom: "unset";
+}
+
+.tableWrapper {
+  margin: 30px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tableHeaderRow {
+  background-color: "black";
+}
+
+.tableHeaderText {
+  color: "white";
+  font-weight: "bold";
+}
+
+.partitionButtons {
+  background-color: "white";
+}
+
+.primaryButtons {
+  background-color: "white";
+  justify-self: "center";
+  color: "black";
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insideModalDiv {
+  display: flex;
+  width: 300px;
+  height: 300px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: "white";
+  border-radius: 5%;
+}
+
+.button {
+  margin-top: 10px;
+  background-color: "red";
+}
