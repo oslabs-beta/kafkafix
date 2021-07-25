@@ -52,7 +52,7 @@ export const ProducerModal: FC<ProducerModalInterface> = ({
 
           <Input
             id="selectProducer"
-            ref={inputProducer}
+            inputRef={inputProducer}
             type="text"
             placeholder="Kafkafix"
           />

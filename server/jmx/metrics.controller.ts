@@ -13,13 +13,18 @@ export class Metrics {
 		const urls = Object.entries(MBeans).map(MBean => `${url}${MBean}`);
 		// const apiData = urls.map(async url => await handleAsync(fetch(url)));
 
-		Promise.all(
-			urls.map(async url => {
-				const data = await handleAsync(fetch(url));
-				console.log('METRIC data', data);
+		setInterval(() => {
+			const datas = Promise.all(
+				urls.map(async url => {
+					const data = await handleAsync(fetch(url));
+					// console.log('METRIC data', data);
 
-				ws.send(data);
-			})
-		);
+					return data;
+				})
+			);
+
+			console.log(datas);
+			ws.send(datas);
+		}, 5000);
 	};
 }
