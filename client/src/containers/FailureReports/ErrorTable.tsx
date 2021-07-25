@@ -1,11 +1,10 @@
-import React, { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { KafkaState } from '../../state/reducers/kafkaDataReducer';
-import { overallState } from '../../state/reducers/index';
+import React, { FC, useState } from "react";
+import { useSelector } from "react-redux";
+import { KafkaState } from "../../state/reducers/kafkaDataReducer";
+import { overallState } from "../../state/reducers/index";
 
 // importing components
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -15,61 +14,58 @@ import {
   TableFooter,
   TablePagination,
   Paper,
-  Typography,
-  Input,
   makeStyles,
-  Modal,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import { MTPaginationOptions } from '../PartitionScreen/MTPaginationOptions';
+import { MTPaginationOptions } from "../PartitionScreen/MTPaginationOptions";
 
 // importing styles
 const useRowStyles = makeStyles({
   bigwrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 20,
   },
   root: {
-    '& > *': {
-      borderBottom: 'unset',
+    "& > *": {
+      borderBottom: "unset",
     },
   },
   tableWrapper: {
     marginTop: 30,
   },
   tableHeaderRow: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
   },
   tableHeaderText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
 export const ErrorTable: FC = () => {
   const classes = useRowStyles();
 
-  const errors = useSelector<overallState, KafkaState['notif']>(
+  const errors = useSelector<overallState, KafkaState["notif"]>(
     (state) => state.kafka.notif
-  ); 
+  );
 
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(
     Math.floor(errors.length / pageSize)
   );
   const [togglePause, setTogglePause] = useState(false);
-  const start = pageIndex * pageSize; 
-  const end = Math.min(start + pageSize, errors.length); 
-  const showErrors = errors.slice(start, end); 
+  const start = pageIndex * pageSize;
+  const end = Math.min(start + pageSize, errors.length);
+  const showErrors = errors.slice(start, end);
 
   const numEmptyRows = pageSize - (end - start);
 
-  const emptyRows = []; 
+  const emptyRows = [];
   for (let i = 0; i < numEmptyRows; i++) {
     emptyRows.push(
-      <TableRow key={'emptyRow' + i} style={{ height: 53 }}>
+      <TableRow key={"emptyRow" + i} style={{ height: 53 }}>
         <TableCell colSpan={errors[0] ? Object.keys(errors[0]).length : 0} />
       </TableRow>
     );
@@ -96,12 +92,12 @@ export const ErrorTable: FC = () => {
   return (
     <div className={classes.bigwrapper}>
       <TableContainer component={Paper} className={classes.tableWrapper}>
-        <Table aria-label='custom pagination table'>
+        <Table aria-label="custom pagination table">
           <TableHead>
             <TableRow className={classes.tableHeaderRow}>
               {errors[0] &&
                 Object.keys(errors[0]).map((key) => (
-                  <TableCell style={{ color: 'white' }}>{key}</TableCell>
+                  <TableCell style={{ color: "white" }}>{key}</TableCell>
                 ))}
             </TableRow>
           </TableHead>
@@ -125,7 +121,7 @@ export const ErrorTable: FC = () => {
                 rowsPerPage={pageSize}
                 page={pageIndex}
                 SelectProps={{
-                  inputProps: { 'aria-label': 'rows per page' },
+                  inputProps: { "aria-label": "rows per page" },
                   native: true,
                 }}
                 onPageChange={handleChangePage}
