@@ -6,7 +6,7 @@ const { ipcRenderer } = window.require("electron");
 import { populateData } from "../../../helperFunctions/populateData";
 
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
-
+import { DataEntries } from "../../../state/reducers/kafkaDataReducer";
 import {
   Button,
   Box,
@@ -22,8 +22,11 @@ import {
   Modal,
 } from "@material-ui/core";
 
-export const TopicRow = (props: { row: any }) => {
-  const { row } = props;
+interface TopicRowProps {
+  row: DataEntries;
+}
+
+export const TopicRow: FC<TopicRowProps> = ({ row }) => {
   const [open, setOpen] = React.useState(false);
 
   const [isOpenModal, setOpenModal] = useState(false);
