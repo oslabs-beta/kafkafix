@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+
+=======
+>>>>>>> 6169dfc14570b0ad4f9d00b46f1bc69b571b4285
 import {
 	USER_LOGIN_REQUEST,
 	USER_LOGIN_SUCCESS,

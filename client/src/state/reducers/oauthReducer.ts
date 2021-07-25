@@ -1,14 +1,29 @@
 import * as types from '../constants/oauthConstants';
 import { Action } from '../actions/oauthActions';
 
-const initialState = {
-    email: '',
-    password: '',
-    authenticating: false,
-    error: false,
+export interface OauthState {
+    email: string;
+    LOGINLoading: boolean;
+    error: string;
+    preferences: any;
+  }
+
+const initialState: OauthState = {
+    email: "",
+    // password: '',
+  LOGINLoading: false,
+  error: "",
+  preferences: null,
 };
-export const userReducer = (state = initialState, action: Action) => {
-    switch (action.type) { 
+export const userReducer = (
+    state: OauthState = initialState,
+    action: Action) => {
+    switch (action.type) {
+        case types.SET_ERROR: 
+      return {
+        ...state,
+        error: action.payload
+      }
         case types.USER_LOGIN_REQUEST:
             return { ...state, authenticating: true };
         case types.USER_LOGIN_SUCCESS:
