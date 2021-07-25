@@ -14,7 +14,7 @@ export interface DataEntries {
   partitionData: partitionDataEntries[];
 }
 
-interface partitionDataEntries {
+export interface partitionDataEntries {
   id: number;
   partitionErrorCode: any;
   leader: boolean;
