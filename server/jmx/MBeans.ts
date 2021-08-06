@@ -1,6 +1,6 @@
 export enum MBeans {
 	underReplicatedPartitions = 'kafka_server_replicamanager_underreplicatedpartitions',
-	isrShrinksPerSec = 'kafka_server_replicamanager_isrshrinks_total',
+	isrShrinksTotal = 'kafka_server_replicamanager_isrshrinks_total',
 	activeControllerCount = 'kafka_controller_kafkacontroller_activecontrollercount',
 	offlinePartitionsCount = 'kafka_controller_kafkacontroller_offlinepartitionscount',
 	leaderElectionRateAndTimeMs = 'kafka_controller_controllerstats_leaderelectionrateandtimems',

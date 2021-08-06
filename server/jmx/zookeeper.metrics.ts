@@ -1,4 +1,4 @@
-import { Instance, Quantile } from '../types';
+import type { Instance, Quantile, QuantileData } from '../types';
 
 export class ZookeeperMetrics {
 	/**
@@ -8,7 +8,13 @@ export class ZookeeperMetrics {
 	 * @metricType Gauge
 	 */
 	static zkRequestLatencyMs = (payload: Quantile[]) => {
-		return payload;
+		const zkRequestLatencyMs: any = {};
+
+		payload.forEach((data: Quantile) => {
+			zkRequestLatencyMs[data.metric.quantile] = data.value;
+		});
+
+		return { zkRequestLatencyMs };
 	};
 
 	/**
@@ -18,6 +24,6 @@ export class ZookeeperMetrics {
 	 * @metricType Gauge
 	 */
 	static zkRequestLatencyMsCount = (payload: Instance[]) => {
-		return payload[0].value;
+		return { zkRequestLatencyMsCount: payload[0].value };
 	};
 }

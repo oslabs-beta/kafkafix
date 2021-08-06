@@ -16,7 +16,7 @@ export class JVMMetrics {
 			data.metric.gc === 'G1 Young Generation' ? (young = data.value) : null;
 		});
 
-		return { old, young };
+		return { garbageCollectionCount: { old, young } };
 	};
 
 	/**
@@ -34,7 +34,7 @@ export class JVMMetrics {
 			data.metric.gc === 'G1 Young Generation' ? (young = data.value) : null;
 		});
 
-		return { old, young };
+		return { garbageCollectionTime: { old, young } };
 	};
 
 	/**
@@ -62,7 +62,7 @@ export class JVMMetrics {
 	 * @type Gauge
 	 */
 	static cpuSecondsTotal = (payload: Instance[]) => {
-		return payload[0].value;
+		return { cpuSecondsTotal: payload[0].value };
 	};
 
 	/**

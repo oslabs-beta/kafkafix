@@ -1,4 +1,10 @@
-import { Instance, DelayedOperation, RequestVersion } from '../types';
+import {
+	Instance,
+	DelayedOperation,
+	RequestVersion,
+	Quantile,
+	QuantileRequest,
+} from '../types';
 
 export class KafkaMetrics {
 	/**
@@ -12,15 +18,12 @@ export class KafkaMetrics {
 	};
 
 	/**
-	 * @name IsrShrinksPerSec/IsrExpandsPerSec
-	 * @MBean kafka.server:type=ReplicaManager,name=IsrShrinksPerSec
-	 * @MBean kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
-	 * @desc Rate at which the pool of in-sync replicas (ISRs) shrinks/expands
+	 * @name isrShrinksTotal
+	 * @MBean kafka.server:type=ReplicaManager,name=IsrShrinksTotal
+	 * @desc Rate at which the pool of in-sync replicas (ISRs) shrinks total
 	 * @metricType Counter
 	 */
-	// CHECK only shows total: find shrink/expand
-	//! TOTAL
-	static isrShrinksPerSec = (payload: Instance[]) => {
+	static isrShrinksTotal = (payload: Instance[]) => {
 		return { isrShrinkPerSec: payload[0].value };
 	};
 
@@ -50,8 +53,14 @@ export class KafkaMetrics {
 	 * @desc Leader election rate and latency
 	 * @metricType Gauge
 	 */
-	static leaderElectionRateAndTimeMs = (payload: any) => {
-		return payload;
+	static leaderElectionRateAndTimeMs = (payload: Quantile[]) => {
+		const leaderElectionRateAndTimeMs: any = {};
+
+		payload.forEach((data: Quantile) => {
+			leaderElectionRateAndTimeMs[data.metric.quantile] = data.value;
+		});
+
+		return { leaderElectionRateAndTimeMs };
 	};
 
 	/**
@@ -60,8 +69,14 @@ export class KafkaMetrics {
 	 * @desc Number of “unclean” elections per second
 	 * @metricType Gauge
 	 */
-	static uncleanLeaderElectionsPerSec = (payload: any) => {
-		return payload;
+	static uncleanLeaderElectionsPerSec = (payload: Quantile[]) => {
+		const uncleanLeaderElectionsPerSec: any = {};
+
+		payload.forEach((data: Quantile) => {
+			uncleanLeaderElectionsPerSec[data.metric.quantile] = data.value;
+		});
+
+		return { uncleanLeaderElectionsPerSec };
 	};
 
 	/**
@@ -70,18 +85,24 @@ export class KafkaMetrics {
 	 * @desc Total time (in ms) to serve the specified request (Produce/Fetch)
 	 * @metricType Gauge
 	 */
-	static totalTimeMs = (payload: any) => {
-		const fetchConsumer: any[] = [];
-		const fetchFollower: any[] = [];
-		const produce: any[] = [];
+	static totalTimeMs = (payload: QuantileRequest[]) => {
+		const fetchConsumer: any = {};
+		const fetchFollower: any = {};
+		const produce: any = {};
 
-		payload.forEach((data: any) => {
-			data.metric.request === 'FetchConsumer' ? fetchConsumer.push(data) : null;
-			data.metric.request === 'FetchFollower' ? fetchFollower.push(data) : null;
-			data.metric.request === 'Produce' ? produce.push(data) : null;
+		payload.forEach((data: QuantileRequest) => {
+			data.metric.request === 'FetchConsumer'
+				? (fetchConsumer[data.metric.quantile] = data.value)
+				: null;
+			data.metric.request === 'FetchFollower'
+				? (fetchFollower[data.metric.quantile] = data.value)
+				: null;
+			data.metric.request === 'Produce'
+				? (produce[data.metric.quantile] = data.value)
+				: null;
 		});
 
-		return { fetchConsumer, fetchFollower, produce };
+		return { totalTimeMs: { fetchConsumer, fetchFollower, produce } };
 	};
 
 	/**
