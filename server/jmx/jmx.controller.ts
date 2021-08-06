@@ -8,8 +8,6 @@ import { JVMMetrics } from './jvm.metrics';
 import { KafkaMetrics } from './kafka.metrics';
 import { ZookeeperMetrics } from './zookeeper.metrics';
 
-// call it once when it's connected: otherwise it's going to memory leak
-//! change route
 export class JMXController {
 	static fetchMetrics: RequestHandler = (req, res, next) => {
 		console.log('fetchMetrics');
@@ -17,7 +15,6 @@ export class JMXController {
 		const url = 'http://localhost:9090/api/v1/query?query=';
 		// timestamp = int(float(datetime.datetime.now().timestamp()) * 1000);
 
-		// think about sending a huge one object with all data
 		setInterval(() => {
 			Object.entries(MBeans).map(async ([metric, MBean]) => {
 				const [response] = await handleAsync(fetch(`${url}${MBean}`));
