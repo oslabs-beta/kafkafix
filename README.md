@@ -25,7 +25,7 @@ Users are able to fully manage their local Kafka instance and perform any operat
 
 ## Install
 
-Just visit https://wwww.kafkafix.com and download and install.
+Just visit https://www.kafkafix.com and download and install.
 
 ## How to Use
 
